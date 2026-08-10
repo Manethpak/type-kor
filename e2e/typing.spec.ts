@@ -45,14 +45,17 @@ test("backspace reopens the previous cluster when the capture buffer is empty", 
 
 test("accepts a Khmer zero-width word boundary in place of visible test space", async ({ page }) => {
   await page.goto("/");
-  const firstCluster = page.locator("[data-cluster='0']");
-  await enterText(page, (await firstCluster.textContent())!);
-  await expect(page.locator("[data-cluster='1']")).toHaveAttribute("data-active", "true");
+  const prompt = await page.locator("[data-cluster]").allTextContents();
+  const boundaryIndex = prompt.indexOf(" ");
+  expect(boundaryIndex).toBeGreaterThan(0);
+
+  await enterText(page, prompt.slice(0, boundaryIndex).join(""));
+  await expect(page.locator(`[data-cluster='${boundaryIndex}']`)).toHaveAttribute("data-active", "true");
 
   await enterText(page, "\u200B");
 
-  await expect(page.locator("[data-cluster='1']")).toHaveAttribute("data-state", "correct");
-  await expect(page.locator("[data-cluster='2']")).toHaveAttribute("data-active", "true");
+  await expect(page.locator(`[data-cluster='${boundaryIndex}']`)).toHaveAttribute("data-state", "correct");
+  await expect(page.locator(`[data-cluster='${boundaryIndex + 1}']`)).toHaveAttribute("data-active", "true");
 });
 
 test("starts and completes the countdown when an input method omits beforeinput", async ({ page }) => {
@@ -69,18 +72,22 @@ test("starts and completes the countdown when an input method omits beforeinput"
 
 test("gives immediate prefix and error feedback without moving the cluster caret", async ({ page }) => {
   await page.goto("/");
-  const firstCluster = page.locator("[data-cluster='0']");
-  const target = await firstCluster.textContent();
-  const firstCodePoint = Array.from(target!)[0];
+  const prompt = await page.locator("[data-cluster]").allTextContents();
+  const targetIndex = prompt.findIndex((cluster) => Array.from(cluster).length > 1);
+  expect(targetIndex).toBeGreaterThanOrEqual(0);
+
+  await enterText(page, prompt.slice(0, targetIndex).join(""));
+  const targetCluster = page.locator(`[data-cluster='${targetIndex}']`);
+  const firstCodePoint = Array.from(prompt[targetIndex])[0];
   await enterText(page, firstCodePoint);
   await expect(page.getByTestId("attempt-feedback")).toHaveAttribute("data-status", "prefix");
   await expect(page.getByTestId("attempt-feedback")).toContainText(firstCodePoint);
-  await expect(firstCluster).toHaveAttribute("data-active", "true");
+  await expect(targetCluster).toHaveAttribute("data-active", "true");
 
-  await enterText(page, "ឈ");
+  await enterText(page, "x");
   await expect(page.getByTestId("attempt-feedback")).toHaveAttribute("data-status", "incorrect");
-  await expect(page.getByTestId("attempt-feedback")).toContainText("ឈ");
-  await expect(firstCluster).toHaveAttribute("data-active", "true");
+  await expect(page.getByTestId("attempt-feedback")).toContainText("x");
+  await expect(targetCluster).toHaveAttribute("data-active", "true");
 });
 
 test("completes a deterministic word test and stores the result locally", async ({ page }) => {
@@ -111,4 +118,20 @@ test("switches the live speed display between CPM and WPM", async ({ page }) => 
   await unitSwitch.getByRole("button", { name: "wpm" }).click();
   await expect(unitSwitch.getByRole("button", { name: "wpm" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByTestId("live-speed").locator("xpath=following-sibling::small")).toHaveText("wpm");
+});
+
+test("routes with hash URLs and preserves the typing session across navigation", async ({ page }) => {
+  await page.goto("/");
+  const firstCluster = page.locator("[data-cluster='0']");
+  await enterText(page, (await firstCluster.textContent())!);
+  await expect(firstCluster).toHaveAttribute("data-state", "correct");
+
+  await page.getByTitle("Settings").click();
+  await expect(page).toHaveURL(/#\/settings$/);
+  await expect(page.getByRole("heading", { name: "ការកំណត់" })).toBeVisible();
+
+  await page.goBack();
+  await expect(page).toHaveURL(/\/(?:#\/)?$/);
+  await expect(firstCluster).toHaveAttribute("data-state", "correct");
+  await expect(page.locator("[data-cluster='1']")).toHaveAttribute("data-active", "true");
 });

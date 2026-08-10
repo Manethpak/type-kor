@@ -1,6 +1,15 @@
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { MemoryRouter } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
+
+function renderApp(initialEntry = "/") {
+  return render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <App />
+    </MemoryRouter>,
+  );
+}
 
 describe("timed typing test", () => {
   beforeEach(() => {
@@ -17,7 +26,7 @@ describe("timed typing test", () => {
   });
 
   it("starts from input when beforeinput is unavailable and stops at the deadline", async () => {
-    const { container } = render(<App />);
+    const { container } = renderApp();
     const capture = screen.getByLabelText("Type the displayed Khmer text");
     const firstCluster = container.querySelector<HTMLElement>("[data-cluster='0']")!;
 
@@ -34,7 +43,7 @@ describe("timed typing test", () => {
   });
 
   it("switches the live counter between CPM and WPM", () => {
-    render(<App />);
+    renderApp();
     const switcher = screen.getByRole("group", { name: "Speed unit" });
     const cpm = switcher.querySelector<HTMLButtonElement>("button[aria-pressed='true']")!;
     expect(cpm).toHaveTextContent("cpm");
@@ -42,5 +51,16 @@ describe("timed typing test", () => {
     fireEvent.click(within(switcher).getByRole("button", { name: "wpm" }));
     expect(within(switcher).getByRole("button", { name: "wpm" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByTestId("live-speed").nextElementSibling).toHaveTextContent("wpm");
+  });
+
+  it("renders route pages and supports browser-style navigation", () => {
+    renderApp("/settings");
+    expect(screen.getByRole("heading", { name: "ការកំណត់" })).toBeVisible();
+
+    fireEvent.click(screen.getByTitle("Local history"));
+    expect(screen.getByRole("heading", { name: "ប្រវត្តិការវាយ" })).toBeVisible();
+
+    fireEvent.click(screen.getByTitle("Typing test"));
+    expect(screen.getByLabelText("Khmer typing test")).toBeVisible();
   });
 });
