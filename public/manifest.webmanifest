@@ -1,0 +1,9 @@
+{
+  "name": "ចង្វាក់ — Khmer typing practice",
+  "short_name": "ចង្វាក់",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#171813",
+  "theme_color": "#171813",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

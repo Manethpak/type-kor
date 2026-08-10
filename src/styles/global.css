@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-app-bg: var(--bg);
+  --color-app-raised: var(--bg-raised);
+  --color-app-surface: var(--surface);
+  --color-app-hover: var(--surface-hover);
+  --color-app-text: var(--text);
+  --color-app-soft: var(--text-soft);
+  --color-app-dim: var(--text-dim);
+  --color-app-accent: var(--accent);
+  --color-app-accent-soft: var(--accent-soft);
+  --color-app-correct: var(--correct);
+  --color-app-error: var(--error);
+  --color-app-line: var(--line);
+  --color-app-shadow: var(--shadow);
+  --font-ui: "Kantumruy Pro", sans-serif;
+  --font-khmer: "Battambang", serif;
+  --animate-arrive: arrive .5s cubic-bezier(.2,.8,.2,1) both;
+  --animate-blink: blink 1.15s step-end infinite;
+  --animate-echo-in: echo-in .12s ease-out both;
+}
+
+@font-face {
+  font-family: "Battambang";
+  src: url("/fonts/Battambang-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Battambang";
+  src: url("/fonts/Battambang-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kantumruy Pro";
+  src: url("/fonts/KantumruyPro-Variable.ttf") format("truetype");
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: "Kantumruy Pro", sans-serif;
+  color-scheme: dark;
+  --bg: #171813;
+  --bg-raised: #1d1e18;
+  --surface: #23241d;
+  --surface-hover: #292a22;
+  --text: #e8e3d7;
+  --text-soft: #aaa79b;
+  --text-dim: #66675e;
+  --accent: #e8a43a;
+  --accent-soft: rgba(232, 164, 58, 0.13);
+  --correct: #d8d4c9;
+  --error: #df735f;
+  --line: rgba(232, 227, 215, 0.09);
+  --shadow: rgba(0, 0, 0, 0.22);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+:root[data-theme="paper"] {
+  color-scheme: light;
+  --bg: #eee9dc;
+  --bg-raised: #f5f0e4;
+  --surface: #e4dece;
+  --surface-hover: #dad2c0;
+  --text: #292a23;
+  --text-soft: #67675d;
+  --text-dim: #9a978b;
+  --accent: #ad5c28;
+  --accent-soft: rgba(173, 92, 40, 0.12);
+  --correct: #34352e;
+  --error: #b4483c;
+  --line: rgba(41, 42, 35, 0.11);
+  --shadow: rgba(64, 49, 28, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  color: var(--bg);
+  background: var(--accent);
+}
+
+.app-scene {
+  background:
+    radial-gradient(circle at 20% 15%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 30%),
+    radial-gradient(circle at 85% 82%, color-mix(in srgb, var(--accent) 3%, transparent), transparent 30%),
+    var(--bg);
+}
+
+.app-scene::after {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  opacity: .16;
+  pointer-events: none;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+}
+
+.prompt-scrollbar::-webkit-scrollbar { display: none; }
+
+@keyframes arrive {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes echo-in {
+  from { opacity: 0; margin-top: -3px; }
+  to { opacity: 1; margin-top: 0; }
+}
+
+@keyframes blink {
+  0%, 62% { opacity: 1; }
+  63%, 100% { opacity: .2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
