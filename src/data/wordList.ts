@@ -95,7 +95,6 @@ export const commonKhmerWords: WordList = {
     "ស្ងប់",
     "រហ័ស",
     "យឺត",
-    "ងាយ",
     "ពិបាក",
     "ត្រឹមត្រូវ",
     "សំខាន់",

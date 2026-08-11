@@ -27,6 +27,7 @@ export function AppShell({
     <div className="app-scene relative isolate flex min-h-screen flex-col overflow-hidden text-app-text">
       <div
         className="pointer-events-none fixed inset-0 -z-10 overflow-hidden font-khmer text-app-accent"
+        data-focus-fade
         aria-hidden="true"
       >
         <span className="absolute right-[-5%] top-[4%] rotate-[8deg] text-[clamp(15rem,28vw,32rem)] leading-none opacity-[.018] blur-[1px]">
@@ -40,7 +41,10 @@ export function AppShell({
         </span>
       </div>
 
-      <header className="mx-auto grid w-[min(1180px,calc(100%_-_48px))] grid-cols-[1fr_auto_1fr] items-center pt-[26px] max-[760px]:w-[calc(100%_-_30px)] max-[760px]:grid-cols-[1fr_auto]">
+      <header
+        className="mx-auto grid w-[min(1180px,calc(100%_-_48px))] grid-cols-[1fr_auto_1fr] items-center pt-[26px] max-[760px]:w-[calc(100%_-_30px)] max-[760px]:grid-cols-[1fr_auto]"
+        data-focus-fade
+      >
         <Link
           className="inline-flex cursor-pointer items-center justify-self-start gap-3 p-0 text-left"
           to="/"
@@ -93,7 +97,10 @@ export function AppShell({
         {children}
       </main>
 
-      <footer className="mx-auto flex w-[min(1180px,calc(100%_-_48px))] justify-between border-t border-app-line py-6 pt-[18px] text-[11px] tracking-[.08em] text-app-dim max-[760px]:w-[calc(100%_-_30px)] max-[760px]:pb-20">
+      <footer
+        className="mx-auto flex w-[min(1180px,calc(100%_-_48px))] justify-between border-t border-app-line py-6 pt-[18px] text-[11px] tracking-[.08em] text-app-dim max-[760px]:w-[calc(100%_-_30px)] max-[760px]:pb-20"
+        data-focus-fade
+      >
         <span>Unicode Khmer · orthographic cluster engine</span>
         <span className="text-[color-mix(in_srgb,var(--accent)_60%,var(--text-dim))] max-[760px]:hidden">
           បញ្ជីពាក្យសាកល្បង · រង់ចាំការពិនិត្យ

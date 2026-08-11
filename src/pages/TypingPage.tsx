@@ -63,13 +63,19 @@ export function TypingPage({
   const pendingUnits = Array.from(pendingKey).length;
   const targetUnits = activeTarget ? Array.from(activeTarget.comparisonKey).length : 0;
   const pendingProgress = targetUnits === 0 ? 0 : Math.min(100, (pendingUnits / targetUnits) * 100);
+  const completedWords = session.typing.prompt
+    .slice(0, session.typing.currentIndex)
+    .filter((cluster) => cluster.kind === "space").length;
 
   return (
     <section className="w-full animate-arrive" aria-label="Khmer typing test">
       {!session.result && (
         <>
-          <div className="mb-7 flex min-h-12 items-end justify-between max-[760px]:items-start max-[760px]:gap-[18px]">
-            <div className="flex items-center gap-[3px] rounded-xl border border-app-line bg-app-raised p-[5px] max-[760px]:flex-wrap">
+          <div className="mb-7 flex min-h-12 items-end justify-between max-[760px]:items-start max-[760px]:gap-4.5">
+            <div
+              className="flex items-center gap-0.75 rounded-xl border border-app-line bg-app-raised p-1.25 max-[760px]:flex-wrap"
+              data-focus-fade
+            >
               <button
                 className={cx(modeButtonClass, settings.mode === "time" && selectedButtonClass)}
                 onClick={() =>
@@ -102,24 +108,28 @@ export function TypingPage({
             </div>
 
             <div
-              className="flex items-center gap-[26px] [&>span]:flex [&>span]:items-baseline [&>span]:gap-1.5 [&_b]:text-[29px] [&_b]:font-[420] [&_b]:leading-none [&_b]:text-app-accent [&_b]:[font-variant-numeric:tabular-nums] [&_small]:text-[10px] [&_small]:font-semibold [&_small]:uppercase [&_small]:tracking-[.15em] [&_small]:text-app-dim"
+              className="flex items-center gap-6.5 [&_b]:text-[29px] [&_b]:font-[420] [&_b]:leading-none [&_b]:text-app-accent [&_b]:[font-variant-numeric:tabular-nums] [&_small]:text-[10px] [&_small]:font-semibold [&_small]:uppercase [&_small]:tracking-[.15em] [&_small]:text-app-dim"
               aria-live="polite"
             >
-              {session.remainingSeconds !== null && (
-                <span className="max-[760px]:!hidden">
+              {session.remainingSeconds !== null ? (
+                <span
+                  className="flex items-baseline gap-1.5 min-w-12"
+                  aria-label={`${session.remainingSeconds} seconds remaining`}
+                  data-testid="time-progress"
+                >
                   <b data-testid="countdown">{session.remainingSeconds}</b>
                   <small>sec</small>
                 </span>
+              ) : (
+                <span
+                  className="flex items-baseline gap-1.5"
+                  aria-label={`${completedWords} of ${settings.modeValue} words completed`}
+                  data-testid="word-progress"
+                >
+                  <b>{completedWords}</b>
+                  <small>/ {settings.modeValue} words</small>
+                </span>
               )}
-              <span>
-                <b data-testid="live-speed">{session.liveSpeed}</b>
-                <small>{settings.speedUnit}</small>
-              </span>
-              <SpeedUnitToggle
-                label="Speed unit"
-                value={settings.speedUnit}
-                onChange={(speedUnit) => onSettingsChange((current) => ({ ...current, speedUnit }))}
-              />
             </div>
           </div>
 
@@ -213,6 +223,7 @@ export function TypingPage({
 
             <textarea
               ref={captureRef}
+              data-typing-capture
               className="absolute left-1/2 top-1/2 size-0.5 overflow-hidden whitespace-nowrap border-0 p-0 [clip-path:inset(50%)]"
               value={session.typing.pendingInput}
               onBeforeInput={session.handleBeforeInput}
@@ -227,7 +238,10 @@ export function TypingPage({
               aria-label="Type the displayed Khmer text"
             />
 
-            <div className="mx-auto mt-[9px] flex w-max items-center gap-[9px] text-[13px] text-app-dim transition-colors group-focus-within:text-app-soft">
+            <div
+              className="mx-auto mt-[9px] flex w-max items-center gap-[9px] text-[13px] text-app-dim transition-colors group-focus-within:text-app-soft"
+              data-focus-fade
+            >
               <span className="size-[5px] rounded-full bg-app-accent shadow-[0_0_0_4px_var(--accent-soft)] group-data-[error=true]:bg-app-error group-data-[error=true]:shadow-[0_0_0_4px_color-mix(in_srgb,var(--error)_15%,transparent)]" />
               {session.typing.startedAt === null
                 ? "ចុចទីនេះ ហើយចាប់ផ្ដើមវាយ"
@@ -240,6 +254,7 @@ export function TypingPage({
           <button
             className="mx-auto mt-[30px] flex cursor-pointer items-center gap-[9px] rounded-[10px] px-3 py-2 text-[13px] text-app-dim transition-colors hover:bg-app-accent-soft hover:text-app-accent [&_svg]:w-3.5"
             onClick={restart}
+            data-focus-fade
           >
             <RestartIcon /> <span>ចាប់ផ្ដើមឡើងវិញ</span>
             <kbd className="rounded-[5px] border border-b-2 border-app-line bg-app-surface px-1.5 py-0.5 font-ui text-[10px] uppercase text-app-soft">
