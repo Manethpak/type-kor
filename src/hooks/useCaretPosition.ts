@@ -12,7 +12,12 @@ export function useCaretPosition(
   activeRef: RefObject<HTMLElement | null>,
   dependency: unknown,
 ): CaretPosition {
-  const [position, setPosition] = useState<CaretPosition>({ x: 0, y: 0, height: 44, visible: false });
+  const [position, setPosition] = useState<CaretPosition>({
+    x: 0,
+    y: 0,
+    height: 44,
+    visible: false,
+  });
 
   useLayoutEffect(() => {
     const update = () => {

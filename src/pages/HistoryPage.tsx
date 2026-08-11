@@ -15,11 +15,16 @@ export function HistoryPage({
     <section className="mx-auto w-[min(880px,100%)] animate-[arrive_.4s_ease_both]">
       <div className="mb-[35px] flex items-end justify-between border-b border-app-line pb-[22px]">
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[.13em] text-app-accent">រក្សាទុកក្នុងឧបករណ៍នេះ</p>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[.13em] text-app-accent">
+            រក្សាទុកក្នុងឧបករណ៍នេះ
+          </p>
           <h1 className="m-0 font-khmer text-[34px] font-medium">ប្រវត្តិការវាយ</h1>
         </div>
         {history.length > 0 && (
-          <button className="flex cursor-pointer items-center gap-[7px] p-2 text-xs text-app-dim transition-colors hover:text-app-error [&_svg]:w-3.5" onClick={onClear}>
+          <button
+            className="flex cursor-pointer items-center gap-[7px] p-2 text-xs text-app-dim transition-colors hover:text-app-error [&_svg]:w-3.5"
+            onClick={onClear}
+          >
             <TrashIcon /> លុបទាំងអស់
           </button>
         )}
@@ -34,14 +39,26 @@ export function HistoryPage({
       ) : (
         <div className="grid gap-2">
           {history.map((item) => (
-            <article className="grid grid-cols-[1.5fr_1fr_1fr_1fr] items-center rounded-xl border border-app-line bg-app-raised px-[18px] py-[15px] transition-[border-color,transform] hover:translate-x-[3px] hover:border-[color-mix(in_srgb,var(--accent)_35%,transparent)] max-[760px]:grid-cols-2 max-[760px]:gap-2" key={item.id}>
-              <time className="text-xs text-app-dim">{new Intl.DateTimeFormat("km-KH", { dateStyle: "medium", timeStyle: "short" }).format(new Date(item.startedAt))}</time>
+            <article
+              className="grid grid-cols-[1.5fr_1fr_1fr_1fr] items-center rounded-xl border border-app-line bg-app-raised px-[18px] py-[15px] transition-[border-color,transform] hover:translate-x-[3px] hover:border-[color-mix(in_srgb,var(--accent)_35%,transparent)] max-[760px]:grid-cols-2 max-[760px]:gap-2"
+              key={item.id}
+            >
+              <time className="text-xs text-app-dim">
+                {new Intl.DateTimeFormat("km-KH", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                }).format(new Date(item.startedAt))}
+              </time>
               <strong className="text-[22px] font-[450] text-app-accent">
-                {speedUnit === "cpm" ? item.clustersPerMinute : (item.wordsPerMinute ?? Math.round(item.clustersPerMinute / 5))}
+                {speedUnit === "cpm"
+                  ? item.clustersPerMinute
+                  : (item.wordsPerMinute ?? Math.round(item.clustersPerMinute / 5))}
                 <small className="text-[10px] font-medium"> {speedUnit}</small>
               </strong>
               <span className="text-xs text-app-dim">{item.accuracy}% ត្រឹមត្រូវ</span>
-              <span className="text-xs text-app-dim">{item.mode === "time" ? `${item.modeValue} វិនាទី` : `${item.modeValue} ពាក្យ`}</span>
+              <span className="text-xs text-app-dim">
+                {item.mode === "time" ? `${item.modeValue} វិនាទី` : `${item.modeValue} ពាក្យ`}
+              </span>
             </article>
           ))}
         </div>

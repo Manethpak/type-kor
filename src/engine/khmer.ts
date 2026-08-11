@@ -65,9 +65,13 @@ function categoryFor(character: string): Category {
   if (code === 0x17b6) return Category.VPost;
   if (code === 0x17c7 || code === 0x17c8) return Category.Final;
   if (
-    code === 0x17c6 || code === 0x17cb ||
-    (code >= 0x17cd && code <= 0x17d1) || code === 0x17d3 || code === 0x17dd
-  ) return Category.Modifier;
+    code === 0x17c6 ||
+    code === 0x17cb ||
+    (code >= 0x17cd && code <= 0x17d1) ||
+    code === 0x17d3 ||
+    code === 0x17dd
+  )
+    return Category.Modifier;
   return Category.Other;
 }
 
@@ -76,7 +80,8 @@ function lunarSymbol(tens: string, digit: string, base: number, original: string
   return value <= 15 ? String.fromCodePoint(base + value) : original;
 }
 
-const S1 = "[\\u1780-\\u1783\\u1785-\\u1788\\u178A-\\u178D\\u178F-\\u1792\\u1795-\\u1797\\u179E-\\u17A0\\u17A2]";
+const S1 =
+  "[\\u1780-\\u1783\\u1785-\\u1788\\u178A-\\u178D\\u178F-\\u1792\\u1795-\\u1797\\u179E-\\u17A0\\u17A2]";
 const S2 = "[\\u1784\\u1789\\u178E\\u1793\\u1794\\u1798-\\u179D\\u17A1\\u17A5-\\u17B3]";
 const B = "[\\u1780-\\u17A2\\u17A5-\\u17B3]";
 const NON_RO = "[\\u1780-\\u1799\\u179B-\\u17A2\\u17A5-\\u17B3]";
@@ -140,11 +145,14 @@ function normalizeKhmerRun(run: string): string {
     index = end;
   }
 
-  return output.join("")
+  return output
+    .join("")
     .replace(/(\u17E1?)([\u17E0-\u17E9])\u17D2\u17D4/gu, (match, tens: string, digit: string) =>
-      lunarSymbol(tens, digit, 0x19e0, match))
+      lunarSymbol(tens, digit, 0x19e0, match),
+    )
     .replace(/\u17D4\u17D2(\u17E1?)([\u17E0-\u17E9])/gu, (match, tens: string, digit: string) =>
-      lunarSymbol(tens, digit, 0x19f0, match))
+      lunarSymbol(tens, digit, 0x19f0, match),
+    )
     .replace(/\u17D4\u17D2\u17D4/gu, "\u19F0");
 }
 
@@ -176,7 +184,8 @@ function segmentNormalized(input: string): OrthographicCluster[] {
     if (
       (characters[index - 1] === "\u17D2" || characters[index - 1] === "\u200D") &&
       categories[index] === Category.Base
-    ) categories[index] = categories[index - 1];
+    )
+      categories[index] = categories[index - 1];
   }
 
   const clusters: OrthographicCluster[] = [];
@@ -214,13 +223,32 @@ export function validateKhmer(input: string): ValidationResult {
 
   for (let index = 0; index < characters.length; index += 1) {
     const character = characters[index];
-    if (CONTROL.test(character) && character !== "\n" && character !== "\t" && character !== "\u200C" && character !== "\u200D") {
-      issues.push({ index: offset, code: "unsupported-control", message: "Unsupported control character" });
+    if (
+      CONTROL.test(character) &&
+      character !== "\n" &&
+      character !== "\t" &&
+      character !== "\u200C" &&
+      character !== "\u200D"
+    ) {
+      issues.push({
+        index: offset,
+        code: "unsupported-control",
+        message: "Unsupported control character",
+      });
     }
     if (character === "\u17D2" && !BASE.test(characters[index + 1] ?? "")) {
-      issues.push({ index: offset, code: "dangling-coeng", message: "COENG must be followed by a Khmer base" });
+      issues.push({
+        index: offset,
+        code: "dangling-coeng",
+        message: "COENG must be followed by a Khmer base",
+      });
     }
-    if (KHMER_MARK.test(character) && (index === 0 || (!BASE.test(characters[index - 1]) && categoryFor(characters[index - 1]) === Category.Other))) {
+    if (
+      KHMER_MARK.test(character) &&
+      (index === 0 ||
+        (!BASE.test(characters[index - 1]) &&
+          categoryFor(characters[index - 1]) === Category.Other))
+    ) {
       issues.push({ index: offset, code: "orphan-mark", message: "Khmer mark has no base" });
     }
     offset += character.length;
@@ -233,7 +261,11 @@ export function validateKhmer(input: string): ValidationResult {
       return category >= Category.VPre && category <= Category.VPost;
     });
     if (vowels.length > 1) {
-      issues.push({ index: cluster.start, code: "duplicate-vowel", message: "Cluster contains multiple dependent vowels" });
+      issues.push({
+        index: cluster.start,
+        code: "duplicate-vowel",
+        message: "Cluster contains multiple dependent vowels",
+      });
     }
   }
 

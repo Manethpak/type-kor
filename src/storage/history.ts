@@ -24,7 +24,10 @@ class IndexedDbHistoryRepository implements HistoryRepository {
     const database = await openDatabase();
     return new Promise<TestResult[]>((resolve, reject) => {
       const request = database.transaction(STORE, "readonly").objectStore(STORE).getAll();
-      request.onsuccess = () => resolve((request.result as TestResult[]).sort((a, b) => b.startedAt.localeCompare(a.startedAt)));
+      request.onsuccess = () =>
+        resolve(
+          (request.result as TestResult[]).sort((a, b) => b.startedAt.localeCompare(a.startedAt)),
+        );
       request.onerror = () => reject(request.error);
     }).finally(() => database.close());
   }

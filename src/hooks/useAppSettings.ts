@@ -16,12 +16,17 @@ const SETTINGS_SCHEMA_VERSION = 2;
 
 function readSettings(): TestSettings {
   try {
-    const saved = JSON.parse(localStorage.getItem("typkh:settings") ?? "{}") as Partial<TestSettings> & {
+    const saved = JSON.parse(
+      localStorage.getItem("typkh:settings") ?? "{}",
+    ) as Partial<TestSettings> & {
       schemaVersion?: number;
     };
 
     // Migrate browsers that persisted the original, undersized 43px default.
-    if (saved.schemaVersion !== SETTINGS_SCHEMA_VERSION && (saved.fontSize === undefined || saved.fontSize === 43)) {
+    if (
+      saved.schemaVersion !== SETTINGS_SCHEMA_VERSION &&
+      (saved.fontSize === undefined || saved.fontSize === 43)
+    ) {
       saved.fontSize = DEFAULT_SETTINGS.fontSize;
     }
 
@@ -35,7 +40,10 @@ export function useAppSettings() {
   const [settings, setSettings] = useState<TestSettings>(readSettings);
 
   useEffect(() => {
-    localStorage.setItem("typkh:settings", JSON.stringify({ ...settings, schemaVersion: SETTINGS_SCHEMA_VERSION }));
+    localStorage.setItem(
+      "typkh:settings",
+      JSON.stringify({ ...settings, schemaVersion: SETTINGS_SCHEMA_VERSION }),
+    );
     document.documentElement.dataset.theme = settings.theme;
   }, [settings]);
 

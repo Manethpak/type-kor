@@ -72,7 +72,8 @@ export function typingReducer(state: TypingState, action: TypingAction): TypingS
         pendingStatus: "prefix",
         correctClusters: state.correctClusters - (scored && previousState === "correct" ? 1 : 0),
         correctCodePoints: state.correctCodePoints - (previousState === "correct" ? codePoints : 0),
-        incorrectClusters: state.incorrectClusters - (scored && previousState === "incorrect" ? 1 : 0),
+        incorrectClusters:
+          state.incorrectClusters - (scored && previousState === "incorrect" ? 1 : 0),
         finished: false,
         endedAt: null,
       };
@@ -81,17 +82,25 @@ export function typingReducer(state: TypingState, action: TypingAction): TypingS
       const elapsedMs = Math.max(1, Math.round(action.elapsedMs));
       const previous = state.timeline.at(-1);
       if (previous && previous.elapsedMs >= elapsedMs) return state;
-      return { ...state, timeline: [...state.timeline, createPerformanceSample(state, elapsedMs, previous)] };
+      return {
+        ...state,
+        timeline: [...state.timeline, createPerformanceSample(state, elapsedMs, previous)],
+      };
     }
     case "finish":
-      return state.finished && state.endedAt !== null ? state : { ...state, finished: true, endedAt: action.at };
+      return state.finished && state.endedAt !== null
+        ? state
+        : { ...state, finished: true, endedAt: action.at };
     case "reset":
       return createTypingState(action.prompt);
   }
 }
 
 export function createPerformanceSample(
-  state: Pick<TypingState, "correctClusters" | "correctCodePoints" | "incorrectClusters" | "rawKeystrokes">,
+  state: Pick<
+    TypingState,
+    "correctClusters" | "correctCodePoints" | "incorrectClusters" | "rawKeystrokes"
+  >,
   elapsedMs: number,
   previous?: PerformanceSample,
 ): PerformanceSample {
@@ -105,9 +114,9 @@ export function createPerformanceSample(
     elapsedMs: safeElapsed,
     cpm: Math.round(state.correctClusters / (safeElapsed / 60_000)),
     burstCpm: Math.round(deltaCorrect / (deltaMs / 60_000)),
-    wpm: Math.round((state.correctCodePoints / 5) / (safeElapsed / 60_000)),
-    burstWpm: Math.round((deltaCodePoints / 5) / (deltaMs / 60_000)),
-    accuracy: attempts === 0 ? 100 : Math.round(state.correctClusters / attempts * 100),
+    wpm: Math.round(state.correctCodePoints / 5 / (safeElapsed / 60_000)),
+    burstWpm: Math.round(deltaCodePoints / 5 / (deltaMs / 60_000)),
+    accuracy: attempts === 0 ? 100 : Math.round((state.correctClusters / attempts) * 100),
     correctClusters: state.correctClusters,
     correctCodePoints: state.correctCodePoints,
     incorrectClusters: state.incorrectClusters,
@@ -137,8 +146,8 @@ export function calculateResult(
     modeValue,
     durationMs,
     clustersPerMinute: Math.round(state.correctClusters / (durationMs / 60_000)),
-    wordsPerMinute: Math.round((state.correctCodePoints / 5) / (durationMs / 60_000)),
-    accuracy: attempts === 0 ? 100 : Math.round(state.correctClusters / attempts * 100),
+    wordsPerMinute: Math.round(state.correctCodePoints / 5 / (durationMs / 60_000)),
+    accuracy: attempts === 0 ? 100 : Math.round((state.correctClusters / attempts) * 100),
     correctClusters: state.correctClusters,
     correctCodePoints: state.correctCodePoints,
     incorrectClusters: state.incorrectClusters,

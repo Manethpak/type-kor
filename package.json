@@ -9,6 +9,8 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "fmt": "oxfmt fmt ./src",
+    "fmt:check": "oxfmt fmt --check ./",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "typecheck": "tsc -b"
@@ -29,6 +31,7 @@
     "@types/react-dom": "latest",
     "@vitejs/plugin-react": "latest",
     "jsdom": "latest",
+    "oxfmt": "^0.63.0",
     "tailwindcss": "^4.3.3",
     "typescript": "latest",
     "vite": "latest",

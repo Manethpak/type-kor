@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { canonicalizeKhmer, khmerTextEngine, normalizeTestBoundaries, segmentKhmer, validateKhmer } from "./khmer";
+import {
+  canonicalizeKhmer,
+  khmerTextEngine,
+  normalizeTestBoundaries,
+  segmentKhmer,
+  validateKhmer,
+} from "./khmer";
 
 describe("Khmer structural normalization", () => {
   it("is idempotent", () => {
@@ -42,7 +48,11 @@ describe("Khmer orthographic clusters", () => {
 
   it("round trips every fixture", () => {
     const input = "ខ្ញុំ ស្រឡាញ់ ភាសាខ្មែរ។";
-    expect(segmentKhmer(input).map((cluster) => cluster.display).join("")).toBe(canonicalizeKhmer(input));
+    expect(
+      segmentKhmer(input)
+        .map((cluster) => cluster.display)
+        .join(""),
+    ).toBe(canonicalizeKhmer(input));
   });
 
   it("segments zero-width space as the same logical boundary as visible space", () => {
@@ -75,7 +85,9 @@ describe("Khmer orthographic clusters", () => {
 
 describe("Khmer validation", () => {
   it("rejects a dangling coeng", () => {
-    expect(validateKhmer("ក\u17D2").issues.some((issue) => issue.code === "dangling-coeng")).toBe(true);
+    expect(validateKhmer("ក\u17D2").issues.some((issue) => issue.code === "dangling-coeng")).toBe(
+      true,
+    );
   });
 
   it("accepts representative modern Khmer", () => {

@@ -7,4 +7,7 @@ class ResizeObserverStub {
 }
 
 Object.defineProperty(globalThis, "ResizeObserver", { value: ResizeObserverStub, writable: true });
-Object.defineProperty(Element.prototype, "scrollIntoView", { value: () => undefined, writable: true });
+Object.defineProperty(Element.prototype, "scrollIntoView", {
+  value: () => undefined,
+  writable: true,
+});

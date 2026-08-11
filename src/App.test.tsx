@@ -39,7 +39,9 @@ describe("timed typing test", () => {
     expect(screen.getByTestId("countdown")).toHaveTextContent("1");
     await act(() => vi.advanceTimersByTimeAsync(1_100));
     expect(screen.getByText("លទ្ធផលរបស់អ្នក")).toBeVisible();
-    expect(screen.getByRole("img", { name: /Per-second typing speed chart, peak \d+ cpm/ })).toBeVisible();
+    expect(
+      screen.getByRole("img", { name: /Per-second typing speed chart, peak \d+ cpm/ }),
+    ).toBeVisible();
   });
 
   it("switches the live counter between CPM and WPM", () => {
@@ -49,7 +51,10 @@ describe("timed typing test", () => {
     expect(cpm).toHaveTextContent("cpm");
 
     fireEvent.click(within(switcher).getByRole("button", { name: "wpm" }));
-    expect(within(switcher).getByRole("button", { name: "wpm" })).toHaveAttribute("aria-pressed", "true");
+    expect(within(switcher).getByRole("button", { name: "wpm" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
     expect(screen.getByTestId("live-speed").nextElementSibling).toHaveTextContent("wpm");
   });
 

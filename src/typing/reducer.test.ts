@@ -41,13 +41,33 @@ describe("typing reducer", () => {
   });
 
   it("records cumulative and burst analytics for each elapsed second", () => {
-    let state = { ...createTypingState(segmentKhmer("ខ្មែរ")), correctClusters: 2, correctCodePoints: 10, incorrectClusters: 1, rawKeystrokes: 5 };
+    let state = {
+      ...createTypingState(segmentKhmer("ខ្មែរ")),
+      correctClusters: 2,
+      correctCodePoints: 10,
+      incorrectClusters: 1,
+      rawKeystrokes: 5,
+    };
     state = typingReducer(state, { type: "sample", elapsedMs: 1_000 });
-    expect(state.timeline[0]).toMatchObject({ second: 1, cpm: 120, burstCpm: 120, wpm: 120, burstWpm: 120, accuracy: 67 });
+    expect(state.timeline[0]).toMatchObject({
+      second: 1,
+      cpm: 120,
+      burstCpm: 120,
+      wpm: 120,
+      burstWpm: 120,
+      accuracy: 67,
+    });
 
     state = { ...state, correctClusters: 3, correctCodePoints: 15, rawKeystrokes: 7 };
     state = typingReducer(state, { type: "sample", elapsedMs: 2_000 });
-    expect(state.timeline[1]).toMatchObject({ second: 2, cpm: 90, burstCpm: 60, wpm: 90, burstWpm: 60, rawKeystrokes: 7 });
+    expect(state.timeline[1]).toMatchObject({
+      second: 2,
+      cpm: 90,
+      burstCpm: 60,
+      wpm: 90,
+      burstWpm: 60,
+      rawKeystrokes: 7,
+    });
   });
 
   it("adds a final partial-second sample to completed results", () => {

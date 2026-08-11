@@ -24,7 +24,8 @@ function createPrompt(settings: TestSettings, seed: number): OrthographicCluster
 }
 
 function playTick() {
-  const AudioContextClass = window.AudioContext ??
+  const AudioContextClass =
+    window.AudioContext ??
     (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!AudioContextClass) return;
 
@@ -104,44 +105,47 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
     dispatch({ type: "reset", prompt: nextPrompt });
   }, [settings]);
 
-  const processInput = useCallback((rawValue: string) => {
-    if (typing.finished) return;
-    let remaining = rawValue;
-    let index = typing.currentIndex;
+  const processInput = useCallback(
+    (rawValue: string) => {
+      if (typing.finished) return;
+      let remaining = rawValue;
+      let index = typing.currentIndex;
 
-    while (remaining && index < typing.prompt.length) {
-      const target = typing.prompt[index];
-      const match = khmerTextEngine.compare(target, remaining);
-      if (match === "correct") {
-        dispatch({ type: "commit", attempt: remaining, correct: true });
-        if (settings.sound && target.kind === "khmer") playTick();
-        remaining = "";
-        index += 1;
+      while (remaining && index < typing.prompt.length) {
+        const target = typing.prompt[index];
+        const match = khmerTextEngine.compare(target, remaining);
+        if (match === "correct") {
+          dispatch({ type: "commit", attempt: remaining, correct: true });
+          if (settings.sound && target.kind === "khmer") playTick();
+          remaining = "";
+          index += 1;
+          break;
+        }
+        if (match === "prefix") {
+          dispatch({ type: "pending", value: remaining, status: "prefix" });
+          break;
+        }
+
+        const attempts = khmerTextEngine.segment(remaining);
+        if (attempts.length > 1) {
+          const first = attempts[0];
+          const consumed = remaining.slice(0, first.end);
+          const firstMatch = khmerTextEngine.compare(target, consumed);
+          const correct = firstMatch === "correct";
+          dispatch({ type: "commit", attempt: consumed, correct });
+          if (correct && settings.sound && target.kind === "khmer") playTick();
+          remaining = remaining.slice(first.end);
+          index += 1;
+          continue;
+        }
+        dispatch({ type: "pending", value: remaining, status: "incorrect" });
         break;
       }
-      if (match === "prefix") {
-        dispatch({ type: "pending", value: remaining, status: "prefix" });
-        break;
-      }
 
-      const attempts = khmerTextEngine.segment(remaining);
-      if (attempts.length > 1) {
-        const first = attempts[0];
-        const consumed = remaining.slice(0, first.end);
-        const firstMatch = khmerTextEngine.compare(target, consumed);
-        const correct = firstMatch === "correct";
-        dispatch({ type: "commit", attempt: consumed, correct });
-        if (correct && settings.sound && target.kind === "khmer") playTick();
-        remaining = remaining.slice(first.end);
-        index += 1;
-        continue;
-      }
-      dispatch({ type: "pending", value: remaining, status: "incorrect" });
-      break;
-    }
-
-    if (!remaining) dispatch({ type: "pending", value: "", status: "prefix" });
-  }, [settings.sound, typing.currentIndex, typing.finished, typing.prompt]);
+      if (!remaining) dispatch({ type: "pending", value: "", status: "prefix" });
+    },
+    [settings.sound, typing.currentIndex, typing.finished, typing.prompt],
+  );
 
   const startTest = useCallback(() => {
     if (typing.startedAt !== null || typing.finished) return;
@@ -150,75 +154,91 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
     dispatch({ type: "start", at: startedAt });
   }, [typing.finished, typing.startedAt]);
 
-  const handleBeforeInput = useCallback((event: FormEvent<HTMLTextAreaElement>) => {
-    const native = event.nativeEvent as InputEvent;
-    if (native.inputType?.startsWith("insert") && !composingRef.current && !native.isComposing) {
-      beforeInputRecordedRef.current = true;
-      startTest();
-      dispatch({ type: "keystrokes", count: Array.from(native.data ?? "").length || 1 });
-    }
-    if (native.inputType === "deleteContentBackward" && typing.pendingInput.length === 0) {
-      event.preventDefault();
-      dispatch({ type: "reopen" });
-    }
-  }, [startTest, typing.pendingInput.length]);
-
-  const handleInput = useCallback((event: FormEvent<HTMLTextAreaElement>) => {
-    const value = event.currentTarget.value;
-    if (composingRef.current) {
-      dispatch({ type: "pending", value, status: "prefix" });
-      return;
-    }
-    if (value) {
-      startTest();
-      if (!beforeInputRecordedRef.current) {
-        const native = event.nativeEvent as InputEvent;
+  const handleBeforeInput = useCallback(
+    (event: FormEvent<HTMLTextAreaElement>) => {
+      const native = event.nativeEvent as InputEvent;
+      if (native.inputType?.startsWith("insert") && !composingRef.current && !native.isComposing) {
+        beforeInputRecordedRef.current = true;
+        startTest();
         dispatch({ type: "keystrokes", count: Array.from(native.data ?? "").length || 1 });
       }
-    }
-    beforeInputRecordedRef.current = false;
-    processInput(value);
-  }, [processInput, startTest]);
+      if (native.inputType === "deleteContentBackward" && typing.pendingInput.length === 0) {
+        event.preventDefault();
+        dispatch({ type: "reopen" });
+      }
+    },
+    [startTest, typing.pendingInput.length],
+  );
+
+  const handleInput = useCallback(
+    (event: FormEvent<HTMLTextAreaElement>) => {
+      const value = event.currentTarget.value;
+      if (composingRef.current) {
+        dispatch({ type: "pending", value, status: "prefix" });
+        return;
+      }
+      if (value) {
+        startTest();
+        if (!beforeInputRecordedRef.current) {
+          const native = event.nativeEvent as InputEvent;
+          dispatch({ type: "keystrokes", count: Array.from(native.data ?? "").length || 1 });
+        }
+      }
+      beforeInputRecordedRef.current = false;
+      processInput(value);
+    },
+    [processInput, startTest],
+  );
 
   const handleCompositionStart = useCallback(() => {
     composingRef.current = true;
   }, []);
 
-  const handleCompositionEnd = useCallback((event: FormEvent<HTMLTextAreaElement>) => {
-    composingRef.current = false;
-    if (event.currentTarget.value) {
-      startTest();
-      dispatch({ type: "keystrokes", count: Array.from(event.currentTarget.value).length });
-    }
-    beforeInputRecordedRef.current = false;
-    processInput(event.currentTarget.value);
-  }, [processInput, startTest]);
+  const handleCompositionEnd = useCallback(
+    (event: FormEvent<HTMLTextAreaElement>) => {
+      composingRef.current = false;
+      if (event.currentTarget.value) {
+        startTest();
+        dispatch({ type: "keystrokes", count: Array.from(event.currentTarget.value).length });
+      }
+      beforeInputRecordedRef.current = false;
+      processInput(event.currentTarget.value);
+    },
+    [processInput, startTest],
+  );
 
-  const handleKeyDown = useCallback((event: ReactKeyboardEvent<HTMLTextAreaElement>) => {
-    if (
-      event.key === "Backspace" &&
-      !composingRef.current &&
-      typing.pendingInput.length === 0 &&
-      typing.currentIndex > 0
-    ) {
-      // Empty text controls do not consistently emit beforeinput for Backspace.
-      event.preventDefault();
-      dispatch({ type: "reopen" });
-      return;
-    }
-    if (event.key === "Enter") event.preventDefault();
-  }, [typing.currentIndex, typing.pendingInput.length]);
+  const handleKeyDown = useCallback(
+    (event: ReactKeyboardEvent<HTMLTextAreaElement>) => {
+      if (
+        event.key === "Backspace" &&
+        !composingRef.current &&
+        typing.pendingInput.length === 0 &&
+        typing.currentIndex > 0
+      ) {
+        // Empty text controls do not consistently emit beforeinput for Backspace.
+        event.preventDefault();
+        dispatch({ type: "reopen" });
+        return;
+      }
+      if (event.key === "Enter") event.preventDefault();
+    },
+    [typing.currentIndex, typing.pendingInput.length],
+  );
 
-  const elapsedMs = typing.startedAt === null ? 0 : Math.max(0, (typing.endedAt ?? clock) - typing.startedAt);
-  const remainingSeconds = settings.mode === "time"
-    ? Math.max(0, Math.ceil(settings.modeValue - elapsedMs / 1_000))
-    : null;
-  const liveCpm = typing.startedAt === null || elapsedMs < 1_000
-    ? 0
-    : Math.round(typing.correctClusters / (elapsedMs / 60_000));
-  const liveWpm = typing.startedAt === null || elapsedMs < 1_000
-    ? 0
-    : Math.round((typing.correctCodePoints / 5) / (elapsedMs / 60_000));
+  const elapsedMs =
+    typing.startedAt === null ? 0 : Math.max(0, (typing.endedAt ?? clock) - typing.startedAt);
+  const remainingSeconds =
+    settings.mode === "time"
+      ? Math.max(0, Math.ceil(settings.modeValue - elapsedMs / 1_000))
+      : null;
+  const liveCpm =
+    typing.startedAt === null || elapsedMs < 1_000
+      ? 0
+      : Math.round(typing.correctClusters / (elapsedMs / 60_000));
+  const liveWpm =
+    typing.startedAt === null || elapsedMs < 1_000
+      ? 0
+      : Math.round(typing.correctCodePoints / 5 / (elapsedMs / 60_000));
 
   return {
     handleBeforeInput,

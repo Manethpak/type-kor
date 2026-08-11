@@ -25,32 +25,51 @@ export default function App() {
     void loadHistory();
   }, [loadHistory]);
 
-  const saveResult = useCallback((result: TestResult) => {
-    void historyRepository.save(result).then(loadHistory).catch(() => undefined);
-  }, [loadHistory]);
+  const saveResult = useCallback(
+    (result: TestResult) => {
+      void historyRepository
+        .save(result)
+        .then(loadHistory)
+        .catch(() => undefined);
+    },
+    [loadHistory],
+  );
 
   const typingSession = useTypingSession(settings, saveResult);
 
   const clearHistory = useCallback(() => {
-    void historyRepository.clear().then(loadHistory).catch(() => undefined);
+    void historyRepository
+      .clear()
+      .then(loadHistory)
+      .catch(() => undefined);
   }, [loadHistory]);
 
   return (
     <AppShell
       theme={settings.theme}
-      onThemeToggle={() => setSettings((current) => ({
-        ...current,
-        theme: current.theme === "saffron" ? "paper" : "saffron",
-      }))}
+      onThemeToggle={() =>
+        setSettings((current) => ({
+          ...current,
+          theme: current.theme === "saffron" ? "paper" : "saffron",
+        }))
+      }
     >
       <Routes>
         <Route
           path="/"
-          element={<TypingPage session={typingSession} settings={settings} onSettingsChange={setSettings} />}
+          element={
+            <TypingPage
+              session={typingSession}
+              settings={settings}
+              onSettingsChange={setSettings}
+            />
+          }
         />
         <Route
           path="/history"
-          element={<HistoryPage history={history} speedUnit={settings.speedUnit} onClear={clearHistory} />}
+          element={
+            <HistoryPage history={history} speedUnit={settings.speedUnit} onClear={clearHistory} />
+          }
         />
         <Route
           path="/settings"
