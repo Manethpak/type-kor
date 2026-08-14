@@ -15,19 +15,48 @@ async function readJson(relativePath) {
   return JSON.parse(await readFile(path.join(contentDirectory, relativePath), "utf8"));
 }
 
-async function readYamlDirectory(name) {
-  const directory = path.join(contentDirectory, name);
-  const files = (await readdir(directory)).filter((file) => file.endsWith(".yaml")).sort();
+async function readYamlFile(relativePath) {
+  const source = await readFile(path.join(contentDirectory, relativePath), "utf8");
+  const document = parseDocument(source, { prettyErrors: true, uniqueKeys: true });
+  if (document.errors.length) {
+    throw new Error(`${relativePath}: ${document.errors.map((error) => error.message).join("; ")}`);
+  }
+  return { file: relativePath, value: document.toJS() };
+}
+
+async function readCurriculumUnits() {
+  const unitsDirectory = path.join(contentDirectory, "units");
+  const entries = await readdir(unitsDirectory, { withFileTypes: true });
+  const flatUnitFiles = entries.filter((entry) => entry.isFile() && entry.name.endsWith(".yaml"));
+  if (flatUnitFiles.length) {
+    throw new Error(
+      `units/: unit YAML must live in a unit folder: ${flatUnitFiles
+        .map((entry) => entry.name)
+        .sort()
+        .join(", ")}`,
+    );
+  }
+
+  const directories = entries
+    .filter((entry) => entry.isDirectory())
+    .sort((left, right) => left.name.localeCompare(right.name, "en", { numeric: true }));
+
   return Promise.all(
-    files.map(async (file) => {
-      const source = await readFile(path.join(directory, file), "utf8");
-      const document = parseDocument(source, { prettyErrors: true, uniqueKeys: true });
-      if (document.errors.length) {
-        throw new Error(
-          `${name}/${file}: ${document.errors.map((error) => error.message).join("; ")}`,
-        );
-      }
-      return { file: `${name}/${file}`, value: document.toJS() };
+    directories.map(async (directory) => {
+      const base = path.posix.join("units", directory.name);
+      const lessonsDirectory = path.join(contentDirectory, base, "lessons");
+      const lessonEntries = await readdir(lessonsDirectory, { withFileTypes: true });
+      const lessonFiles = lessonEntries
+        .filter((entry) => entry.isFile() && entry.name.endsWith(".yaml"))
+        .sort((left, right) => left.name.localeCompare(right.name, "en", { numeric: true }));
+
+      return {
+        directory: directory.name,
+        unit: await readYamlFile(path.posix.join(base, "unit.yaml")),
+        lessons: await Promise.all(
+          lessonFiles.map((file) => readYamlFile(path.posix.join(base, "lessons", file.name))),
+        ),
+      };
     }),
   );
 }
@@ -73,31 +102,41 @@ function validateNidaCoverage(lesson) {
 }
 
 async function generate() {
-  const [unitSchema, lessonSchema, unitFiles, lessonFiles] = await Promise.all([
+  const [unitSchema, lessonSchema, unitGroups] = await Promise.all([
     readJson("unit.schema.json"),
     readJson("lesson.schema.json"),
-    readYamlDirectory("units"),
-    readYamlDirectory("lessons"),
+    readCurriculumUnits(),
   ]);
+  const unitFiles = unitGroups.map((group) => group.unit);
+  const lessonFiles = unitGroups.flatMap((group) => group.lessons);
 
   const ajv = new Ajv2020({ allErrors: true, strict: true });
   const validateUnit = ajv.compile(unitSchema);
   const validateLesson = ajv.compile(lessonSchema);
 
-  for (const item of unitFiles) {
+  for (const group of unitGroups) {
+    const item = group.unit;
     if (!validateUnit(item.value)) {
       throw new Error(`${item.file}: ${formatSchemaErrors(validateUnit.errors)}`);
     }
-    if (`${item.value.id}.yaml` !== path.basename(item.file)) {
-      throw new Error(`${item.file}: filename must match unit id ${item.value.id}`);
+    const expectedDirectory = `${item.value.order}-${item.value.id}`;
+    if (group.directory !== expectedDirectory) {
+      throw new Error(`${item.file}: unit folder must be named ${expectedDirectory}`);
     }
-  }
-  for (const item of lessonFiles) {
-    if (!validateLesson(item.value)) {
-      throw new Error(`${item.file}: ${formatSchemaErrors(validateLesson.errors)}`);
-    }
-    if (`${item.value.id}.yaml` !== path.basename(item.file)) {
-      throw new Error(`${item.file}: filename must match lesson id ${item.value.id}`);
+
+    for (const lesson of group.lessons) {
+      if (!validateLesson(lesson.value)) {
+        throw new Error(`${lesson.file}: ${formatSchemaErrors(validateLesson.errors)}`);
+      }
+      const expectedFilename = `${lesson.value.order}-${lesson.value.id}.yaml`;
+      if (path.basename(lesson.file) !== expectedFilename) {
+        throw new Error(`${lesson.file}: lesson file must be named ${expectedFilename}`);
+      }
+      if (lesson.value.unitId !== item.value.id) {
+        throw new Error(
+          `${lesson.file}: unitId must match parent unit ${JSON.stringify(item.value.id)}`,
+        );
+      }
     }
   }
 

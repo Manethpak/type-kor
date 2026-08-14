@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../lesson.schema.json
+# yaml-language-server: $schema=../../../lesson.schema.json
 schemaVersion: 1
 id: home-reach
 revision: 1

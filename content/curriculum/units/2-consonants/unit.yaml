@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../unit.schema.json
+# yaml-language-server: $schema=../../unit.schema.json
 schemaVersion: 1
 id: consonants
 order: 2
