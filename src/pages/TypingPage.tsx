@@ -111,6 +111,22 @@ export function TypingPage({
               className="flex items-center gap-6.5 [&_b]:text-[29px] [&_b]:font-[420] [&_b]:leading-none [&_b]:text-app-accent [&_b]:[font-variant-numeric:tabular-nums] [&_small]:text-[10px] [&_small]:font-semibold [&_small]:uppercase [&_small]:tracking-[.15em] [&_small]:text-app-dim"
               aria-live="polite"
             >
+              <div data-focus-fade>
+                <SpeedUnitToggle
+                  label="Speed unit"
+                  value={settings.speedUnit}
+                  onChange={(speedUnit) =>
+                    onSettingsChange((current) => ({ ...current, speedUnit }))
+                  }
+                />
+              </div>
+              <span
+                className="flex min-w-16 items-baseline gap-1.5"
+                aria-label={`${session.liveSpeed} ${settings.speedUnit}`}
+              >
+                <b data-testid="live-speed">{session.liveSpeed}</b>
+                <small>{settings.speedUnit}</small>
+              </span>
               {session.remainingSeconds !== null ? (
                 <span
                   className="flex items-baseline gap-1.5 min-w-12"

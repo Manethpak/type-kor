@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { Link, NavLink } from "react-router";
-import { HistoryIcon, KeyboardIcon, MoonIcon, SettingsIcon, SunIcon } from "./Icons";
+import { Link, NavLink, useLocation } from "react-router";
+import { BookIcon, HistoryIcon, KeyboardIcon, MoonIcon, SettingsIcon, SunIcon } from "./Icons";
 import type { TestSettings } from "../typing/types";
 import { cx } from "../utils/classNames";
 
@@ -12,15 +12,41 @@ export function AppShell({
   children,
   theme,
   onThemeToggle,
+  practicePath,
+  learnPath,
 }: {
   children: ReactNode;
   theme: TestSettings["theme"];
   onThemeToggle: () => void;
+  practicePath: string;
+  learnPath: string;
 }) {
+  const location = useLocation();
   const navigation = [
-    { to: "/", label: "Typing test", icon: <KeyboardIcon />, end: true },
-    { to: "/history", label: "Local history", icon: <HistoryIcon />, end: false },
-    { to: "/settings", label: "Settings", icon: <SettingsIcon />, end: false },
+    {
+      to: learnPath,
+      label: "Learn",
+      icon: <BookIcon />,
+      active: location.pathname.startsWith("/learn"),
+    },
+    {
+      to: "/test",
+      label: "Typing test",
+      icon: <KeyboardIcon />,
+      active: location.pathname === "/test",
+    },
+    {
+      to: "/history",
+      label: "Local history",
+      icon: <HistoryIcon />,
+      active: location.pathname === "/history",
+    },
+    {
+      to: "/settings",
+      label: "Settings",
+      icon: <SettingsIcon />,
+      active: location.pathname === "/settings",
+    },
   ];
 
   return (
@@ -47,8 +73,8 @@ export function AppShell({
       >
         <Link
           className="inline-flex cursor-pointer items-center justify-self-start gap-3 p-0 text-left"
-          to="/"
-          aria-label="Go to typing test"
+          to={practicePath}
+          aria-label="Go to typing practice"
         >
           <span className="grid size-10 place-items-center rounded-[11px_11px_11px_3px] border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-app-accent-soft font-khmer text-2xl text-app-accent shadow-[inset_0_0_20px_var(--accent-soft)]">
             ច
@@ -67,12 +93,11 @@ export function AppShell({
           className="flex gap-1 rounded-[14px] border border-app-line bg-[color-mix(in_srgb,var(--surface)_70%,transparent)] p-[5px] shadow-[0_12px_40px_var(--shadow)] backdrop-blur-[14px] max-[760px]:fixed max-[760px]:bottom-[18px] max-[760px]:right-1/2 max-[760px]:z-10 max-[760px]:translate-x-1/2"
           aria-label="Primary navigation"
         >
-          {navigation.map(({ to, label, icon, end }) => (
+          {navigation.map(({ to, label, icon, active }) => (
             <NavLink
-              key={to}
+              key={label}
               to={to}
-              end={end}
-              className={({ isActive }) => cx(navLinkClass, isActive && selectedLinkClass)}
+              className={() => cx(navLinkClass, active && selectedLinkClass)}
               title={label}
               aria-label={label}
             >

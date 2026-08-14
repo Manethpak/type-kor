@@ -40,10 +40,14 @@ export function useAppSettings() {
   const [settings, setSettings] = useState<TestSettings>(readSettings);
 
   useEffect(() => {
-    localStorage.setItem(
-      "typkh:settings",
-      JSON.stringify({ ...settings, schemaVersion: SETTINGS_SCHEMA_VERSION }),
-    );
+    try {
+      localStorage.setItem(
+        "typkh:settings",
+        JSON.stringify({ ...settings, schemaVersion: SETTINGS_SCHEMA_VERSION }),
+      );
+    } catch {
+      // Keep settings available in memory when browser storage is unavailable.
+    }
     document.documentElement.dataset.theme = settings.theme;
   }, [settings]);
 

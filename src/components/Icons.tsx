@@ -25,6 +25,12 @@ export const KeyboardIcon = (props: IconProps) => (
     <path d="M7 10h.01M11 10h.01M15 10h.01M18 10h.01M7 14h.01M17 14h.01M10 14h5" />
   </IconBase>
 );
+export const BookIcon = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22V5.5Z" />
+    <path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22V5.5Z" />
+  </IconBase>
+);
 export const HistoryIcon = (props: IconProps) => (
   <IconBase {...props}>
     <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />

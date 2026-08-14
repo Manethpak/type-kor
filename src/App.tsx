@@ -1,16 +1,38 @@
-import { useCallback, useEffect, useState } from "react";
-import { Navigate, Route, Routes } from "react-router";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router";
 import { AppShell } from "./components/AppShell";
 import { useAppSettings } from "./hooks/useAppSettings";
+import { useAppState } from "./hooks/useAppState";
+import { useLearningProgress } from "./hooks/useLearningProgress";
 import { useTypingSession } from "./hooks/useTypingSession";
 import { HistoryPage } from "./pages/HistoryPage";
+import { LearnPage } from "./pages/LearnPage";
+import { LessonPage } from "./pages/LessonPage";
+import { OnboardingPage } from "./pages/OnboardingPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { TypingPage } from "./pages/TypingPage";
 import { historyRepository } from "./storage/history";
 import type { TestResult } from "./storage/types";
+import type { ExperienceMode } from "./learning/types";
+
+function ExperienceRoute({
+  experience,
+  onVisit,
+  children,
+}: {
+  experience: ExperienceMode;
+  onVisit: (experience: ExperienceMode) => void;
+  children: ReactNode;
+}) {
+  useEffect(() => onVisit(experience), [experience, onVisit]);
+  return children;
+}
 
 export default function App() {
+  const navigate = useNavigate();
   const [settings, setSettings] = useAppSettings();
+  const { appState, completeOnboarding, setLastExperience } = useAppState();
+  const { learningState, saveCheckpoint, completeLesson } = useLearningProgress();
   const [history, setHistory] = useState<TestResult[]>([]);
 
   const loadHistory = useCallback(async () => {
@@ -44,25 +66,82 @@ export default function App() {
       .catch(() => undefined);
   }, [loadHistory]);
 
+  const learnResumePath = learningState.checkpoint
+    ? `/learn/${learningState.checkpoint.lessonId}`
+    : "/learn";
+  const practicePath = appState.lastExperience === "learn" ? learnResumePath : "/test";
+
+  const handleOnboardingSelect = useCallback(
+    (experience: ExperienceMode) => {
+      completeOnboarding(experience);
+      navigate(experience === "learn" ? learnResumePath : "/test", { replace: true });
+    },
+    [completeOnboarding, learnResumePath, navigate],
+  );
+
+  const toggleTheme = useCallback(
+    () =>
+      setSettings((current) => ({
+        ...current,
+        theme: current.theme === "saffron" ? "paper" : "saffron",
+      })),
+    [setSettings],
+  );
+
+  if (!appState.onboardingCompleted) {
+    return (
+      <OnboardingPage
+        theme={settings.theme}
+        onThemeToggle={toggleTheme}
+        onSelect={handleOnboardingSelect}
+      />
+    );
+  }
+
   return (
     <AppShell
       theme={settings.theme}
-      onThemeToggle={() =>
-        setSettings((current) => ({
-          ...current,
-          theme: current.theme === "saffron" ? "paper" : "saffron",
-        }))
-      }
+      onThemeToggle={toggleTheme}
+      practicePath={practicePath}
+      learnPath={learnResumePath}
     >
       <Routes>
+        <Route path="/" element={<Navigate to={practicePath} replace />} />
         <Route
-          path="/"
+          path="/test"
           element={
-            <TypingPage
-              session={typingSession}
-              settings={settings}
-              onSettingsChange={setSettings}
-            />
+            <ExperienceRoute experience="test" onVisit={setLastExperience}>
+              <TypingPage
+                session={typingSession}
+                settings={settings}
+                onSettingsChange={setSettings}
+              />
+            </ExperienceRoute>
+          }
+        />
+        <Route
+          path="/learn"
+          element={
+            <ExperienceRoute experience="learn" onVisit={setLastExperience}>
+              <LearnPage
+                learningState={learningState}
+                onCheckpoint={(lessonId, stepIndex, errors) =>
+                  saveCheckpoint({ lessonId, stepIndex, errors })
+                }
+              />
+            </ExperienceRoute>
+          }
+        />
+        <Route
+          path="/learn/:lessonId"
+          element={
+            <ExperienceRoute experience="learn" onVisit={setLastExperience}>
+              <LessonPage
+                learningState={learningState}
+                onCheckpoint={saveCheckpoint}
+                onComplete={completeLesson}
+              />
+            </ExperienceRoute>
           }
         />
         <Route
@@ -75,7 +154,7 @@ export default function App() {
           path="/settings"
           element={<SettingsPage settings={settings} onChange={setSettings} />}
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to={practicePath} replace />} />
       </Routes>
     </AppShell>
   );
