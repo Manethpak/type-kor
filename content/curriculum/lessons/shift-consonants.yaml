@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: shift-consonants
+revision: 1
+unitId: consonants
+order: 2
+title:
+  km: គ · ជ · ទ · ព
+  en: Shift consonants
+description:
+  km: ប្រើ Shift ដើម្បីទៅដល់ព្យញ្ជនៈស្រទាប់ទីពីរ។
+  en: Use Shift to reach the second consonant layer.
+masteryAccuracy: 90
+steps:
+  - id: ko
+    prompt: គ
+  - id: cho
+    prompt: ជ
+  - id: to
+    prompt: ទ
+  - id: po
+    prompt: ព
+  - id: kit
+    prompt: គិត
+  - id: cheat
+    prompt: ជាតិ
+  - id: tuk
+    prompt: ទឹក
+  - id: pit
+    prompt: ពិត

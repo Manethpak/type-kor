@@ -106,6 +106,15 @@ describe("timed typing test", () => {
 
     renderApp();
     expect(screen.getByLabelText("Type ហ")).toBeVisible();
+    expect(JSON.parse(localStorage.getItem("typkh:learning")!)).toMatchObject({
+      schemaVersion: 2,
+      checkpoint: {
+        lessonId: "home-anchors",
+        lessonRevision: 1,
+        stepId: "ha",
+        errors: 1,
+      },
+    });
   });
 
   it("checkpoints each completed lesson target independently from test history", () => {
@@ -115,8 +124,34 @@ describe("timed typing test", () => {
 
     expect(screen.getByLabelText("Type ល")).toBeVisible();
     expect(JSON.parse(localStorage.getItem("typkh:learning")!)).toMatchObject({
-      checkpoint: { lessonId: "home-anchors", stepIndex: 1, errors: 0 },
+      schemaVersion: 2,
+      checkpoint: {
+        lessonId: "home-anchors",
+        lessonRevision: 1,
+        stepId: "lo",
+        errors: 0,
+      },
     });
+  });
+
+  it("discards a checkpoint when its stable step no longer exists", () => {
+    localStorage.setItem(
+      "typkh:learning",
+      JSON.stringify({
+        schemaVersion: 2,
+        progress: {},
+        checkpoint: {
+          lessonId: "home-anchors",
+          lessonRevision: 1,
+          stepId: "removed-step",
+          errors: 2,
+        },
+      }),
+    );
+
+    renderApp("/learn");
+    expect(screen.getByRole("heading", { name: "រៀនវាយអក្សរខ្មែរ" })).toBeVisible();
+    expect(screen.getByText("Recommended next")).toBeVisible();
   });
 
   it("keeps Learn and Test in primary navigation instead of the work surface", () => {

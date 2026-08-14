@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: simple-vowels
+revision: 1
+unitId: vowels
+order: 1
+title:
+  km: ា · ិ · ុ · េ
+  en: Simple vowels
+description:
+  km: ភ្ជាប់ស្រៈមូលដ្ឋានជាមួយព្យញ្ជនៈ។
+  en: Combine basic vowels with consonants.
+masteryAccuracy: 90
+steps:
+  - id: kaa
+    prompt: កា
+  - id: kei
+    prompt: កិ
+  - id: kou
+    prompt: កុ
+  - id: ke
+    prompt: គេ
+  - id: nei
+    prompt: និ
+  - id: sou
+    prompt: សុ
+  - id: me
+    prompt: មេ
+  - id: taa
+    prompt: តា

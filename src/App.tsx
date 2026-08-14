@@ -123,12 +123,7 @@ export default function App() {
           path="/learn"
           element={
             <ExperienceRoute experience="learn" onVisit={setLastExperience}>
-              <LearnPage
-                learningState={learningState}
-                onCheckpoint={(lessonId, stepIndex, errors) =>
-                  saveCheckpoint({ lessonId, stepIndex, errors })
-                }
-              />
+              <LearnPage learningState={learningState} onCheckpoint={saveCheckpoint} />
             </ExperienceRoute>
           }
         />

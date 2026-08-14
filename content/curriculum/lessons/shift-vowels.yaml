@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: shift-vowels
+revision: 1
+unitId: vowels
+order: 2
+title:
+  km: ី · ូ · ែ · ៅ
+  en: Shift vowels
+description:
+  km: ហាត់ស្រៈដែលប្រើ Shift និងចម្ងាយម្រាមដៃ។
+  en: Practice vowels that use Shift and longer reaches.
+masteryAccuracy: 90
+steps:
+  - id: tii
+    prompt: ទី
+  - id: kuu
+    prompt: គូ
+  - id: khae
+    prompt: ខែ
+  - id: nov
+    prompt: នៅ
+  - id: dei
+    prompt: ដី
+  - id: muoy
+    prompt: មួយ
+  - id: tov
+    prompt: ទៅ
+  - id: pov
+    prompt: ពៅ

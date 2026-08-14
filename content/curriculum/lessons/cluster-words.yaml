@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: cluster-words
+revision: 1
+unitId: clusters
+order: 2
+title:
+  km: ចង្កោមក្នុងពាក្យ
+  en: Clusters in words
+description:
+  km: អនុវត្តជើងអក្សរក្នុងពាក្យប្រើប្រាស់ជាក់ស្តែង។
+  en: Practice subscript clusters in real words.
+masteryAccuracy: 90
+steps:
+  - id: khmer
+    prompt: ខ្មែរ
+  - id: sdei
+    prompt: ស្តី
+  - id: chbah
+    prompt: ច្បាស់
+  - id: kam
+    prompt: កម្ម
+  - id: angkor
+    prompt: អង្គរ
+  - id: samrab
+    prompt: សម្រាប់
+  - id: bantor
+    prompt: បន្ត
+  - id: laor
+    prompt: ល្អ

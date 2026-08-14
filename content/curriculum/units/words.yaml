@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../unit.schema.json
+schemaVersion: 1
+id: words
+order: 5
+title:
+  km: ពាក្យ និងឃ្លា
+  en: Words and phrases
+description:
+  km: ភ្ជាប់ជំនាញទាំងអស់ទៅជាពាក្យ និងឃ្លាខ្លីៗ។
+  en: Combine every skill in common words and short phrases.

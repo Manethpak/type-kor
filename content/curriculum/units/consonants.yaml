@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../unit.schema.json
+schemaVersion: 1
+id: consonants
+order: 2
+title:
+  km: ព្យញ្ជនៈ
+  en: Consonants
+description:
+  km: បន្ថែមព្យញ្ជនៈធម្មតា និងគ្រាប់ចុច Shift។
+  en: Add common consonants and the Shift layer.

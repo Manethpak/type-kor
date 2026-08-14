@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: home-reach
+revision: 1
+unitId: home-row
+order: 2
+title:
+  km: ម · ន · ប · វ
+  en: Lower-row reach
+description:
+  km: ពង្រីកចលនាទៅជួរខាងក្រោម។
+  en: Extend finger movement to the lower row.
+masteryAccuracy: 90
+steps:
+  - id: mo
+    prompt: ម
+  - id: no
+    prompt: ន
+  - id: ba
+    prompt: ប
+  - id: vo
+    prompt: វ
+  - id: mok
+    prompt: មក
+  - id: neang
+    prompt: នាង
+  - id: ban
+    prompt: បាន
+  - id: veal
+    prompt: វាល

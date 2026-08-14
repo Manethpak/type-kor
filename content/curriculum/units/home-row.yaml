@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../unit.schema.json
+schemaVersion: 1
+id: home-row
+order: 1
+title:
+  km: ជួរគោល
+  en: Home row
+description:
+  km: ស្គាល់គ្រាប់ចុចមូលដ្ឋាន និងចលនាម្រាមដៃខ្លីៗ។
+  en: Learn the anchor keys and short finger movements.

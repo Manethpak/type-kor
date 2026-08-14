@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../unit.schema.json
+schemaVersion: 1
+id: clusters
+order: 4
+title:
+  km: ជើងអក្សរ
+  en: Subscript clusters
+description:
+  km: រៀនគ្រាប់ចុច ្ និងលំដាប់បង្កើតចង្កោមខ្មែរ។
+  en: Learn the coeng key and Khmer cluster order.

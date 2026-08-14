@@ -1,85 +1,103 @@
 import type { PhysicalKeyHint } from "./types";
 
-type KeyDefinition = Omit<PhysicalKeyHint, "output">;
+export type NidaLayer = "base" | "shift" | "altGr";
 
-const NIDA_KEYS: Record<string, KeyDefinition> = {
-  "១": { code: "Digit1", key: "1", shift: false },
-  "២": { code: "Digit2", key: "2", shift: false },
-  "៣": { code: "Digit3", key: "3", shift: false },
-  "៤": { code: "Digit4", key: "4", shift: false },
-  "៥": { code: "Digit5", key: "5", shift: false },
-  "៦": { code: "Digit6", key: "6", shift: false },
-  "៧": { code: "Digit7", key: "7", shift: false },
-  "៨": { code: "Digit8", key: "8", shift: false },
-  "៩": { code: "Digit9", key: "9", shift: false },
-  "០": { code: "Digit0", key: "0", shift: false },
-  ឆ: { code: "KeyQ", key: "Q", shift: false },
-  "ឹ": { code: "KeyW", key: "W", shift: false },
-  "េ": { code: "KeyE", key: "E", shift: false },
-  រ: { code: "KeyR", key: "R", shift: false },
-  ត: { code: "KeyT", key: "T", shift: false },
-  យ: { code: "KeyY", key: "Y", shift: false },
-  "ុ": { code: "KeyU", key: "U", shift: false },
-  "ិ": { code: "KeyI", key: "I", shift: false },
-  "ោ": { code: "KeyO", key: "O", shift: false },
-  ផ: { code: "KeyP", key: "P", shift: false },
-  "ៀ": { code: "BracketLeft", key: "[", shift: false },
-  ឪ: { code: "BracketRight", key: "]", shift: false },
-  "ា": { code: "KeyA", key: "A", shift: false },
-  ស: { code: "KeyS", key: "S", shift: false },
-  ដ: { code: "KeyD", key: "D", shift: false },
-  ថ: { code: "KeyF", key: "F", shift: false },
-  ង: { code: "KeyG", key: "G", shift: false },
-  ហ: { code: "KeyH", key: "H", shift: false },
-  "្": { code: "KeyJ", key: "J", shift: false },
-  ក: { code: "KeyK", key: "K", shift: false },
-  ល: { code: "KeyL", key: "L", shift: false },
-  "ើ": { code: "Semicolon", key: ";", shift: false },
-  "់": { code: "Quote", key: "'", shift: false },
-  ឋ: { code: "KeyZ", key: "Z", shift: false },
-  ខ: { code: "KeyX", key: "X", shift: false },
-  ច: { code: "KeyC", key: "C", shift: false },
-  វ: { code: "KeyV", key: "V", shift: false },
-  ប: { code: "KeyB", key: "B", shift: false },
-  ន: { code: "KeyN", key: "N", shift: false },
-  ម: { code: "KeyM", key: "M", shift: false },
-  "ុំ": { code: "Comma", key: ",", shift: false },
-  "។": { code: "Period", key: ".", shift: false },
-  "៊": { code: "Slash", key: "/", shift: false },
-  ឈ: { code: "KeyQ", key: "Q", shift: true },
-  "ឺ": { code: "KeyW", key: "W", shift: true },
-  "ែ": { code: "KeyE", key: "E", shift: true },
-  ឬ: { code: "KeyR", key: "R", shift: true },
-  ទ: { code: "KeyT", key: "T", shift: true },
-  "ួ": { code: "KeyY", key: "Y", shift: true },
-  "ូ": { code: "KeyU", key: "U", shift: true },
-  "ី": { code: "KeyI", key: "I", shift: true },
-  "ៅ": { code: "KeyO", key: "O", shift: true },
-  ភ: { code: "KeyP", key: "P", shift: true },
-  "ឿ": { code: "BracketLeft", key: "[", shift: true },
-  ឧ: { code: "BracketRight", key: "]", shift: true },
-  "ាំ": { code: "KeyA", key: "A", shift: true },
-  "ៃ": { code: "KeyS", key: "S", shift: true },
-  ឌ: { code: "KeyD", key: "D", shift: true },
-  ធ: { code: "KeyF", key: "F", shift: true },
-  អ: { code: "KeyG", key: "G", shift: true },
-  "ះ": { code: "KeyH", key: "H", shift: true },
-  ញ: { code: "KeyJ", key: "J", shift: true },
-  គ: { code: "KeyK", key: "K", shift: true },
-  ឡ: { code: "KeyL", key: "L", shift: true },
-  "ោះ": { code: "Semicolon", key: ";", shift: true },
-  "៉": { code: "Quote", key: "'", shift: true },
-  ឍ: { code: "KeyZ", key: "Z", shift: true },
-  ឃ: { code: "KeyX", key: "X", shift: true },
-  ជ: { code: "KeyC", key: "C", shift: true },
-  "េះ": { code: "KeyV", key: "V", shift: true },
-  ព: { code: "KeyB", key: "B", shift: true },
-  ណ: { code: "KeyN", key: "N", shift: true },
-  "ំ": { code: "KeyM", key: "M", shift: true },
-  "ុះ": { code: "Comma", key: ",", shift: true },
-  "៕": { code: "Period", key: ".", shift: true },
-  " ": { code: "Space", key: "Space", shift: false },
-};
+export interface NidaLayoutKey {
+  code: string;
+  key: string;
+  base: string;
+  shift: string;
+  altGr: string;
+}
+
+const key = (
+  code: string,
+  latin: string,
+  base: string,
+  shift: string,
+  altGr = "",
+): NidaLayoutKey => ({ code, key: latin, base, shift, altGr });
+
+/**
+ * Khmer (NIDA), CLDR id km-t-k0-windows-extended.
+ * Source: https://unicode.org/cldr/charts/40/keyboards/layouts/km.html
+ */
+export const NIDA_KEY_ROWS: NidaLayoutKey[][] = [
+  [
+    key("Backquote", "`", "«", "»", "\u200D"),
+    key("Digit1", "1", "១", "!", "\u200C"),
+    key("Digit2", "2", "២", "ៗ", "@"),
+    key("Digit3", "3", "៣", '"', "៑"),
+    key("Digit4", "4", "៤", "៛", "$"),
+    key("Digit5", "5", "៥", "%", "€"),
+    key("Digit6", "6", "៦", "៍", "៙"),
+    key("Digit7", "7", "៧", "័", "៚"),
+    key("Digit8", "8", "៨", "៏", "*"),
+    key("Digit9", "9", "៩", "(", "{"),
+    key("Digit0", "0", "០", ")", "}"),
+    key("Minus", "-", "ឥ", "៌", "×"),
+    key("Equal", "=", "ឲ", "=", "៎"),
+  ],
+  [
+    key("KeyQ", "Q", "ឆ", "ឈ"),
+    key("KeyW", "W", "ឹ", "ឺ"),
+    key("KeyE", "E", "េ", "ែ", "ឯ"),
+    key("KeyR", "R", "រ", "ឬ", "ឫ"),
+    key("KeyT", "T", "ត", "ទ"),
+    key("KeyY", "Y", "យ", "ួ"),
+    key("KeyU", "U", "ុ", "ូ"),
+    key("KeyI", "I", "ិ", "ី", "ឦ"),
+    key("KeyO", "O", "ោ", "ៅ", "ឱ"),
+    key("KeyP", "P", "ផ", "ភ", "ឰ"),
+    key("BracketLeft", "[", "ៀ", "ឿ", "ឩ"),
+    key("BracketRight", "]", "ឪ", "ឧ", "ឳ"),
+  ],
+  [
+    key("KeyA", "A", "ា", "ាំ"),
+    key("KeyS", "S", "ស", "ៃ"),
+    key("KeyD", "D", "ដ", "ឌ"),
+    key("KeyF", "F", "ថ", "ធ"),
+    key("KeyG", "G", "ង", "អ"),
+    key("KeyH", "H", "ហ", "ះ"),
+    key("KeyJ", "J", "្", "ញ"),
+    key("KeyK", "K", "ក", "គ"),
+    key("KeyL", "L", "ល", "ឡ"),
+    key("Semicolon", ";", "ើ", "ោះ", "៖"),
+    key("Quote", "'", "់", "៉", "ៈ"),
+    key("Backslash", "\\", "ឮ", "ឭ", "\\"),
+  ],
+  [
+    key("KeyZ", "Z", "ឋ", "ឍ"),
+    key("KeyX", "X", "ខ", "ឃ"),
+    key("KeyC", "C", "ច", "ជ"),
+    key("KeyV", "V", "វ", "េះ"),
+    key("KeyB", "B", "ប", "ព"),
+    key("KeyN", "N", "ន", "ណ"),
+    key("KeyM", "M", "ម", "ំ"),
+    key("Comma", ",", "ុំ", "ុះ", ","),
+    key("Period", ".", "។", "៕", "."),
+    key("Slash", "/", "៊", "?", "/"),
+  ],
+  [key("Space", "Space", "\u200B", " ", "\u00A0")],
+];
+
+const NIDA_KEYS: Record<string, Omit<PhysicalKeyHint, "output">> = {};
+
+for (const layoutKey of NIDA_KEY_ROWS.flat()) {
+  for (const layer of ["base", "shift", "altGr"] as const) {
+    const output = layoutKey[layer];
+    if (!output || NIDA_KEYS[output]) continue;
+    NIDA_KEYS[output] = {
+      code: layoutKey.code,
+      key: layoutKey.key,
+      shift: layer === "shift",
+      altGr: layer === "altGr",
+    };
+  }
+}
+
+// Visible test spaces accept the NIDA Space key's zero-width boundary output.
+NIDA_KEYS[" "] = { code: "Space", key: "Space", shift: false, altGr: false };
 
 const MULTI_OUTPUTS = Object.keys(NIDA_KEYS)
   .filter((output) => Array.from(output).length > 1)
@@ -102,5 +120,23 @@ export function keySequenceFor(output: string): PhysicalKeyHint[] {
 
 export function keyInstruction(hint: PhysicalKeyHint | undefined): string {
   if (!hint) return "Key guidance unavailable";
-  return `Press ${hint.shift ? "Shift + " : ""}${hint.key}`;
+  const modifiers = [hint.altGr && "AltGr", hint.shift && "Shift"].filter(Boolean);
+  return `Press ${[...modifiers, hint.key].join(" + ")}`;
+}
+
+export function outputForLayer(layoutKey: NidaLayoutKey, layer: NidaLayer): string {
+  return layoutKey[layer];
+}
+
+export function displayNidaOutput(output: string): string {
+  const names: Record<string, string> = {
+    "\u200B": "ZWSP",
+    "\u200C": "ZWNJ",
+    "\u200D": "ZWJ",
+    "\u00A0": "NBSP",
+    " ": "Space",
+  };
+  if (names[output]) return names[output];
+  if (/^\p{M}+$/u.test(output)) return `◌${output}`;
+  return output;
 }

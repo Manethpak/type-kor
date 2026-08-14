@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: common-consonants
+revision: 1
+unitId: consonants
+order: 1
+title:
+  km: ត · រ · យ · ច
+  en: Common consonants
+description:
+  km: ព្យញ្ជនៈដែលជួបញឹកញាប់ក្នុងពាក្យខ្មែរ។
+  en: Consonants that appear frequently in Khmer words.
+masteryAccuracy: 90
+steps:
+  - id: ta
+    prompt: ត
+  - id: ro
+    prompt: រ
+  - id: yo
+    prompt: យ
+  - id: cha
+    prompt: ច
+  - id: dara
+    prompt: តារា
+  - id: chan
+    prompt: ចាន
+  - id: rongea
+    prompt: រងា
+  - id: yean
+    prompt: យាន

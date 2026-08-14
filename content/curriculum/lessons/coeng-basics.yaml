@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: coeng-basics
+revision: 1
+unitId: clusters
+order: 1
+title:
+  km: ្ + ព្យញ្ជនៈ
+  en: Coeng basics
+description:
+  km: បញ្ចូលជើងអក្សរមួយដោយរក្សាលំដាប់ Unicode។
+  en: Enter a single subscript while preserving Unicode order.
+masteryAccuracy: 90
+steps:
+  - id: kka
+    prompt: ក្ក
+  - id: kkha
+    prompt: ក្ខ
+  - id: ngka
+    prompt: ង្ក
+  - id: nta
+    prompt: ន្ត
+  - id: mma
+    prompt: ម្ម
+  - id: ssa
+    prompt: ស្ស
+  - id: lba
+    prompt: ល្ប
+  - id: mpo
+    prompt: ម្ព

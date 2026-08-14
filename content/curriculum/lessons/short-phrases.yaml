@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: short-phrases
+revision: 1
+unitId: words
+order: 2
+title:
+  km: ឃ្លាខ្លីៗ
+  en: Short phrases
+description:
+  km: រក្សាចង្វាក់ពេលវាយពាក្យជាប់គ្នា។
+  en: Maintain rhythm while typing connected words.
+masteryAccuracy: 90
+steps:
+  - id: hello-you
+    prompt: សួស្តី អ្នក
+  - id: i-am-well
+    prompt: ខ្ញុំ សុខសប្បាយ
+  - id: many-thanks
+    prompt: អរគុណ ច្រើន
+  - id: learn-khmer
+    prompt: រៀន ភាសាខ្មែរ
+  - id: read-book
+    prompt: អាន សៀវភៅ
+  - id: go-school
+    prompt: ទៅ សាលា
+  - id: love-cambodia
+    prompt: ស្រឡាញ់ កម្ពុជា
+  - id: type-clearly
+    prompt: វាយ ច្បាស់

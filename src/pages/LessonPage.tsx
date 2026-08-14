@@ -31,7 +31,10 @@ function LessonSession({
   const navigate = useNavigate();
   const resumed =
     learningState.checkpoint?.lessonId === lesson.id ? learningState.checkpoint : null;
-  const [stepIndex, setStepIndex] = useState(resumed?.stepIndex ?? 0);
+  const resumedStepIndex = resumed
+    ? lesson.steps.findIndex((step) => step.id === resumed.stepId)
+    : -1;
+  const [stepIndex, setStepIndex] = useState(resumedStepIndex >= 0 ? resumedStepIndex : 0);
   const [errors, setErrors] = useState(resumed?.errors ?? 0);
   const [stepErrors, setStepErrors] = useState(0);
   const [input, setInput] = useState("");
@@ -44,7 +47,14 @@ function LessonSession({
   useEffect(() => {
     if (checkpointInitializedRef.current) return;
     checkpointInitializedRef.current = true;
-    if (!resumed) onCheckpoint({ lessonId: lesson.id, stepIndex: 0, errors: 0 });
+    if (!resumed) {
+      onCheckpoint({
+        lessonId: lesson.id,
+        lessonRevision: lesson.revision,
+        stepId: lesson.steps[0].id,
+        errors: 0,
+      });
+    }
   }, [lesson.id, onCheckpoint, resumed]);
 
   const step = lesson.steps[stepIndex];
@@ -76,7 +86,12 @@ function LessonSession({
         setStepErrors(0);
         setInput("");
         setStatus("prefix");
-        onCheckpoint({ lessonId: lesson.id, stepIndex: nextStep, errors });
+        onCheckpoint({
+          lessonId: lesson.id,
+          lessonRevision: lesson.revision,
+          stepId: lesson.steps[nextStep].id,
+          errors,
+        });
         return;
       }
 
@@ -89,7 +104,12 @@ function LessonSession({
       setErrors(nextErrors);
       setStepErrors((value) => value + 1);
       setStatus("incorrect");
-      onCheckpoint({ lessonId: lesson.id, stepIndex, errors: nextErrors });
+      onCheckpoint({
+        lessonId: lesson.id,
+        lessonRevision: lesson.revision,
+        stepId: step.id,
+        errors: nextErrors,
+      });
     },
     [
       completedAccuracy,
@@ -119,14 +139,19 @@ function LessonSession({
     setInput("");
     setStatus("prefix");
     setCompletedAccuracy(null);
-    onCheckpoint({ lessonId: lesson.id, stepIndex: 0, errors: 0 });
+    onCheckpoint({
+      lessonId: lesson.id,
+      lessonRevision: lesson.revision,
+      stepId: lesson.steps[0].id,
+      errors: 0,
+    });
     window.setTimeout(focusInput, 0);
   };
 
   const nextLesson = getNextLesson(lesson.id);
 
   if (completedAccuracy !== null) {
-    const mastered = completedAccuracy >= 90;
+    const mastered = completedAccuracy >= lesson.masteryAccuracy;
     return (
       <section
         className="mx-auto w-[min(760px,100%)] animate-arrive text-center"
@@ -144,7 +169,7 @@ function LessonSession({
           </h1>
           <p className="mx-auto mt-3 max-w-md text-xs leading-relaxed text-app-dim">
             ភាពត្រឹមត្រូវរបស់អ្នកគឺ <strong className="text-app-accent">{completedAccuracy}%</strong>។
-            ត្រូវការ 90% ដើម្បីសម្គាល់ថាស្ទាត់។
+            ត្រូវការ {lesson.masteryAccuracy}% ដើម្បីសម្គាល់ថាស្ទាត់។
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-2">
             <button
@@ -157,7 +182,12 @@ function LessonSession({
               <button
                 className="cursor-pointer rounded-[10px] bg-app-accent px-4 py-2.5 text-xs font-semibold text-app-bg transition-[filter,transform] hover:brightness-110 active:translate-y-px"
                 onClick={() => {
-                  onCheckpoint({ lessonId: nextLesson.id, stepIndex: 0, errors: 0 });
+                  onCheckpoint({
+                    lessonId: nextLesson.id,
+                    lessonRevision: nextLesson.revision,
+                    stepId: nextLesson.steps[0].id,
+                    errors: 0,
+                  });
                   navigate(`/learn/${nextLesson.id}`);
                 }}
               >
@@ -180,7 +210,7 @@ function LessonSession({
   return (
     <section
       className="mx-auto w-[min(880px,100%)] animate-arrive"
-      aria-label={`Lesson: ${lesson.title}`}
+      aria-label={`Lesson: ${lesson.title.km}`}
     >
       <div className="mb-6 flex items-start justify-between gap-5" data-focus-fade>
         <div className="flex items-start gap-3">
@@ -195,8 +225,8 @@ function LessonSession({
             <p className="mb-1 text-[9px] font-bold uppercase tracking-[.18em] text-app-accent">
               Khmer NIDA · Lesson
             </p>
-            <h1 className="m-0 font-khmer text-[28px] font-medium">{lesson.title}</h1>
-            <p className="mb-0 mt-1 text-[11px] text-app-dim">{lesson.description}</p>
+            <h1 className="m-0 font-khmer text-[28px] font-medium">{lesson.title.km}</h1>
+            <p className="mb-0 mt-1 text-[11px] text-app-dim">{lesson.description.km}</p>
           </div>
         </div>
         <div className="min-w-24 text-right">
@@ -265,6 +295,7 @@ function LessonSession({
               className="rounded-md border border-app-line bg-app-surface px-2 py-1 text-[10px] text-app-dim transition-[color,border-color,background] data-[active=true]:border-[color-mix(in_srgb,var(--accent)_48%,transparent)] data-[active=true]:bg-app-accent-soft data-[active=true]:text-app-accent"
               data-active={index === hintIndex}
             >
+              {hint.altGr && <span className="mr-1 opacity-60">AltGr +</span>}
               {hint.shift && <span className="mr-1 opacity-60">Shift +</span>}
               {hint.key}
             </span>

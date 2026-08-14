@@ -14,7 +14,7 @@ A Khmer typing practice app with cluster-aware input handling and local progress
 
 ## Development
 
-Requires [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/).
+Requires [Node.js](https://nodejs.org/) 22.18 or newer and [pnpm](https://pnpm.io/).
 
 ```bash
 pnpm install

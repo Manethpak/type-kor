@@ -4,7 +4,7 @@ import type { LearningState, LessonCheckpoint, LessonProgress } from "../learnin
 
 const STORAGE_KEY = "typkh:learning";
 const DEFAULT_LEARNING_STATE: LearningState = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   progress: {},
   checkpoint: null,
 };
@@ -22,26 +22,38 @@ function validProgress(value: unknown): value is LessonProgress {
   );
 }
 
-function validCheckpoint(value: unknown): value is LessonCheckpoint {
-  if (!value || typeof value !== "object") return false;
-  const checkpoint = value as Partial<LessonCheckpoint>;
+function normalizeCheckpoint(value: unknown): LessonCheckpoint | null {
+  if (!value || typeof value !== "object") return null;
+  const checkpoint = value as Partial<LessonCheckpoint> & { stepIndex?: number };
   const lesson = getLesson(checkpoint.lessonId);
-  return Boolean(
-    lesson &&
-    Number.isInteger(checkpoint.stepIndex) &&
-    checkpoint.stepIndex! >= 0 &&
-    checkpoint.stepIndex! < lesson.steps.length &&
-    Number.isInteger(checkpoint.errors) &&
-    checkpoint.errors! >= 0,
-  );
+  if (!lesson || !Number.isInteger(checkpoint.errors) || checkpoint.errors! < 0) return null;
+
+  const step =
+    typeof checkpoint.stepId === "string"
+      ? lesson.steps.find((item) => item.id === checkpoint.stepId)
+      : Number.isInteger(checkpoint.stepIndex)
+        ? lesson.steps[checkpoint.stepIndex!]
+        : undefined;
+  if (!step) return null;
+
+  return {
+    lessonId: lesson.id,
+    lessonRevision: lesson.revision,
+    stepId: step.id,
+    errors: checkpoint.errors!,
+  };
 }
 
 function readLearningState(): LearningState {
   try {
-    const saved = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) ?? "null",
-    ) as Partial<LearningState> | null;
-    if (!saved || saved.schemaVersion !== 1) return DEFAULT_LEARNING_STATE;
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null") as {
+      schemaVersion?: number;
+      progress?: Record<string, unknown>;
+      checkpoint?: unknown;
+    } | null;
+    if (!saved || (saved.schemaVersion !== 1 && saved.schemaVersion !== 2)) {
+      return DEFAULT_LEARNING_STATE;
+    }
 
     const progress: Record<string, LessonProgress> = {};
     for (const lesson of lessons) {
@@ -49,11 +61,13 @@ function readLearningState(): LearningState {
       if (validProgress(candidate)) progress[lesson.id] = candidate;
     }
 
-    return {
-      schemaVersion: 1,
+    const normalized: LearningState = {
+      schemaVersion: 2,
       progress,
-      checkpoint: validCheckpoint(saved.checkpoint) ? saved.checkpoint : null,
+      checkpoint: normalizeCheckpoint(saved.checkpoint),
     };
+    persistLearningState(normalized);
+    return normalized;
   } catch {
     return DEFAULT_LEARNING_STATE;
   }
@@ -90,6 +104,8 @@ export function useLearningProgress() {
 
   const completeLesson = useCallback(
     (lessonId: string, accuracy: number) => {
+      const lesson = getLesson(lessonId);
+      if (!lesson) return;
       const now = new Date().toISOString();
       update((current) => {
         const previous = current.progress[lessonId];
@@ -103,7 +119,9 @@ export function useLearningProgress() {
               bestAccuracy: Math.max(previous?.bestAccuracy ?? 0, accuracy),
               completedAt: previous?.completedAt ?? now,
               masteredAt:
-                accuracy >= 90 ? (previous?.masteredAt ?? now) : (previous?.masteredAt ?? null),
+                accuracy >= lesson.masteryAccuracy
+                  ? (previous?.masteredAt ?? now)
+                  : (previous?.masteredAt ?? null),
             },
           },
         };

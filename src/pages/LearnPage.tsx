@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import { curriculum, lessons } from "../learning/curriculum";
-import type { LearningState, Lesson } from "../learning/types";
+import type { LearningState, Lesson, LessonCheckpoint } from "../learning/types";
 import { cx } from "../utils/classNames";
 
 export function LearnPage({
@@ -8,7 +8,7 @@ export function LearnPage({
   onCheckpoint,
 }: {
   learningState: LearningState;
-  onCheckpoint: (lessonId: string, stepIndex: number, errors: number) => void;
+  onCheckpoint: (checkpoint: LessonCheckpoint) => void;
 }) {
   const navigate = useNavigate();
   const mastered = lessons.filter((lesson) => learningState.progress[lesson.id]?.masteredAt).length;
@@ -20,7 +20,14 @@ export function LearnPage({
 
   const openLesson = (lesson: Lesson) => {
     const resume = learningState.checkpoint?.lessonId === lesson.id;
-    if (!resume) onCheckpoint(lesson.id, 0, 0);
+    if (!resume) {
+      onCheckpoint({
+        lessonId: lesson.id,
+        lessonRevision: lesson.revision,
+        stepId: lesson.steps[0].id,
+        errors: 0,
+      });
+    }
     navigate(`/learn/${lesson.id}`);
   };
 
@@ -61,9 +68,11 @@ export function LearnPage({
                 : "Recommended next"}
             </small>
             <strong className="mt-1 block font-khmer text-lg font-medium">
-              {recommended.title}
+              {recommended.title.km}
             </strong>
-            <span className="mt-0.5 block text-[11px] text-app-dim">{recommended.description}</span>
+            <span className="mt-0.5 block text-[11px] text-app-dim">
+              {recommended.description.km}
+            </span>
           </span>
           <span
             className="text-sm text-app-accent transition-transform group-hover:translate-x-1 max-[620px]:hidden"
@@ -79,13 +88,13 @@ export function LearnPage({
           <section key={unit.id} aria-labelledby={`${unit.id}-title`}>
             <div className="mb-3 flex items-start gap-3">
               <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg border border-app-line bg-app-surface text-[10px] font-semibold text-app-accent">
-                {String(unit.index).padStart(2, "0")}
+                {String(unit.order).padStart(2, "0")}
               </span>
               <div>
                 <h2 id={`${unit.id}-title`} className="m-0 font-khmer text-xl font-medium">
-                  {unit.title}
+                  {unit.title.km}
                 </h2>
-                <p className="mb-0 mt-0.5 text-[11px] text-app-dim">{unit.description}</p>
+                <p className="mb-0 mt-0.5 text-[11px] text-app-dim">{unit.description.km}</p>
               </div>
             </div>
 
@@ -102,7 +111,7 @@ export function LearnPage({
                   >
                     <span className="mb-5 flex items-center justify-between">
                       <small className="text-[9px] font-semibold uppercase tracking-[.13em] text-app-dim">
-                        Lesson {unit.index}.{lessonIndex + 1}
+                        Lesson {unit.order}.{lessonIndex + 1}
                       </small>
                       <span
                         className={cx(
@@ -121,10 +130,10 @@ export function LearnPage({
                       </span>
                     </span>
                     <strong className="block font-khmer text-lg font-medium transition-colors group-hover:text-app-accent">
-                      {lesson.title}
+                      {lesson.title.km}
                     </strong>
                     <span className="mt-1 block text-[11px] leading-normal text-app-dim">
-                      {lesson.description}
+                      {lesson.description.km}
                     </span>
                     {progress && (
                       <small className="mt-2 block text-[9px] text-app-accent">

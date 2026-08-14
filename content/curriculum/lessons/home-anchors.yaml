@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: home-anchors
+revision: 1
+unitId: home-row
+order: 1
+title:
+  km: ក · ល · ស · ហ
+  en: Home anchors
+description:
+  km: គ្រាប់ចុចគោលសម្រាប់ដៃទាំងពីរ។
+  en: Anchor keys for both hands.
+masteryAccuracy: 90
+steps:
+  - id: ka
+    prompt: ក
+  - id: lo
+    prompt: ល
+  - id: sa
+    prompt: ស
+  - id: ha
+    prompt: ហ
+  - id: ka-lo
+    prompt: កល
+  - id: sa-ka
+    prompt: សក
+  - id: ha-lo
+    prompt: ហល
+  - id: sala
+    prompt: សាលា

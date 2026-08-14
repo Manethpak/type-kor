@@ -1,0 +1,572 @@
+{
+  "schemaVersion": 1,
+  "units": [
+    {
+      "schemaVersion": 1,
+      "id": "home-row",
+      "order": 1,
+      "title": {
+        "km": "ជួរគោល",
+        "en": "Home row"
+      },
+      "description": {
+        "km": "ស្គាល់គ្រាប់ចុចមូលដ្ឋាន និងចលនាម្រាមដៃខ្លីៗ។",
+        "en": "Learn the anchor keys and short finger movements."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "consonants",
+      "order": 2,
+      "title": {
+        "km": "ព្យញ្ជនៈ",
+        "en": "Consonants"
+      },
+      "description": {
+        "km": "បន្ថែមព្យញ្ជនៈធម្មតា និងគ្រាប់ចុច Shift។",
+        "en": "Add common consonants and the Shift layer."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "vowels",
+      "order": 3,
+      "title": {
+        "km": "ស្រៈ និងសញ្ញា",
+        "en": "Vowels and marks"
+      },
+      "description": {
+        "km": "បង្កើតចង្កោមជាមួយស្រៈលើ ក្រោម មុខ និងក្រោយ។",
+        "en": "Build clusters with vowels above, below, before, and after."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "clusters",
+      "order": 4,
+      "title": {
+        "km": "ជើងអក្សរ",
+        "en": "Subscript clusters"
+      },
+      "description": {
+        "km": "រៀនគ្រាប់ចុច ្ និងលំដាប់បង្កើតចង្កោមខ្មែរ។",
+        "en": "Learn the coeng key and Khmer cluster order."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "words",
+      "order": 5,
+      "title": {
+        "km": "ពាក្យ និងឃ្លា",
+        "en": "Words and phrases"
+      },
+      "description": {
+        "km": "ភ្ជាប់ជំនាញទាំងអស់ទៅជាពាក្យ និងឃ្លាខ្លីៗ។",
+        "en": "Combine every skill in common words and short phrases."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "schemaVersion": 1,
+      "id": "home-anchors",
+      "revision": 1,
+      "unitId": "home-row",
+      "order": 1,
+      "title": {
+        "km": "ក · ល · ស · ហ",
+        "en": "Home anchors"
+      },
+      "description": {
+        "km": "គ្រាប់ចុចគោលសម្រាប់ដៃទាំងពីរ។",
+        "en": "Anchor keys for both hands."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "ka",
+          "prompt": "ក"
+        },
+        {
+          "id": "lo",
+          "prompt": "ល"
+        },
+        {
+          "id": "sa",
+          "prompt": "ស"
+        },
+        {
+          "id": "ha",
+          "prompt": "ហ"
+        },
+        {
+          "id": "ka-lo",
+          "prompt": "កល"
+        },
+        {
+          "id": "sa-ka",
+          "prompt": "សក"
+        },
+        {
+          "id": "ha-lo",
+          "prompt": "ហល"
+        },
+        {
+          "id": "sala",
+          "prompt": "សាលា"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "home-reach",
+      "revision": 1,
+      "unitId": "home-row",
+      "order": 2,
+      "title": {
+        "km": "ម · ន · ប · វ",
+        "en": "Lower-row reach"
+      },
+      "description": {
+        "km": "ពង្រីកចលនាទៅជួរខាងក្រោម។",
+        "en": "Extend finger movement to the lower row."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "mo",
+          "prompt": "ម"
+        },
+        {
+          "id": "no",
+          "prompt": "ន"
+        },
+        {
+          "id": "ba",
+          "prompt": "ប"
+        },
+        {
+          "id": "vo",
+          "prompt": "វ"
+        },
+        {
+          "id": "mok",
+          "prompt": "មក"
+        },
+        {
+          "id": "neang",
+          "prompt": "នាង"
+        },
+        {
+          "id": "ban",
+          "prompt": "បាន"
+        },
+        {
+          "id": "veal",
+          "prompt": "វាល"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "common-consonants",
+      "revision": 1,
+      "unitId": "consonants",
+      "order": 1,
+      "title": {
+        "km": "ត · រ · យ · ច",
+        "en": "Common consonants"
+      },
+      "description": {
+        "km": "ព្យញ្ជនៈដែលជួបញឹកញាប់ក្នុងពាក្យខ្មែរ។",
+        "en": "Consonants that appear frequently in Khmer words."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "ta",
+          "prompt": "ត"
+        },
+        {
+          "id": "ro",
+          "prompt": "រ"
+        },
+        {
+          "id": "yo",
+          "prompt": "យ"
+        },
+        {
+          "id": "cha",
+          "prompt": "ច"
+        },
+        {
+          "id": "dara",
+          "prompt": "តារា"
+        },
+        {
+          "id": "chan",
+          "prompt": "ចាន"
+        },
+        {
+          "id": "rongea",
+          "prompt": "រងា"
+        },
+        {
+          "id": "yean",
+          "prompt": "យាន"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "shift-consonants",
+      "revision": 1,
+      "unitId": "consonants",
+      "order": 2,
+      "title": {
+        "km": "គ · ជ · ទ · ព",
+        "en": "Shift consonants"
+      },
+      "description": {
+        "km": "ប្រើ Shift ដើម្បីទៅដល់ព្យញ្ជនៈស្រទាប់ទីពីរ។",
+        "en": "Use Shift to reach the second consonant layer."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "ko",
+          "prompt": "គ"
+        },
+        {
+          "id": "cho",
+          "prompt": "ជ"
+        },
+        {
+          "id": "to",
+          "prompt": "ទ"
+        },
+        {
+          "id": "po",
+          "prompt": "ព"
+        },
+        {
+          "id": "kit",
+          "prompt": "គិត"
+        },
+        {
+          "id": "cheat",
+          "prompt": "ជាតិ"
+        },
+        {
+          "id": "tuk",
+          "prompt": "ទឹក"
+        },
+        {
+          "id": "pit",
+          "prompt": "ពិត"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "simple-vowels",
+      "revision": 1,
+      "unitId": "vowels",
+      "order": 1,
+      "title": {
+        "km": "ា · ិ · ុ · េ",
+        "en": "Simple vowels"
+      },
+      "description": {
+        "km": "ភ្ជាប់ស្រៈមូលដ្ឋានជាមួយព្យញ្ជនៈ។",
+        "en": "Combine basic vowels with consonants."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "kaa",
+          "prompt": "កា"
+        },
+        {
+          "id": "kei",
+          "prompt": "កិ"
+        },
+        {
+          "id": "kou",
+          "prompt": "កុ"
+        },
+        {
+          "id": "ke",
+          "prompt": "គេ"
+        },
+        {
+          "id": "nei",
+          "prompt": "និ"
+        },
+        {
+          "id": "sou",
+          "prompt": "សុ"
+        },
+        {
+          "id": "me",
+          "prompt": "មេ"
+        },
+        {
+          "id": "taa",
+          "prompt": "តា"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "shift-vowels",
+      "revision": 1,
+      "unitId": "vowels",
+      "order": 2,
+      "title": {
+        "km": "ី · ូ · ែ · ៅ",
+        "en": "Shift vowels"
+      },
+      "description": {
+        "km": "ហាត់ស្រៈដែលប្រើ Shift និងចម្ងាយម្រាមដៃ។",
+        "en": "Practice vowels that use Shift and longer reaches."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "tii",
+          "prompt": "ទី"
+        },
+        {
+          "id": "kuu",
+          "prompt": "គូ"
+        },
+        {
+          "id": "khae",
+          "prompt": "ខែ"
+        },
+        {
+          "id": "nov",
+          "prompt": "នៅ"
+        },
+        {
+          "id": "dei",
+          "prompt": "ដី"
+        },
+        {
+          "id": "muoy",
+          "prompt": "មួយ"
+        },
+        {
+          "id": "tov",
+          "prompt": "ទៅ"
+        },
+        {
+          "id": "pov",
+          "prompt": "ពៅ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "coeng-basics",
+      "revision": 1,
+      "unitId": "clusters",
+      "order": 1,
+      "title": {
+        "km": "្ + ព្យញ្ជនៈ",
+        "en": "Coeng basics"
+      },
+      "description": {
+        "km": "បញ្ចូលជើងអក្សរមួយដោយរក្សាលំដាប់ Unicode។",
+        "en": "Enter a single subscript while preserving Unicode order."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "kka",
+          "prompt": "ក្ក"
+        },
+        {
+          "id": "kkha",
+          "prompt": "ក្ខ"
+        },
+        {
+          "id": "ngka",
+          "prompt": "ង្ក"
+        },
+        {
+          "id": "nta",
+          "prompt": "ន្ត"
+        },
+        {
+          "id": "mma",
+          "prompt": "ម្ម"
+        },
+        {
+          "id": "ssa",
+          "prompt": "ស្ស"
+        },
+        {
+          "id": "lba",
+          "prompt": "ល្ប"
+        },
+        {
+          "id": "mpo",
+          "prompt": "ម្ព"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "cluster-words",
+      "revision": 1,
+      "unitId": "clusters",
+      "order": 2,
+      "title": {
+        "km": "ចង្កោមក្នុងពាក្យ",
+        "en": "Clusters in words"
+      },
+      "description": {
+        "km": "អនុវត្តជើងអក្សរក្នុងពាក្យប្រើប្រាស់ជាក់ស្តែង។",
+        "en": "Practice subscript clusters in real words."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "khmer",
+          "prompt": "ខ្មែរ"
+        },
+        {
+          "id": "sdei",
+          "prompt": "ស្តី"
+        },
+        {
+          "id": "chbah",
+          "prompt": "ច្បាស់"
+        },
+        {
+          "id": "kam",
+          "prompt": "កម្ម"
+        },
+        {
+          "id": "angkor",
+          "prompt": "អង្គរ"
+        },
+        {
+          "id": "samrab",
+          "prompt": "សម្រាប់"
+        },
+        {
+          "id": "bantor",
+          "prompt": "បន្ត"
+        },
+        {
+          "id": "laor",
+          "prompt": "ល្អ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "common-words",
+      "revision": 1,
+      "unitId": "words",
+      "order": 1,
+      "title": {
+        "km": "ពាក្យប្រចាំថ្ងៃ",
+        "en": "Everyday words"
+      },
+      "description": {
+        "km": "ហាត់ចង្វាក់លើពាក្យដែលប្រើញឹកញាប់។",
+        "en": "Build rhythm with frequently used words."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "hello",
+          "prompt": "សួស្តី"
+        },
+        {
+          "id": "thank-you",
+          "prompt": "អរគុណ"
+        },
+        {
+          "id": "school",
+          "prompt": "សាលា"
+        },
+        {
+          "id": "family",
+          "prompt": "គ្រួសារ"
+        },
+        {
+          "id": "work",
+          "prompt": "ការងារ"
+        },
+        {
+          "id": "book",
+          "prompt": "សៀវភៅ"
+        },
+        {
+          "id": "happy",
+          "prompt": "សប្បាយ"
+        },
+        {
+          "id": "cambodia",
+          "prompt": "កម្ពុជា"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "short-phrases",
+      "revision": 1,
+      "unitId": "words",
+      "order": 2,
+      "title": {
+        "km": "ឃ្លាខ្លីៗ",
+        "en": "Short phrases"
+      },
+      "description": {
+        "km": "រក្សាចង្វាក់ពេលវាយពាក្យជាប់គ្នា។",
+        "en": "Maintain rhythm while typing connected words."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "hello-you",
+          "prompt": "សួស្តី អ្នក"
+        },
+        {
+          "id": "i-am-well",
+          "prompt": "ខ្ញុំ សុខសប្បាយ"
+        },
+        {
+          "id": "many-thanks",
+          "prompt": "អរគុណ ច្រើន"
+        },
+        {
+          "id": "learn-khmer",
+          "prompt": "រៀន ភាសាខ្មែរ"
+        },
+        {
+          "id": "read-book",
+          "prompt": "អាន សៀវភៅ"
+        },
+        {
+          "id": "go-school",
+          "prompt": "ទៅ សាលា"
+        },
+        {
+          "id": "love-cambodia",
+          "prompt": "ស្រឡាញ់ កម្ពុជា"
+        },
+        {
+          "id": "type-clearly",
+          "prompt": "វាយ ច្បាស់"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../unit.schema.json
+schemaVersion: 1
+id: vowels
+order: 3
+title:
+  km: ស្រៈ និងសញ្ញា
+  en: Vowels and marks
+description:
+  km: បង្កើតចង្កោមជាមួយស្រៈលើ ក្រោម មុខ និងក្រោយ។
+  en: Build clusters with vowels above, below, before, and after.

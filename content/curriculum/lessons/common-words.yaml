@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../lesson.schema.json
+schemaVersion: 1
+id: common-words
+revision: 1
+unitId: words
+order: 1
+title:
+  km: ពាក្យប្រចាំថ្ងៃ
+  en: Everyday words
+description:
+  km: ហាត់ចង្វាក់លើពាក្យដែលប្រើញឹកញាប់។
+  en: Build rhythm with frequently used words.
+masteryAccuracy: 90
+steps:
+  - id: hello
+    prompt: សួស្តី
+  - id: thank-you
+    prompt: អរគុណ
+  - id: school
+    prompt: សាលា
+  - id: family
+    prompt: គ្រួសារ
+  - id: work
+    prompt: ការងារ
+  - id: book
+    prompt: សៀវភៅ
+  - id: happy
+    prompt: សប្បាយ
+  - id: cambodia
+    prompt: កម្ពុជា
