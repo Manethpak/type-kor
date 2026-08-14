@@ -41,8 +41,37 @@ function LessonSession({
   const [status, setStatus] = useState<"prefix" | "incorrect">("prefix");
   const [completedAccuracy, setCompletedAccuracy] = useState<number | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const typingAreaRef = useRef<HTMLDivElement>(null);
+  const primaryActionRef = useRef<HTMLButtonElement>(null);
   const composingRef = useRef(false);
   const checkpointInitializedRef = useRef(false);
+  const nextLesson = getNextLesson(lesson.id);
+
+  const focusInput = useCallback(() => inputRef.current?.focus({ preventScroll: true }), []);
+
+  useEffect(() => {
+    if (completedAccuracy !== null) return;
+    focusInput();
+  }, [completedAccuracy, focusInput, lesson.id]);
+
+  useEffect(() => {
+    const blurInputOutsideTypingArea = (event: PointerEvent) => {
+      const input = inputRef.current;
+      const target = event.target;
+      if (
+        !input ||
+        input !== document.activeElement ||
+        !(target instanceof Node) ||
+        typingAreaRef.current?.contains(target)
+      ) {
+        return;
+      }
+      input.blur();
+    };
+
+    document.addEventListener("pointerdown", blurInputOutsideTypingArea, true);
+    return () => document.removeEventListener("pointerdown", blurInputOutsideTypingArea, true);
+  }, []);
 
   useEffect(() => {
     if (checkpointInitializedRef.current) return;
@@ -63,8 +92,6 @@ function LessonSession({
     [input, lesson, step, stepIndex],
   );
   const activeHint = step?.keySequence[hintIndex];
-
-  const focusInput = useCallback(() => inputRef.current?.focus({ preventScroll: true }), []);
 
   const processInput = useCallback(
     (nextInput: string) => {
@@ -132,7 +159,7 @@ function LessonSession({
     processInput(value);
   };
 
-  const repeatLesson = () => {
+  const repeatLesson = useCallback(() => {
     setStepIndex(0);
     setErrors(0);
     setStepErrors(0);
@@ -145,10 +172,61 @@ function LessonSession({
       stepId: lesson.steps[0].id,
       errors: 0,
     });
-    window.setTimeout(focusInput, 0);
-  };
+  }, [lesson.id, lesson.revision, lesson.steps, onCheckpoint]);
 
-  const nextLesson = getNextLesson(lesson.id);
+  const continueLesson = useCallback(() => {
+    if (!nextLesson) {
+      navigate("/learn");
+      return;
+    }
+
+    onCheckpoint({
+      lessonId: nextLesson.id,
+      lessonRevision: nextLesson.revision,
+      stepId: nextLesson.steps[0].id,
+      errors: 0,
+    });
+    navigate(`/learn/${nextLesson.id}`);
+  }, [navigate, nextLesson, onCheckpoint]);
+
+  useEffect(() => {
+    if (completedAccuracy === null) return;
+    primaryActionRef.current?.focus({ preventScroll: true });
+
+    const handleCompletionShortcut = (event: KeyboardEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.repeat ||
+        event.isComposing ||
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey
+      ) {
+        return;
+      }
+
+      const target = event.target;
+      const isTextEntryTarget =
+        target instanceof HTMLElement &&
+        (target.isContentEditable || /^(INPUT|SELECT|TEXTAREA)$/.test(target.tagName));
+      const isInteractiveTarget =
+        isTextEntryTarget || (target instanceof HTMLElement && /^(BUTTON|A)$/.test(target.tagName));
+
+      if (event.code === "KeyR" && !isTextEntryTarget) {
+        event.preventDefault();
+        repeatLesson();
+        return;
+      }
+
+      if (event.key === "Enter" && !isInteractiveTarget) {
+        event.preventDefault();
+        continueLesson();
+      }
+    };
+
+    window.addEventListener("keydown", handleCompletionShortcut);
+    return () => window.removeEventListener("keydown", handleCompletionShortcut);
+  }, [completedAccuracy, continueLesson, repeatLesson]);
 
   if (completedAccuracy !== null) {
     const mastered = completedAccuracy >= lesson.masteryAccuracy;
@@ -175,30 +253,36 @@ function LessonSession({
             <button
               className="cursor-pointer rounded-[10px] border border-app-line bg-app-surface px-4 py-2.5 text-xs text-app-soft transition-colors hover:text-app-accent"
               onClick={repeatLesson}
+              type="button"
             >
               រៀនម្ដងទៀត
+              <kbd className="ml-2 rounded border border-app-line px-1.5 py-0.5 font-ui text-[9px] uppercase">
+                R
+              </kbd>
             </button>
             {nextLesson ? (
               <button
+                ref={primaryActionRef}
                 className="cursor-pointer rounded-[10px] bg-app-accent px-4 py-2.5 text-xs font-semibold text-app-bg transition-[filter,transform] hover:brightness-110 active:translate-y-px"
-                onClick={() => {
-                  onCheckpoint({
-                    lessonId: nextLesson.id,
-                    lessonRevision: nextLesson.revision,
-                    stepId: nextLesson.steps[0].id,
-                    errors: 0,
-                  });
-                  navigate(`/learn/${nextLesson.id}`);
-                }}
+                onClick={continueLesson}
+                type="button"
               >
                 មេរៀនបន្ទាប់ →
+                <kbd className="ml-2 rounded border border-[color-mix(in_srgb,var(--bg)_38%,transparent)] px-1.5 py-0.5 font-ui text-[9px] uppercase">
+                  Enter
+                </kbd>
               </button>
             ) : (
               <button
+                ref={primaryActionRef}
                 className="cursor-pointer rounded-[10px] bg-app-accent px-4 py-2.5 text-xs font-semibold text-app-bg"
-                onClick={() => navigate("/learn")}
+                onClick={continueLesson}
+                type="button"
               >
                 មើលមេរៀនទាំងអស់
+                <kbd className="ml-2 rounded border border-[color-mix(in_srgb,var(--bg)_38%,transparent)] px-1.5 py-0.5 font-ui text-[9px] uppercase">
+                  Enter
+                </kbd>
               </button>
             )}
           </div>
@@ -244,6 +328,7 @@ function LessonSession({
       </div>
 
       <div
+        ref={typingAreaRef}
         className="group relative cursor-text rounded-[20px] border border-app-line bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)] px-6 py-9 text-center shadow-[0_24px_70px_var(--shadow)] transition-[border-color] focus-within:border-[color-mix(in_srgb,var(--accent)_34%,transparent)] data-[status=incorrect]:border-[color-mix(in_srgb,var(--error)_42%,transparent)]"
         data-status={status}
         onClick={focusInput}
@@ -301,7 +386,7 @@ function LessonSession({
             </span>
           ))}
         </div>
-        <NidaKeyboard active={activeHint} />
+        <NidaKeyboard active={activeHint} defaultMode="follow" />
         <p className="hidden text-center text-[11px] leading-relaxed text-app-dim max-md:block">
           មេរៀនគ្រាប់ចុច NIDA ត្រូវបានរចនាសម្រាប់កុំព្យូទ័រដែលមានក្ដារចុច។ សូមបន្តលើអេក្រង់ធំដើម្បីមើលផែនទីគ្រាប់ចុច។
         </p>

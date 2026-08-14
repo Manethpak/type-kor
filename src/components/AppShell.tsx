@@ -24,16 +24,16 @@ export function AppShell({
   const location = useLocation();
   const navigation = [
     {
-      to: learnPath,
-      label: "Learn",
-      icon: <BookIcon />,
-      active: location.pathname.startsWith("/learn"),
-    },
-    {
       to: "/test",
       label: "Typing test",
       icon: <KeyboardIcon />,
       active: location.pathname === "/test",
+    },
+    {
+      to: learnPath,
+      label: "Learn",
+      icon: <BookIcon />,
+      active: location.pathname.startsWith("/learn"),
     },
     {
       to: "/history",

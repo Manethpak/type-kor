@@ -187,6 +187,47 @@ describe("timed typing test", () => {
     });
   });
 
+  it("focuses each lesson typing area until the learner clicks elsewhere", () => {
+    renderApp("/learn/home-anchors");
+    const input = screen.getByLabelText("Type ក");
+    expect(input).toHaveFocus();
+
+    fireEvent.pointerDown(screen.getByRole("heading", { name: "ក · ល · ស · ហ" }));
+    expect(input).not.toHaveFocus();
+
+    fireEvent.click(screen.getByText("Type this"));
+    expect(input).toHaveFocus();
+  });
+
+  it("continues with Enter and repeats with R after completing a lesson", () => {
+    renderApp("/learn/home-anchors");
+    for (const prompt of ["ក", "ល", "ស", "ហ", "កល", "សក", "ហល", "សាលា"]) {
+      fireEvent.input(screen.getByLabelText(`Type ${prompt}`), {
+        target: { value: prompt },
+        inputType: "insertText",
+        data: prompt,
+      });
+    }
+
+    const continueButton = screen.getByRole("button", { name: /មេរៀនបន្ទាប់/ });
+    expect(continueButton).toHaveFocus();
+
+    fireEvent.keyDown(window, { key: "r", code: "KeyR" });
+    expect(screen.getByLabelText("Type ក")).toHaveFocus();
+
+    for (const prompt of ["ក", "ល", "ស", "ហ", "កល", "សក", "ហល", "សាលា"]) {
+      fireEvent.input(screen.getByLabelText(`Type ${prompt}`), {
+        target: { value: prompt },
+        inputType: "insertText",
+        data: prompt,
+      });
+    }
+
+    screen.getByRole("button", { name: /មេរៀនបន្ទាប់/ }).blur();
+    fireEvent.keyDown(window, { key: "Enter", code: "Enter" });
+    expect(screen.getByLabelText("Type ម")).toHaveFocus();
+  });
+
   it("falls back to onboarding when app state is malformed", () => {
     localStorage.setItem("typkh:app-state", "not-json");
     renderApp();
