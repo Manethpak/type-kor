@@ -1,6 +1,14 @@
 import type { ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router";
-import { BookIcon, HistoryIcon, KeyboardIcon, MoonIcon, SettingsIcon, SunIcon } from "./Icons";
+import {
+  BookIcon,
+  HistoryIcon,
+  KeyboardIcon,
+  KeyboardLayoutIcon,
+  MoonIcon,
+  SettingsIcon,
+  SunIcon,
+} from "./Icons";
 import type { TestSettings } from "../typing/types";
 import { cx } from "../utils/classNames";
 
@@ -34,6 +42,12 @@ export function AppShell({
       label: "Learn",
       icon: <BookIcon />,
       active: location.pathname.startsWith("/learn"),
+    },
+    {
+      to: "/keyboard",
+      label: "NIDA keyboard",
+      icon: <KeyboardLayoutIcon />,
+      active: location.pathname === "/keyboard",
     },
     {
       to: "/history",

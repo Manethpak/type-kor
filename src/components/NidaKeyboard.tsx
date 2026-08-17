@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { displayNidaOutput, NIDA_KEY_ROWS, outputForLayer, type NidaLayer } from "../learning/nida";
 import type { PhysicalKeyHint } from "../learning/types";
 import { cx } from "../utils/classNames";
@@ -7,7 +7,7 @@ export type NidaKeyboardMode = "follow" | "interactable";
 
 interface NidaKeyboardProps {
   active: PhysicalKeyHint | undefined;
-  defaultMode?: NidaKeyboardMode;
+  mode?: NidaKeyboardMode;
 }
 
 const layerLabel: Record<NidaLayer, string> = {
@@ -25,27 +25,18 @@ function layerForHint(active: PhysicalKeyHint | undefined): NidaLayer {
   return "base";
 }
 
-function layerForEvent(event: KeyboardEvent): NidaLayer {
-  if (event.altKey) return "altGr";
-  if (event.shiftKey) return "shift";
-  return "base";
-}
-
 function isShiftCode(code: string) {
   return code === "ShiftLeft" || code === "ShiftRight";
 }
 
-function isAltCode(code: string) {
-  return code === "AltLeft" || code === "AltRight";
-}
-
-export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeyboardProps) {
+export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProps) {
   const activeLayer = layerForHint(active);
-  const [mode, setMode] = useState<NidaKeyboardMode>(defaultMode);
   const [selectedLayer, setSelectedLayer] = useState<NidaLayer>("base");
   const [heldLayer, setHeldLayer] = useState<NidaLayer | null>(null);
   const [pressedCodes, setPressedCodes] = useState<Set<string>>(() => new Set());
   const [lastCode, setLastCode] = useState<string | null>(null);
+  const rightAltHeldRef = useRef(false);
+  const shiftHeldRef = useRef(false);
 
   const layer = heldLayer ?? (mode === "follow" ? activeLayer : selectedLayer);
   const physicalLayer = heldLayer ?? "base";
@@ -57,11 +48,21 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
   const lastOutput = lastLayoutKey ? outputForLayer(lastLayoutKey, layer) : "";
 
   useEffect(() => {
-    const press = (event: KeyboardEvent) => {
-      const eventLayer = layerForEvent(event);
-      setHeldLayer(eventLayer === "base" ? null : eventLayer);
+    const syncHeldLayer = () => {
+      setHeldLayer(rightAltHeldRef.current ? "altGr" : shiftHeldRef.current ? "shift" : null);
+    };
 
-      if (!layoutCodes.has(event.code) && !isShiftCode(event.code) && !isAltCode(event.code)) {
+    const press = (event: KeyboardEvent) => {
+      if (mode === "interactable" && event.code === "AltRight") {
+        event.preventDefault();
+      }
+      if (event.code === "AltRight" || event.getModifierState("AltGraph")) {
+        rightAltHeldRef.current = true;
+      }
+      shiftHeldRef.current = event.shiftKey;
+      syncHeldLayer();
+
+      if (!layoutCodes.has(event.code) && !isShiftCode(event.code) && event.code !== "AltRight") {
         return;
       }
 
@@ -70,8 +71,12 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
     };
 
     const release = (event: KeyboardEvent) => {
-      const eventLayer = layerForEvent(event);
-      setHeldLayer(eventLayer === "base" ? null : eventLayer);
+      if (event.code === "AltRight") {
+        event.preventDefault();
+      }
+      if (event.code === "AltRight") rightAltHeldRef.current = false;
+      shiftHeldRef.current = event.shiftKey;
+      syncHeldLayer();
       setPressedCodes((current) => {
         const next = new Set(current);
         next.delete(event.code);
@@ -80,6 +85,8 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
     };
 
     const reset = () => {
+      rightAltHeldRef.current = false;
+      shiftHeldRef.current = false;
       setHeldLayer(null);
       setPressedCodes(new Set());
     };
@@ -92,11 +99,12 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
       window.removeEventListener("keyup", release);
       window.removeEventListener("blur", reset);
     };
-  }, []);
+  }, [mode]);
 
   const pressPointerKey = (code: string, modifier?: NidaLayer) => {
-    setMode("interactable");
     setPressedCodes((current) => new Set(current).add(code));
+    if (modifier === "shift") shiftHeldRef.current = true;
+    if (modifier === "altGr") rightAltHeldRef.current = true;
     if (modifier) setHeldLayer(modifier);
     if (layoutCodes.has(code)) setLastCode(code);
   };
@@ -107,7 +115,11 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
       next.delete(code);
       return next;
     });
-    if (isShiftCode(code) || isAltCode(code)) setHeldLayer(null);
+    if (isShiftCode(code)) shiftHeldRef.current = false;
+    if (code === "AltRight") rightAltHeldRef.current = false;
+    if (isShiftCode(code) || code === "AltRight") {
+      setHeldLayer(rightAltHeldRef.current ? "altGr" : shiftHeldRef.current ? "shift" : null);
+    }
   };
 
   const feedbackFor = (code: string): "correct" | "incorrect" | undefined => {
@@ -121,7 +133,6 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
       aria-label={`Khmer NIDA keyboard, ${mode} mode, ${layerLabel[layer]} layer`}
       data-mode={mode}
       data-testid="nida-keyboard"
-      onFocusCapture={() => setMode("interactable")}
       tabIndex={0}
     >
       <div className="mb-3 flex items-center justify-between gap-3">
@@ -138,25 +149,7 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div
-            className="flex gap-0.5 rounded-lg border border-app-line bg-app-raised p-[3px]"
-            role="group"
-            aria-label="Keyboard mode"
-          >
-            {(["follow", "interactable"] as const).map((option) => (
-              <button
-                key={option}
-                className="cursor-pointer rounded-[5px] px-2 py-1 text-[8px] font-semibold uppercase tracking-[.08em] text-app-dim transition-colors hover:text-app-accent data-[selected=true]:bg-app-accent-soft data-[selected=true]:text-app-accent"
-                data-selected={mode === option}
-                aria-pressed={mode === option}
-                onClick={() => setMode(option)}
-                type="button"
-              >
-                {option === "follow" ? "Follow" : "Interact"}
-              </button>
-            ))}
-          </div>
+        {mode === "interactable" && (
           <div
             className="flex gap-0.5 rounded-lg border border-app-line bg-app-raised p-[3px]"
             role="group"
@@ -168,17 +161,14 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
                 className="cursor-pointer rounded-[5px] px-2 py-1 text-[8px] font-semibold uppercase tracking-[.08em] text-app-dim transition-colors hover:text-app-accent data-[selected=true]:bg-app-accent-soft data-[selected=true]:text-app-accent"
                 data-selected={layer === option}
                 aria-pressed={layer === option}
-                onClick={() => {
-                  setMode("interactable");
-                  setSelectedLayer(option);
-                }}
+                onClick={() => setSelectedLayer(option)}
                 type="button"
               >
                 {layerLabel[option]}
               </button>
             ))}
           </div>
-        </div>
+        )}
       </div>
 
       {characterRows.map((row, rowIndex) => (
@@ -198,8 +188,9 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
             return (
               <button
                 key={layoutKey.code}
-                className="relative grid h-12 min-w-0 max-w-[50px] flex-1 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface p-0 text-app-dim shadow-[0_3px_0_var(--line)] transition-[color,background,transform,box-shadow,border-color] hover:border-[color-mix(in_srgb,var(--accent)_28%,transparent)] hover:text-app-soft data-[target=true]:-translate-y-0.5 data-[target=true]:border-[color-mix(in_srgb,var(--accent)_55%,transparent)] data-[target=true]:bg-app-accent-soft data-[target=true]:text-app-accent data-[target=true]:shadow-[0_5px_16px_var(--accent-soft)] data-[pressed=true]:translate-y-[2px] data-[pressed=true]:shadow-none data-[feedback=correct]:border-[color-mix(in_srgb,var(--correct)_72%,transparent)] data-[feedback=correct]:bg-[color-mix(in_srgb,var(--correct)_14%,var(--surface))] data-[feedback=correct]:text-app-correct data-[feedback=incorrect]:border-[color-mix(in_srgb,var(--error)_65%,transparent)] data-[feedback=incorrect]:bg-[color-mix(in_srgb,var(--error)_13%,var(--surface))] data-[feedback=incorrect]:text-app-error"
+                className="relative grid h-12 min-w-0 max-w-[50px] flex-1 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface p-0 text-app-dim shadow-[0_3px_0_var(--line)] transition-[color,background,transform,box-shadow,border-color] hover:border-[color-mix(in_srgb,var(--accent)_28%,transparent)] hover:text-app-soft data-[target=true]:-translate-y-0.5 data-[target=true]:border-[color-mix(in_srgb,var(--accent)_55%,transparent)] data-[target=true]:bg-app-accent-soft data-[target=true]:text-app-accent data-[target=true]:shadow-[0_5px_16px_var(--accent-soft)] data-[pressed=true]:translate-y-[2px] data-[pressed=true]:shadow-none data-[highlight=true]:border-[color-mix(in_srgb,var(--accent)_65%,transparent)] data-[highlight=true]:bg-app-accent-soft data-[highlight=true]:text-app-accent data-[feedback=correct]:border-[color-mix(in_srgb,var(--correct)_72%,transparent)] data-[feedback=correct]:bg-[color-mix(in_srgb,var(--correct)_14%,var(--surface))] data-[feedback=correct]:text-app-correct data-[feedback=incorrect]:border-[color-mix(in_srgb,var(--error)_65%,transparent)] data-[feedback=incorrect]:bg-[color-mix(in_srgb,var(--error)_13%,var(--surface))] data-[feedback=incorrect]:text-app-error"
                 data-feedback={feedbackFor(layoutKey.code)}
+                data-highlight={mode === "interactable" && pressed}
                 data-pressed={pressed}
                 data-target={target}
                 title={`${layoutKey.key}: ${displayNidaOutput(output) || "No output"}`}
@@ -224,7 +215,11 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
 
       <div className="mt-2 flex items-end justify-center gap-2">
         <button
-          className="grid h-9 w-24 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface text-[8px] font-semibold uppercase tracking-[.08em] text-app-dim transition-[transform,color,background,border-color] data-[pressed=true]:translate-y-px data-[pressed=true]:bg-app-accent-soft data-[pressed=true]:text-app-accent data-[target=true]:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] data-[target=true]:text-app-accent"
+          className="grid h-9 w-24 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface text-[8px] font-semibold uppercase tracking-[.08em] text-app-dim transition-[transform,color,background,border-color] data-[pressed=true]:translate-y-px data-[highlight=true]:border-[color-mix(in_srgb,var(--accent)_65%,transparent)] data-[highlight=true]:bg-app-accent-soft data-[highlight=true]:text-app-accent data-[target=true]:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] data-[target=true]:text-app-accent"
+          data-highlight={
+            mode === "interactable" &&
+            (pressedCodes.has("ShiftLeft") || pressedCodes.has("ShiftRight"))
+          }
           data-pressed={pressedCodes.has("ShiftLeft") || pressedCodes.has("ShiftRight")}
           data-target={mode === "follow" && active?.shift}
           aria-label="Hold Shift"
@@ -237,8 +232,9 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
           Shift
         </button>
         <button
-          className="grid h-9 w-64 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface font-khmer text-[10px] text-app-dim shadow-[0_3px_0_var(--line)] transition-[transform,color,background,border-color,box-shadow] data-[pressed=true]:translate-y-[2px] data-[pressed=true]:bg-app-accent-soft data-[pressed=true]:text-app-accent data-[pressed=true]:shadow-none data-[target=true]:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] data-[target=true]:text-app-accent"
+          className="grid h-9 w-64 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface font-khmer text-[10px] text-app-dim shadow-[0_3px_0_var(--line)] transition-[transform,color,background,border-color,box-shadow] data-[pressed=true]:translate-y-[2px] data-[pressed=true]:shadow-none data-[highlight=true]:border-[color-mix(in_srgb,var(--accent)_65%,transparent)] data-[highlight=true]:bg-app-accent-soft data-[highlight=true]:text-app-accent data-[target=true]:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] data-[target=true]:text-app-accent"
           data-feedback={feedbackFor("Space")}
+          data-highlight={mode === "interactable" && pressedCodes.has("Space")}
           data-pressed={pressedCodes.has("Space")}
           data-target={mode === "follow" && active?.code === "Space"}
           aria-label={`Space key: ${displayNidaOutput(outputForLayer(spaceKey, layer))}`}
@@ -251,17 +247,18 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
           {displayNidaOutput(outputForLayer(spaceKey, layer))}
         </button>
         <button
-          className="grid h-9 w-24 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface text-[8px] font-semibold uppercase tracking-[.08em] text-app-dim transition-[transform,color,background,border-color] data-[pressed=true]:translate-y-px data-[pressed=true]:bg-app-accent-soft data-[pressed=true]:text-app-accent data-[target=true]:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] data-[target=true]:text-app-accent"
-          data-pressed={pressedCodes.has("AltLeft") || pressedCodes.has("AltRight")}
+          className="grid h-9 w-24 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface text-[8px] font-semibold uppercase tracking-[.08em] text-app-dim transition-[transform,color,background,border-color] data-[pressed=true]:translate-y-px data-[highlight=true]:border-[color-mix(in_srgb,var(--accent)_65%,transparent)] data-[highlight=true]:bg-app-accent-soft data-[highlight=true]:text-app-accent data-[target=true]:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] data-[target=true]:text-app-accent"
+          data-highlight={mode === "interactable" && pressedCodes.has("AltRight")}
+          data-pressed={pressedCodes.has("AltRight")}
           data-target={mode === "follow" && active?.altGr}
-          aria-label="Hold Alt"
+          aria-label="Hold Right Alt"
           onPointerDown={() => pressPointerKey("AltRight", "altGr")}
           onPointerUp={() => releasePointerKey("AltRight")}
           onPointerCancel={() => releasePointerKey("AltRight")}
           onPointerLeave={() => releasePointerKey("AltRight")}
           type="button"
         >
-          Alt
+          Right Alt
         </button>
       </div>
     </div>
@@ -269,5 +266,5 @@ export function NidaKeyboard({ active, defaultMode = "interactable" }: NidaKeybo
 }
 
 function keyInstructionLabel(hint: PhysicalKeyHint): string {
-  return [hint.altGr && "Alt", hint.shift && "Shift", hint.key].filter(Boolean).join(" + ");
+  return [hint.altGr && "Right Alt", hint.shift && "Shift", hint.key].filter(Boolean).join(" + ");
 }

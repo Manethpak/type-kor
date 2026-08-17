@@ -39,6 +39,7 @@ function LessonSession({
   const [stepErrors, setStepErrors] = useState(0);
   const [input, setInput] = useState("");
   const [status, setStatus] = useState<"prefix" | "incorrect">("prefix");
+  const [keyboardVisible, setKeyboardVisible] = useState(true);
   const [completedAccuracy, setCompletedAccuracy] = useState<number | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const typingAreaRef = useRef<HTMLDivElement>(null);
@@ -342,13 +343,31 @@ function LessonSession({
         <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 font-khmer text-[26px] text-app-accent">
           {input || <span className="text-app-dim opacity-30">…</span>}
         </div>
-        <p className="mb-0 mt-3 min-h-5 text-[11px] text-app-dim" role="status" aria-live="polite">
-          {status === "incorrect"
-            ? stepErrors >= 2
-              ? `${keyInstruction(activeHint)} — look for the highlighted key`
-              : "មិនទាន់ត្រូវទេ — លុប ហើយសាកម្ដងទៀត"
-            : keyInstruction(activeHint)}
-        </p>
+        <div className="mt-3">
+          <div
+            className="flex flex-wrap items-center justify-center gap-1.5"
+            aria-label={`Key sequence: ${step.keySequence.map(keyInstruction).join(", ")}`}
+          >
+            {step.keySequence.map((hint, index) => (
+              <span
+                key={`${hint.code}-${index}`}
+                className="rounded-md border border-app-line bg-app-surface px-2 py-1 text-[10px] text-app-dim transition-[color,border-color,background] data-[active=true]:border-[color-mix(in_srgb,var(--accent)_48%,transparent)] data-[active=true]:bg-app-accent-soft data-[active=true]:text-app-accent"
+                data-active={index === hintIndex}
+              >
+                {hint.altGr && <span className="mr-1 opacity-60">Right Alt +</span>}
+                {hint.shift && <span className="mr-1 opacity-60">Shift +</span>}
+                {hint.key}
+              </span>
+            ))}
+          </div>
+          <p className="mb-0 mt-3 min-h-5 text-xs text-app-dim" role="status" aria-live="polite">
+            {status === "incorrect"
+              ? stepErrors >= 2
+                ? `${keyInstruction(activeHint)} — look for the highlighted key`
+                : "មិនទាន់ត្រូវទេ — លុប ហើយសាកម្ដងទៀត"
+              : keyInstruction(activeHint)}
+          </p>
+        </div>
         <textarea
           ref={inputRef}
           className="absolute left-1/2 top-1/2 size-0.5 overflow-hidden whitespace-nowrap border-0 p-0 [clip-path:inset(50%)]"
@@ -370,26 +389,28 @@ function LessonSession({
       </div>
 
       <div className="mt-6" data-help={stepErrors >= 2}>
-        <div
-          className="mb-4 flex flex-wrap items-center justify-center gap-1.5"
-          aria-label={`Key sequence: ${step.keySequence.map(keyInstruction).join(", ")}`}
-        >
-          {step.keySequence.map((hint, index) => (
-            <span
-              key={`${hint.code}-${index}`}
-              className="rounded-md border border-app-line bg-app-surface px-2 py-1 text-[10px] text-app-dim transition-[color,border-color,background] data-[active=true]:border-[color-mix(in_srgb,var(--accent)_48%,transparent)] data-[active=true]:bg-app-accent-soft data-[active=true]:text-app-accent"
-              data-active={index === hintIndex}
-            >
-              {hint.altGr && <span className="mr-1 opacity-60">AltGr +</span>}
-              {hint.shift && <span className="mr-1 opacity-60">Shift +</span>}
-              {hint.key}
-            </span>
-          ))}
+        <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
+          <button
+            className="cursor-pointer rounded-md border border-app-line bg-app-raised px-2.5 py-1 text-[9px] font-semibold text-app-dim transition-[color,border-color,background] hover:border-[color-mix(in_srgb,var(--accent)_35%,transparent)] hover:text-app-accent"
+            type="button"
+            aria-controls="lesson-nida-keyboard"
+            aria-expanded={keyboardVisible}
+            onClick={() => setKeyboardVisible((visible) => !visible)}
+          >
+            {keyboardVisible ? "Hide keyboard" : "Show keyboard"}
+          </button>
         </div>
-        <NidaKeyboard active={activeHint} defaultMode="follow" />
-        <p className="hidden text-center text-[11px] leading-relaxed text-app-dim max-md:block">
-          មេរៀនគ្រាប់ចុច NIDA ត្រូវបានរចនាសម្រាប់កុំព្យូទ័រដែលមានក្ដារចុច។ សូមបន្តលើអេក្រង់ធំដើម្បីមើលផែនទីគ្រាប់ចុច។
-        </p>
+
+        <div id="lesson-nida-keyboard" hidden={!keyboardVisible}>
+          {keyboardVisible && (
+            <>
+              <NidaKeyboard active={activeHint} mode="follow" />
+              <p className="hidden text-center text-[11px] leading-relaxed text-app-dim max-md:block">
+                មេរៀនគ្រាប់ចុច NIDA ត្រូវបានរចនាសម្រាប់កុំព្យូទ័រដែលមានក្ដារចុច។ សូមបន្តលើអេក្រង់ធំដើម្បីមើលផែនទីគ្រាប់ចុច។
+              </p>
+            </>
+          )}
+        </div>
       </div>
     </section>
   );

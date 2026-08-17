@@ -32,7 +32,7 @@ describe("Khmer NIDA keyboard", () => {
       shift: false,
       altGr: true,
     });
-    expect(keyInstruction(keySequenceFor("ឱ")[0])).toBe("Press AltGr + O");
+    expect(keyInstruction(keySequenceFor("ឱ")[0])).toBe("Press Right Alt (AltGr) + O");
   });
 
   it("includes the complete US physical key rows plus Space", () => {

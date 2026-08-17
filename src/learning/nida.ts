@@ -120,7 +120,7 @@ export function keySequenceFor(output: string): PhysicalKeyHint[] {
 
 export function keyInstruction(hint: PhysicalKeyHint | undefined): string {
   if (!hint) return "Key guidance unavailable";
-  const modifiers = [hint.altGr && "AltGr", hint.shift && "Shift"].filter(Boolean);
+  const modifiers = [hint.altGr && "Right Alt (AltGr)", hint.shift && "Shift"].filter(Boolean);
   return `Press ${[...modifiers, hint.key].join(" + ")}`;
 }
 

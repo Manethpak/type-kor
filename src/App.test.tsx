@@ -76,6 +76,15 @@ describe("timed typing test", () => {
     expect(screen.getByLabelText("Khmer typing test")).toBeVisible();
   });
 
+  it("opens the interactive NIDA keyboard playground from primary navigation", () => {
+    renderApp("/test");
+    fireEvent.click(screen.getByTitle("NIDA keyboard"));
+
+    expect(screen.getByRole("heading", { name: "សាកល្បងក្ដារចុចខ្មែរ" })).toBeVisible();
+    expect(screen.getByTestId("nida-keyboard")).toHaveAttribute("data-mode", "interactable");
+    expect(screen.getByRole("group", { name: "Keyboard layer" })).toBeVisible();
+  });
+
   it("onboards once and remembers the selected learning experience", () => {
     localStorage.removeItem("typkh:app-state");
     renderApp();
@@ -197,6 +206,24 @@ describe("timed typing test", () => {
 
     fireEvent.click(screen.getByText("Type this"));
     expect(input).toHaveFocus();
+  });
+
+  it("lets learners show and hide the NIDA keyboard", () => {
+    renderApp("/learn/home-anchors");
+    const toggle = screen.getByRole("button", { name: "Hide keyboard" });
+
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByTestId("nida-keyboard")).toBeInTheDocument();
+
+    fireEvent.click(toggle);
+    expect(screen.queryByTestId("nida-keyboard")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Show keyboard" })).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Show keyboard" }));
+    expect(screen.getByTestId("nida-keyboard")).toHaveAttribute("data-mode", "follow");
   });
 
   it("continues with Enter and repeats with R after completing a lesson", () => {
