@@ -33,10 +33,10 @@ export function OnboardingPage({
       <section className="w-[min(900px,100%)] animate-arrive" aria-labelledby="welcome-title">
         <div className="mb-9 text-center">
           <div className="mx-auto mb-5 grid size-13 place-items-center rounded-[14px_14px_14px_4px] border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-app-accent-soft font-khmer text-[28px] text-app-accent shadow-[inset_0_0_24px_var(--accent-soft)]">
-            ច
+            ក
           </div>
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.25em] text-app-accent">
-            Welcome to TypKH
+            Welcome to Type ក
           </p>
           <h1
             id="welcome-title"

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem(
-      "typkh:app-state",
+      "typekor:app-state",
       JSON.stringify({
         schemaVersion: 1,
         onboardingCompleted: true,
@@ -114,7 +114,7 @@ test("starts and completes the countdown when an input method omits beforeinput"
   page,
 }) => {
   await page.addInitScript(() => {
-    localStorage.setItem("typkh:settings", JSON.stringify({ mode: "time", modeValue: 1 }));
+    localStorage.setItem("typekor:settings", JSON.stringify({ mode: "time", modeValue: 1 }));
   });
   await page.goto("/");
   const firstCluster = page.locator("[data-cluster='0']");
@@ -212,8 +212,8 @@ test("routes with hash URLs and preserves the typing session across navigation",
 test("onboards into Learn and resumes the saved lesson step", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => {
-    localStorage.removeItem("typkh:app-state");
-    localStorage.removeItem("typkh:learning");
+    localStorage.removeItem("typekor:app-state");
+    localStorage.removeItem("typekor:learning");
   });
   await page.reload();
 

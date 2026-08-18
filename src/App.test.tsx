@@ -22,8 +22,8 @@ describe("timed typing test", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-08-10T09:00:00Z"));
     localStorage.clear();
-    localStorage.setItem("typkh:settings", JSON.stringify({ mode: "time", modeValue: 1 }));
-    localStorage.setItem("typkh:app-state", JSON.stringify(completedOnboarding));
+    localStorage.setItem("typekor:settings", JSON.stringify({ mode: "time", modeValue: 1 }));
+    localStorage.setItem("typekor:app-state", JSON.stringify(completedOnboarding));
   });
 
   afterEach(() => {
@@ -86,14 +86,14 @@ describe("timed typing test", () => {
   });
 
   it("onboards once and remembers the selected learning experience", () => {
-    localStorage.removeItem("typkh:app-state");
+    localStorage.removeItem("typekor:app-state");
     renderApp();
 
     expect(screen.getByRole("heading", { name: "តើអ្នកចង់ចាប់ផ្ដើមដោយរបៀបណា?" })).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: /រៀន Learn/ }));
 
     expect(screen.getByRole("heading", { name: "រៀនវាយអក្សរខ្មែរ" })).toBeVisible();
-    expect(JSON.parse(localStorage.getItem("typkh:app-state")!)).toMatchObject({
+    expect(JSON.parse(localStorage.getItem("typekor:app-state")!)).toMatchObject({
       onboardingCompleted: true,
       lastExperience: "learn",
     });
@@ -101,11 +101,11 @@ describe("timed typing test", () => {
 
   it("resumes a validated learning checkpoint from the root route", () => {
     localStorage.setItem(
-      "typkh:app-state",
+      "typekor:app-state",
       JSON.stringify({ ...completedOnboarding, lastExperience: "learn" }),
     );
     localStorage.setItem(
-      "typkh:learning",
+      "typekor:learning",
       JSON.stringify({
         schemaVersion: 1,
         progress: {},
@@ -115,7 +115,7 @@ describe("timed typing test", () => {
 
     renderApp();
     expect(screen.getByLabelText("Type ហ")).toBeVisible();
-    expect(JSON.parse(localStorage.getItem("typkh:learning")!)).toMatchObject({
+    expect(JSON.parse(localStorage.getItem("typekor:learning")!)).toMatchObject({
       schemaVersion: 2,
       checkpoint: {
         lessonId: "home-anchors",
@@ -132,7 +132,7 @@ describe("timed typing test", () => {
     fireEvent.input(input, { target: { value: "ក" }, inputType: "insertText", data: "ក" });
 
     expect(screen.getByLabelText("Type ល")).toBeVisible();
-    expect(JSON.parse(localStorage.getItem("typkh:learning")!)).toMatchObject({
+    expect(JSON.parse(localStorage.getItem("typekor:learning")!)).toMatchObject({
       schemaVersion: 2,
       checkpoint: {
         lessonId: "home-anchors",
@@ -145,7 +145,7 @@ describe("timed typing test", () => {
 
   it("discards a checkpoint when its stable step no longer exists", () => {
     localStorage.setItem(
-      "typkh:learning",
+      "typekor:learning",
       JSON.stringify({
         schemaVersion: 2,
         progress: {},
@@ -169,7 +169,7 @@ describe("timed typing test", () => {
 
     fireEvent.click(screen.getByTitle("Learn"));
     expect(screen.getByRole("heading", { name: "រៀនវាយអក្សរខ្មែរ" })).toBeVisible();
-    expect(JSON.parse(localStorage.getItem("typkh:app-state")!)).toMatchObject({
+    expect(JSON.parse(localStorage.getItem("typekor:app-state")!)).toMatchObject({
       lastExperience: "learn",
     });
 
@@ -188,7 +188,7 @@ describe("timed typing test", () => {
     }
 
     expect(screen.getByLabelText("Lesson complete")).toBeVisible();
-    expect(JSON.parse(localStorage.getItem("typkh:learning")!)).toMatchObject({
+    expect(JSON.parse(localStorage.getItem("typekor:learning")!)).toMatchObject({
       checkpoint: null,
       progress: {
         "home-anchors": { attempts: 1, bestAccuracy: 100 },
@@ -256,7 +256,7 @@ describe("timed typing test", () => {
   });
 
   it("falls back to onboarding when app state is malformed", () => {
-    localStorage.setItem("typkh:app-state", "not-json");
+    localStorage.setItem("typekor:app-state", "not-json");
     renderApp();
     expect(screen.getByRole("heading", { name: "តើអ្នកចង់ចាប់ផ្ដើមដោយរបៀបណា?" })).toBeVisible();
   });

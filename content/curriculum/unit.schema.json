@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://typkh.local/schemas/curriculum-unit.json",
+  "$id": "https://typekor.local/schemas/curriculum-unit.json",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "id", "order", "title", "description"],

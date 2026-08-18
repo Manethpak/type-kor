@@ -34,7 +34,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Validate curriculum
-        run: pnpm curriculum:check
+        run: pnpm lesson:check
 
       - name: Type-check
         run: pnpm typecheck

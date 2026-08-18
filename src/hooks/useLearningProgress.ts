@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { getLesson, lessons } from "../learning/curriculum";
 import type { LearningState, LessonCheckpoint, LessonProgress } from "../learning/types";
 
-const STORAGE_KEY = "typkh:learning";
+const STORAGE_KEY = "typekor:learning";
 const DEFAULT_LEARNING_STATE: LearningState = {
   schemaVersion: 2,
   progress: {},

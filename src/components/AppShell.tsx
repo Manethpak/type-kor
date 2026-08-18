@@ -91,14 +91,14 @@ export function AppShell({
           aria-label="Go to typing practice"
         >
           <span className="grid size-10 place-items-center rounded-[11px_11px_11px_3px] border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-app-accent-soft font-khmer text-2xl text-app-accent shadow-[inset_0_0_20px_var(--accent-soft)]">
-            ច
+            ក
           </span>
           <span>
-            <strong className="block font-khmer text-[22px] font-bold leading-[1.2] tracking-[.01em]">
-              ចង្វាក់
+            <strong className="block font-ui text-[22px] font-bold leading-[1.2] tracking-[-.02em]">
+              Type <span className="font-khmer font-normal">ក</span>
             </strong>
             <small className="mt-0.5 block text-[9px] font-semibold tracking-[.24em] text-app-dim">
-              KHMER TYPE
+              TYPEKOR
             </small>
           </span>
         </Link>

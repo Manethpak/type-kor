@@ -7,7 +7,7 @@ export interface AppState {
   lastExperience: ExperienceMode;
 }
 
-const STORAGE_KEY = "typkh:app-state";
+const STORAGE_KEY = "typekor:app-state";
 const DEFAULT_APP_STATE: AppState = {
   schemaVersion: 1,
   onboardingCompleted: false,

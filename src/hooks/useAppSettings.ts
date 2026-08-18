@@ -13,11 +13,12 @@ export const DEFAULT_SETTINGS: TestSettings = {
 };
 
 const SETTINGS_SCHEMA_VERSION = 2;
+const STORAGE_KEY = "typekor:settings";
 
 function readSettings(): TestSettings {
   try {
     const saved = JSON.parse(
-      localStorage.getItem("typkh:settings") ?? "{}",
+      localStorage.getItem(STORAGE_KEY) ?? "{}",
     ) as Partial<TestSettings> & {
       schemaVersion?: number;
     };
@@ -42,7 +43,7 @@ export function useAppSettings() {
   useEffect(() => {
     try {
       localStorage.setItem(
-        "typkh:settings",
+        STORAGE_KEY,
         JSON.stringify({ ...settings, schemaVersion: SETTINGS_SCHEMA_VERSION }),
       );
     } catch {

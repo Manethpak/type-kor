@@ -1,4 +1,4 @@
-# ចង្វាក់ (TypKH)
+# Type ក (TypeKor)
 
 A Khmer typing practice app with cluster-aware input handling and local progress tracking.
 

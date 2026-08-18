@@ -1,6 +1,6 @@
 import type { HistoryRepository, TestResult } from "./types";
 
-const DATABASE = "typkh";
+const DATABASE = "typekor";
 const STORE = "results";
 const VERSION = 1;
 
