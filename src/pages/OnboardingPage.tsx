@@ -42,11 +42,8 @@ export function OnboardingPage({
             id="welcome-title"
             className="m-0 font-khmer text-[clamp(32px,5vw,48px)] font-medium leading-tight"
           >
-            តើអ្នកចង់ចាប់ផ្ដើមដោយរបៀបណា?
+            Typing ភាសាខ្មែរជាមួយក្ដារចុច NIDA
           </h1>
-          <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-app-dim">
-            ជ្រើសរើសផ្លូវរបស់អ្នក។ យើងនឹងចងចាំ ហើយនាំអ្នកត្រឡប់មកកន្លែងចាស់នៅពេលក្រោយ។
-          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-3 max-[700px]:grid-cols-1">
@@ -64,10 +61,10 @@ export function OnboardingPage({
               Guided path
             </small>
             <h2 className="mb-2 mt-2 font-khmer text-[30px] font-medium">
-              រៀន <span className="font-ui text-sm font-medium text-app-dim">Learn</span>
+              រៀន <span className="font-ui text-sm font-medium text-app-dim">Learning mode</span>
             </h2>
-            <p className="max-w-[310px] text-[13px] leading-relaxed text-app-soft">
-              រៀនគ្រាប់ចុច NIDA មួយជំហានម្ដងៗ ជាមួយការណែនាំ និងការរក្សាទុកវឌ្ឍនភាព។
+            <p className="max-w-77.5 text-[13px] leading-relaxed text-app-soft">
+              រៀន typing ខ្មែរជាមួយក្តារចុច NIDA តាមមេរៀន
             </p>
             <span className="mt-7 inline-flex items-center gap-2 text-xs font-semibold text-app-accent">
               ចាប់ផ្ដើមរៀន <span aria-hidden="true">→</span>
@@ -86,9 +83,9 @@ export function OnboardingPage({
               Focused measure
             </small>
             <h2 className="mb-2 mt-2 font-khmer text-[30px] font-medium">
-              សាកល្បង <span className="font-ui text-sm font-medium text-app-dim">Test</span>
+              សាកល្បង <span className="font-ui text-sm font-medium text-app-dim">Testing mode</span>
             </h2>
-            <p className="max-w-[310px] text-[13px] leading-relaxed text-app-soft">
+            <p className="max-w-77.5 text-[13px] leading-relaxed text-app-soft">
               វាស់ល្បឿន និងភាពត្រឹមត្រូវតាមពេលវេលា ឬចំនួនពាក្យ ដោយគ្មានជំនួយ។
             </p>
             <span className="mt-7 inline-flex items-center gap-2 text-xs font-semibold text-app-accent">
