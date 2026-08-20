@@ -8,7 +8,7 @@ import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
-import { commonKhmerWords, generateWords } from "../data/wordList";
+import { commonWordLists, generateWords } from "../data/wordList";
 import { khmerTextEngine } from "../engine/khmer";
 import type { OrthographicCluster } from "../engine/types";
 import type { TestResult } from "../storage/types";
@@ -17,8 +17,9 @@ import type { TestSettings } from "../typing/types";
 
 function createPrompt(settings: TestSettings, seed: number): OrthographicCluster[] {
   const count = settings.mode === "words" ? settings.modeValue : 90;
-  const words = generateWords(commonKhmerWords, count, seed).map((word, index) =>
-    settings.punctuation && index > 0 && (index + 1) % 12 === 0 ? `${word}។` : word,
+  const words = generateWords(commonWordLists[settings.wordListSize], count, seed).map(
+    (word, index) =>
+      settings.punctuation && index > 0 && (index + 1) % 12 === 0 ? `${word}។` : word,
   );
   return khmerTextEngine.segment(words.join(" "));
 }
@@ -44,9 +45,10 @@ function playTick() {
 
 export function useTypingSession(settings: TestSettings, onComplete: (result: TestResult) => void) {
   const [seed, setSeed] = useState(() => Date.now());
+  const promptSettingsKey = `${settings.mode}:${settings.modeValue}:${settings.punctuation}:${settings.wordListSize}`;
   const prompt = useMemo(
     () => createPrompt(settings, seed),
-    [seed, settings.mode, settings.modeValue, settings.punctuation],
+    [seed, settings.mode, settings.modeValue, settings.punctuation, settings.wordListSize],
   );
   const [typing, dispatch] = useReducer(typingReducer, prompt, createTypingState);
   const [result, setResult] = useState<TestResult | null>(null);
@@ -55,6 +57,13 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
   const savingRef = useRef(false);
   const beforeInputRecordedRef = useRef(false);
   const lastSampledSecondRef = useRef(0);
+  const promptSettingsKeyRef = useRef(promptSettingsKey);
+
+  useEffect(() => {
+    if (promptSettingsKeyRef.current === promptSettingsKey) return;
+    promptSettingsKeyRef.current = promptSettingsKey;
+    setSeed((current) => current + Date.now() + 1);
+  }, [promptSettingsKey]);
 
   useEffect(() => {
     setResult(null);

@@ -1,5 +1,5 @@
 import { canonicalizeKhmer, validateKhmer } from "../engine/khmer";
-import { frequencyWords500 } from "./wordLists.generated";
+import { frequencyWords1000 } from "./wordLists.generated";
 
 export interface WordList {
   id: string;
@@ -22,22 +22,21 @@ function createWordList(id: string, name: string, count: number): WordList {
     difficulty: "common",
     source,
     reviewedBy,
-    words: [...frequencyWords500.slice(0, count)],
+    words: [...frequencyWords1000.slice(0, count)],
   };
 }
 
-export const common100Words = createWordList("km-common-100", "ពាក្យទូទៅ ១០០", 100);
 export const common250Words = createWordList("km-common-250", "ពាក្យទូទៅ ២៥០", 250);
 export const common500Words = createWordList("km-common-500", "ពាក្យទូទៅ ៥០០", 500);
+export const common1000Words = createWordList("km-common-1000", "ពាក្យទូទៅ ១០០០", 1000);
 
 export const commonWordLists = {
-  100: common100Words,
   250: common250Words,
   500: common500Words,
+  1000: common1000Words,
 } as const;
 
-// The mid-sized pool remains the default for existing typing sessions.
-export const commonKhmerWords = common250Words;
+export const commonKhmerWords = common500Words;
 
 export interface WordListValidation {
   valid: boolean;
@@ -74,12 +73,28 @@ export function generateWords(list: WordList, count: number, seed: number): stri
   const random = mulberry32(seed);
   const result: string[] = [];
   let previous = "";
-  while (result.length < count) {
-    const word = list.words[Math.floor(random() * list.words.length)];
-    if (word !== previous || list.words.length === 1) {
-      result.push(word);
-      previous = word;
+  let pool: string[] = [];
+
+  const refill = () => {
+    pool = [...list.words];
+    for (let index = pool.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(random() * (index + 1));
+      [pool[index], pool[swapIndex]] = [pool[swapIndex], pool[index]];
     }
+
+    if (pool.length > 1 && pool[pool.length - 1] === previous) {
+      [pool[pool.length - 1], pool[pool.length - 2]] = [
+        pool[pool.length - 2],
+        pool[pool.length - 1],
+      ];
+    }
+  };
+
+  while (result.length < count) {
+    if (pool.length === 0) refill();
+    const word = pool.pop()!;
+    result.push(word);
+    previous = word;
   }
   return result;
 }

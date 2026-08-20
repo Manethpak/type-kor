@@ -76,6 +76,20 @@ describe("timed typing test", () => {
     expect(screen.getByLabelText("Khmer typing test")).toBeVisible();
   });
 
+  it("switches and persists the typing word list", () => {
+    renderApp("/test");
+    const wordList = screen.getByRole("combobox", { name: "Word list" });
+
+    expect(wordList).toHaveValue("500");
+
+    fireEvent.change(wordList, { target: { value: "1000" } });
+
+    expect(wordList).toHaveValue("1000");
+    expect(JSON.parse(localStorage.getItem("typekor:settings")!)).toMatchObject({
+      wordListSize: 1000,
+    });
+  });
+
   it("opens the interactive NIDA keyboard playground from primary navigation", () => {
     renderApp("/test");
     fireEvent.click(screen.getByTitle("NIDA keyboard"));

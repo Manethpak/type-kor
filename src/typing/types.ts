@@ -3,6 +3,7 @@ import type { TestResult } from "../storage/types";
 import type { PerformanceSample } from "../storage/types";
 
 export type ClusterState = "pending" | "correct" | "incorrect";
+export type WordListSize = 250 | 500 | 1000;
 
 export interface TypingState {
   prompt: OrthographicCluster[];
@@ -34,6 +35,7 @@ export type TypingAction =
 export interface TestSettings {
   mode: "time" | "words";
   modeValue: number;
+  wordListSize: WordListSize;
   speedUnit: "cpm" | "wpm";
   theme: "saffron" | "paper";
   fontSize: number;

@@ -12,12 +12,19 @@ import { SpeedUnitToggle } from "../components/SpeedUnitToggle";
 import { khmerTextEngine } from "../engine/khmer";
 import { useCaretPosition } from "../hooks/useCaretPosition";
 import type { TypingSession } from "../hooks/useTypingSession";
-import type { TestSettings } from "../typing/types";
+import type { TestSettings, WordListSize } from "../typing/types";
 import { cx } from "../utils/classNames";
 
+const controlGroupClass =
+  "flex items-center rounded-lg border border-app-line bg-app-raised px-1 py-1";
 const modeButtonClass =
-  "cursor-pointer rounded-lg px-2.5 py-[7px] text-sm font-medium text-app-dim transition-colors hover:bg-app-accent-soft hover:text-app-accent";
+  "cursor-pointer rounded-md px-2 py-1 text-xs font-medium text-app-dim transition-colors hover:bg-app-accent-soft hover:text-app-accent";
 const selectedButtonClass = "bg-app-accent-soft text-app-accent!";
+const wordListOptions: { size: WordListSize; label: string }[] = [
+  { size: 250, label: "ពាក្យទូទៅ ២៥០" },
+  { size: 500, label: "ពាក្យទូទៅ ៥០០" },
+  { size: 1000, label: "ពាក្យទូទៅ ១០០០" },
+];
 
 export function TypingPage({
   session,
@@ -72,39 +79,62 @@ export function TypingPage({
       {!session.result && (
         <>
           <div className="mb-7 flex min-h-12 items-end justify-between max-[760px]:items-start max-[760px]:gap-4.5">
-            <div
-              className="flex items-center gap-0.75 rounded-xl border border-app-line bg-app-raised p-1.25 max-[760px]:flex-wrap"
-              data-focus-fade
-            >
-              <button
-                className={cx(modeButtonClass, settings.mode === "time" && selectedButtonClass)}
-                onClick={() =>
-                  onSettingsChange((value) => ({ ...value, mode: "time", modeValue: 30 }))
-                }
-              >
-                កំណត់ពេល
-              </button>
-              <button
-                className={cx(modeButtonClass, settings.mode === "words" && selectedButtonClass)}
-                onClick={() =>
-                  onSettingsChange((value) => ({ ...value, mode: "words", modeValue: 25 }))
-                }
-              >
-                ពាក្យ
-              </button>
-              <i className="mx-1 h-4 w-px bg-app-line" />
-              {(settings.mode === "time" ? [15, 30, 60] : [10, 25, 50]).map((value) => (
+            <div className="flex items-center gap-2 max-[760px]:flex-wrap" data-focus-fade>
+              <div className={`${controlGroupClass} gap-0.5`}>
                 <button
-                  key={value}
-                  className={cx(
-                    modeButtonClass,
-                    settings.modeValue === value && selectedButtonClass,
-                  )}
-                  onClick={() => onSettingsChange((current) => ({ ...current, modeValue: value }))}
+                  className={cx(modeButtonClass, settings.mode === "time" && selectedButtonClass)}
+                  onClick={() =>
+                    onSettingsChange((value) => ({ ...value, mode: "time", modeValue: 30 }))
+                  }
                 >
-                  {value}
+                  កំណត់ពេល
                 </button>
-              ))}
+                <button
+                  className={cx(modeButtonClass, settings.mode === "words" && selectedButtonClass)}
+                  onClick={() =>
+                    onSettingsChange((value) => ({ ...value, mode: "words", modeValue: 25 }))
+                  }
+                >
+                  ពាក្យ
+                </button>
+                <i className="mx-1 h-4 w-px bg-app-line" />
+                {(settings.mode === "time" ? [15, 30, 60] : [10, 25, 50]).map((value) => (
+                  <button
+                    key={value}
+                    className={cx(
+                      modeButtonClass,
+                      settings.modeValue === value && selectedButtonClass,
+                    )}
+                    onClick={() =>
+                      onSettingsChange((current) => ({ ...current, modeValue: value }))
+                    }
+                  >
+                    {value}
+                  </button>
+                ))}
+              </div>
+              <div className={`${controlGroupClass} gap-2 px-2`}>
+                <label className="text-[9px] font-semibold uppercase tracking-[.12em] text-app-dim">
+                  បញ្ជីពាក្យ
+                  <select
+                    className="ml-1.5 cursor-pointer rounded-md border-0 bg-app-surface px-1.5 py-1 text-xs font-medium normal-case tracking-normal text-app-soft outline-none focus:ring-1 focus:ring-app-accent"
+                    aria-label="Word list"
+                    value={settings.wordListSize}
+                    onChange={(event) =>
+                      onSettingsChange((current) => ({
+                        ...current,
+                        wordListSize: Number(event.target.value) as WordListSize,
+                      }))
+                    }
+                  >
+                    {wordListOptions.map(({ size, label }) => (
+                      <option key={size} value={size}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
             </div>
 
             <div

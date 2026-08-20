@@ -31,8 +31,8 @@ pnpm typecheck   # TypeScript checks
 pnpm words:fetch # Refresh the generated Khmer frequency word pools
 ```
 
-The word-list library exports cumulative `common100Words`, `common250Words`, and
-`common500Words` pools from `src/data/wordList.ts`. The generated source data is
+The word-list library exports cumulative `common250Words`, `common500Words`, and
+`common1000Words` pools from `src/data/wordList.ts`. The generated source data is
 kept in `src/data/wordLists.generated.ts` so typing tests work offline.
 
 Built with React, TypeScript, Vite, Tailwind CSS, Vitest, and Playwright.

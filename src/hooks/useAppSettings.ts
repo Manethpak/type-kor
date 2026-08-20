@@ -4,6 +4,7 @@ import type { TestSettings } from "../typing/types";
 export const DEFAULT_SETTINGS: TestSettings = {
   mode: "time",
   modeValue: 30,
+  wordListSize: 500,
   speedUnit: "cpm",
   theme: "saffron",
   fontSize: 49,
@@ -17,9 +18,7 @@ const STORAGE_KEY = "typekor:settings";
 
 function readSettings(): TestSettings {
   try {
-    const saved = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) ?? "{}",
-    ) as Partial<TestSettings> & {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}") as Partial<TestSettings> & {
       schemaVersion?: number;
     };
 
@@ -31,7 +30,12 @@ function readSettings(): TestSettings {
       saved.fontSize = DEFAULT_SETTINGS.fontSize;
     }
 
-    return { ...DEFAULT_SETTINGS, ...saved };
+    const wordListSize =
+      saved.wordListSize === 250 || saved.wordListSize === 500 || saved.wordListSize === 1000
+        ? saved.wordListSize
+        : DEFAULT_SETTINGS.wordListSize;
+
+    return { ...DEFAULT_SETTINGS, ...saved, wordListSize };
   } catch {
     return DEFAULT_SETTINGS;
   }
