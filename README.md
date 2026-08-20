@@ -28,6 +28,11 @@ pnpm build       # Production build
 pnpm test        # Unit tests
 pnpm test:e2e    # Playwright end-to-end tests
 pnpm typecheck   # TypeScript checks
+pnpm words:fetch # Refresh the generated Khmer frequency word pools
 ```
+
+The word-list library exports cumulative `common100Words`, `common250Words`, and
+`common500Words` pools from `src/data/wordList.ts`. The generated source data is
+kept in `src/data/wordLists.generated.ts` so typing tests work offline.
 
 Built with React, TypeScript, Vite, Tailwind CSS, Vitest, and Playwright.

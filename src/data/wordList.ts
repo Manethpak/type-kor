@@ -1,4 +1,5 @@
 import { canonicalizeKhmer, validateKhmer } from "../engine/khmer";
+import { frequencyWords500 } from "./wordLists.generated";
 
 export interface WordList {
   id: string;
@@ -10,107 +11,33 @@ export interface WordList {
   reviewedBy: string;
 }
 
-// Development seed only. Replace with the owner-supplied, native-reviewed list before launch.
-export const commonKhmerWords: WordList = {
-  id: "km-demo-common",
-  name: "ពាក្យទូទៅ",
-  version: 1,
-  difficulty: "common",
-  source: "Development seed list",
-  reviewedBy: "Pending owner and native-speaker review",
-  words: [
-    "ខ្ញុំ",
-    "អ្នក",
-    "យើង",
-    "គេ",
-    "នេះ",
-    "នោះ",
-    "មួយ",
-    "ពីរ",
-    "បី",
-    "ច្រើន",
-    "តិច",
-    "មាន",
-    "គ្មាន",
-    "ជា",
-    "នៅ",
-    "ទៅ",
-    "មក",
-    "ធ្វើ",
-    "និយាយ",
-    "សរសេរ",
-    "អាន",
-    "រៀន",
-    "ស្គាល់",
-    "គិត",
-    "ឃើញ",
-    "ស្តាប់",
-    "ស្រឡាញ់",
-    "ចង់",
-    "អាច",
-    "ត្រូវ",
-    "ថ្ងៃ",
-    "យប់",
-    "ពេល",
-    "ឆ្នាំ",
-    "ថ្មី",
-    "ល្អ",
-    "ធំ",
-    "តូច",
-    "វែង",
-    "ខ្លី",
-    "ផ្ទះ",
-    "សាលា",
-    "ការងារ",
-    "មនុស្ស",
-    "កុមារ",
-    "មិត្ត",
-    "គ្រួសារ",
-    "ប្រទេស",
-    "ទីក្រុង",
-    "ភូមិ",
-    "ទឹក",
-    "បាយ",
-    "ម្ហូប",
-    "ផ្លែឈើ",
-    "ផ្លូវ",
-    "ឡាន",
-    "កង់",
-    "ដើរ",
-    "រត់",
-    "លេង",
-    "ភាសា",
-    "ខ្មែរ",
-    "អក្សរ",
-    "ពាក្យ",
-    "សំឡេង",
-    "ចំណេះ",
-    "គំនិត",
-    "សំណួរ",
-    "ចម្លើយ",
-    "រឿង",
-    "ស្អាត",
-    "សប្បាយ",
-    "រីករាយ",
-    "ស្ងប់",
-    "រហ័ស",
-    "យឺត",
-    "ពិបាក",
-    "ត្រឹមត្រូវ",
-    "សំខាន់",
-    "និង",
-    "ងាយ",
-    "ប្រើ",
-    "ស្រួល",
-    "កង្កែប",
-    "ពាក់",
-    "មួក",
-    "ខ្លា",
-    "គោ",
-    "តោ",
-    "ឃ្មំុ",
-  ],
-};
+const source = "Hugging Face: seanghay/khmer-search-frequency (ranked by search frequency)";
+const reviewedBy = "Frequency-derived; native-speaker review pending";
+
+function createWordList(id: string, name: string, count: number): WordList {
+  return {
+    id,
+    name,
+    version: 1,
+    difficulty: "common",
+    source,
+    reviewedBy,
+    words: [...frequencyWords500.slice(0, count)],
+  };
+}
+
+export const common100Words = createWordList("km-common-100", "ពាក្យទូទៅ ១០០", 100);
+export const common250Words = createWordList("km-common-250", "ពាក្យទូទៅ ២៥០", 250);
+export const common500Words = createWordList("km-common-500", "ពាក្យទូទៅ ៥០០", 500);
+
+export const commonWordLists = {
+  100: common100Words,
+  250: common250Words,
+  500: common500Words,
+} as const;
+
+// The mid-sized pool remains the default for existing typing sessions.
+export const commonKhmerWords = common250Words;
 
 export interface WordListValidation {
   valid: boolean;

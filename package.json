@@ -6,6 +6,7 @@
   "scripts": {
     "lesson:gen": "node scripts/generate-curriculum.mjs",
     "lesson:check": "node scripts/generate-curriculum.mjs --check",
+    "words:fetch": "node scripts/fetch-word-lists.mjs",
     "predev": "pnpm lesson:gen",
     "dev": "vite",
     "prebuild": "pnpm lesson:gen",

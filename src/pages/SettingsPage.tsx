@@ -199,6 +199,22 @@ export function SettingsPage({
           </kbd>
         </div>
       </div>
+
+      <aside className="mt-7 rounded-[14px] border border-app-line bg-[color-mix(in_srgb,var(--bg-raised)_62%,transparent)] px-[17px] py-[15px] text-[11px] leading-relaxed text-app-dim">
+        <p className="m-0">
+          <strong className="font-[560] text-app-soft">ការទទួលស្គាល់ប្រភពទិន្នន័យ៖ </strong>
+          បញ្ជីពាក្យ ១០០, ២៥០ និង ៥០០ ពាក្យត្រូវបានបង្កើតពីទិន្នន័យស្វែងរកខ្មែររបស់{" "}
+          <a
+            className="text-app-accent underline decoration-app-accent/35 underline-offset-2 transition-colors hover:decoration-app-accent"
+            href="https://huggingface.co/datasets/seanghay/khmer-search-frequency"
+            target="_blank"
+            rel="noreferrer"
+          >
+            seanghay/khmer-search-frequency
+          </a>{" "}
+          នៅលើ Hugging Face។
+        </p>
+      </aside>
     </section>
   );
 }
