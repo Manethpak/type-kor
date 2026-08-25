@@ -1,9 +1,20 @@
+import type { WordDifficulty } from "../data/wordList";
+import type { WordDifficultySelection } from "../data/wordList";
 import type { OrthographicCluster } from "../engine/types";
 import type { TestResult } from "../storage/types";
-import type { PerformanceSample } from "../storage/types";
 
 export type ClusterState = "pending" | "correct" | "incorrect";
-export type WordListSize = 250 | 500 | 1000;
+
+export interface TypingAnalyticsEvent {
+  elapsedMs: number;
+  insertedUnits: number;
+  errorUnits: number;
+  correctionUnits: number;
+  correctClustersDelta: number;
+  correctCodePointsDelta: number;
+  incorrectClustersDelta: number;
+  clusterAttemptsDelta: number;
+}
 
 export interface TypingState {
   prompt: OrthographicCluster[];
@@ -18,24 +29,33 @@ export interface TypingState {
   correctCodePoints: number;
   incorrectClusters: number;
   rawKeystrokes: number;
-  timeline: PerformanceSample[];
+  insertedUnits: number;
+  errorUnits: number;
+  correctionUnits: number;
+  clusterAttempts: number;
+  analyticsEvents: TypingAnalyticsEvent[];
   finished: boolean;
 }
 
 export type TypingAction =
   | { type: "start"; at: number }
-  | { type: "keystrokes"; count: number }
+  | {
+      type: "input";
+      at: number;
+      insertedUnits: number;
+      errorUnits: number;
+      correctionUnits: number;
+    }
   | { type: "pending"; value: string; status: "prefix" | "incorrect" }
-  | { type: "commit"; attempt: string; correct: boolean }
-  | { type: "reopen" }
-  | { type: "sample"; elapsedMs: number }
+  | { type: "commit"; at: number; attempt: string; correct: boolean }
+  | { type: "reopen"; at: number }
   | { type: "finish"; at: number }
   | { type: "reset"; prompt: OrthographicCluster[] };
 
 export interface TestSettings {
   mode: "time" | "words";
   modeValue: number;
-  wordListSize: WordListSize;
+  wordDifficulty: WordDifficultySelection;
   speedUnit: "cpm" | "wpm";
   theme: "saffron" | "paper";
   fontSize: number;

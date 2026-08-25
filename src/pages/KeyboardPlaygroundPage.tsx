@@ -75,8 +75,7 @@ const impactNotes = [
     glyph: "អ",
     titleKm: "អត្ថបទដែលអាចប្រើបន្តបាន",
     titleEn: "Portable text",
-    bodyKm:
-      "យូនីកូដរក្សាទុកតួអក្សរ មិនមែនទីតាំងរូបរាងនៅក្នុងពុម្ពអក្សរចាស់ទេ ដូច្នេះអត្ថបទអាចស្វែងរក ចម្លង និងចែករំលែកបាន។",
+    bodyKm: "យូនីកូដរក្សាទុកតួអក្សរ មិនមែនទីតាំងរូបរាងនៅក្នុងពុម្ពអក្សរចាស់ទេ ដូច្នេះអត្ថបទអាចស្វែងរក ចម្លង និងចែករំលែកបាន។",
     bodyEn:
       "Unicode stores characters rather than visual positions in a legacy font, allowing text to be searched, copied, and shared.",
   },
@@ -84,8 +83,7 @@ const impactNotes = [
     glyph: "ក",
     titleKm: "ផែនទីគ្រាប់ចុចរួម",
     titleEn: "A shared key map",
-    bodyKm:
-      "ប្លង់ស្តង់ដារផ្ដល់ចំណុចយោងរួមសម្រាប់ការបង្រៀន ឯកសារ និងប្រព័ន្ធដែលអនុវត្តប្លង់ NIDA។",
+    bodyKm: "ប្លង់ស្តង់ដារផ្ដល់ចំណុចយោងរួមសម្រាប់ការបង្រៀន ឯកសារ និងប្រព័ន្ធដែលអនុវត្តប្លង់ NIDA។",
     bodyEn:
       "A standard layout gives teaching, documentation, and systems implementing NIDA one shared reference.",
   },
@@ -93,8 +91,7 @@ const impactNotes = [
     glyph: "្មែ",
     titleKm: "រចនាសម្រាប់អក្សរខ្មែរ",
     titleEn: "Made for Khmer script",
-    bodyKm:
-      "សញ្ញា និងជើងអក្សរត្រូវបានបញ្ចូលជាលំដាប់យូនីកូដ ហើយពុម្ពអក្សរខ្មែរជាអ្នកបង្ហាញពួកវាជាចង្កោមអក្សរតែមួយ។",
+    bodyKm: "សញ្ញា និងជើងអក្សរត្រូវបានបញ្ចូលជាលំដាប់យូនីកូដ ហើយពុម្ពអក្សរខ្មែរជាអ្នកបង្ហាញពួកវាជាចង្កោមអក្សរតែមួយ។",
     bodyEn:
       "Signs and subscripts are entered as Unicode sequences, then shaped into a Khmer cluster by a compatible font.",
   },
@@ -136,11 +133,17 @@ function SectionHeading({
 }) {
   return (
     <div className="mb-7 grid grid-cols-[48px_1fr] items-start gap-4 border-t border-app-line pt-5">
-      <span className="pt-1 text-[9px] font-bold tracking-[.18em] text-app-accent" aria-hidden="true">
+      <span
+        className="pt-1 text-[9px] font-bold tracking-[.18em] text-app-accent"
+        aria-hidden="true"
+      >
         {number}
       </span>
       <div>
-        <h2 id={id} className="m-0 font-khmer text-[clamp(25px,4vw,34px)] font-medium leading-tight">
+        <h2
+          id={id}
+          className="m-0 font-khmer text-[clamp(25px,4vw,34px)] font-medium leading-tight"
+        >
           {titleKm}
         </h2>
         <p className="mb-0 mt-1 text-[10px] font-semibold uppercase tracking-[.16em] text-app-dim">
@@ -159,10 +162,10 @@ export function KeyboardPlaygroundPage() {
     >
       <header className="relative mb-16 overflow-hidden border-y border-app-line py-9 md:py-12">
         <span
-          className="pointer-events-none absolute -right-8 -top-20 font-khmer text-[clamp(180px,32vw,310px)] leading-none text-app-accent opacity-[.035]"
+          className="pointer-events-none absolute -right-8 -top-20 font-khmer text-[clamp(180px,32vw,310px)] leading-none text-app-accent opacity-[.025]"
           aria-hidden="true"
         >
-          ក្ដ
+          អ
         </span>
         <div className="relative grid grid-cols-[minmax(0,1.25fr)_minmax(220px,.75fr)] items-end gap-10 max-[720px]:grid-cols-1">
           <div>
@@ -243,9 +246,7 @@ export function KeyboardPlaygroundPage() {
               </div>
               <div className="pt-1 max-[740px]:col-start-2">
                 <h3 className="m-0 text-[12px] font-semibold text-app-text">{event.titleEn}</h3>
-                <p className="mb-0 mt-2 text-[11px] leading-[1.75] text-app-dim">
-                  {event.bodyEn}
-                </p>
+                <p className="mb-0 mt-2 text-[11px] leading-[1.75] text-app-dim">{event.bodyEn}</p>
               </div>
             </article>
           ))}
@@ -272,8 +273,8 @@ export function KeyboardPlaygroundPage() {
               ចុចគ្រាប់ចុចលើក្ដារចុចរបស់អ្នក ឬចុចលើប្លង់ខាងក្រោម។ សង្កត់ Shift ឬ Right Alt ដើម្បីមើលស្រទាប់ផ្សេងទៀត។
             </p>
             <p className="m-0 text-[11px] leading-relaxed text-app-dim">
-              Press your physical keyboard or click a key below. Hold Shift or Right Alt to
-              reveal every NIDA layer and see its output.
+              Press your physical keyboard or click a key below. Hold Shift or Right Alt to reveal
+              every NIDA layer and see its output.
             </p>
           </div>
           <NidaKeyboard active={undefined} mode="interactable" />
@@ -347,8 +348,8 @@ export function KeyboardPlaygroundPage() {
               ក្ដារចុចកំណត់ថាអ្នកបញ្ចូលតួអក្សរអ្វី។ ពុម្ពអក្សរកំណត់ថាតួអក្សរនោះបង្ហាញរូបរាងយ៉ាងដូចម្ដេច។
             </p>
             <p className="relative mb-0 mt-4 text-[11px] leading-relaxed text-app-dim">
-              A keyboard decides which character you enter. A font decides how that character
-              is drawn.
+              A keyboard decides which character you enter. A font decides how that character is
+              drawn.
             </p>
           </aside>
 

@@ -2,6 +2,13 @@ import { HistoryIcon, TrashIcon } from "../components/Icons";
 import type { TestResult } from "../storage/types";
 import type { TestSettings } from "../typing/types";
 
+const difficultyLabels = {
+  beginner: "ដំបូង",
+  intermediate: "មធ្យម",
+  advanced: "ខ្ពស់",
+  mixed: "ចម្រុះ",
+} as const;
+
 export function HistoryPage({
   history,
   speedUnit,
@@ -58,6 +65,7 @@ export function HistoryPage({
               <span className="text-xs text-app-dim">{item.accuracy}% ត្រឹមត្រូវ</span>
               <span className="text-xs text-app-dim">
                 {item.mode === "time" ? `${item.modeValue} វិនាទី` : `${item.modeValue} ពាក្យ`}
+                {item.wordDifficulty ? ` · ${difficultyLabels[item.wordDifficulty]}` : ""}
               </span>
             </article>
           ))}

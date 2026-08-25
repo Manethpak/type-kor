@@ -47,7 +47,9 @@ describe("timed typing test", () => {
     await act(() => vi.advanceTimersByTimeAsync(1_100));
     expect(screen.getByText("លទ្ធផលរបស់អ្នក")).toBeVisible();
     expect(
-      screen.getByRole("img", { name: /Per-second typing speed chart, peak \d+ cpm/ }),
+      screen.getByRole("img", {
+        name: /Typing analytics chart: peak \d+ CPM, \d+ WPM, \d+% accuracy/,
+      }),
     ).toBeVisible();
   });
 
@@ -76,18 +78,35 @@ describe("timed typing test", () => {
     expect(screen.getByLabelText("Khmer typing test")).toBeVisible();
   });
 
-  it("switches and persists the typing word list", () => {
+  it("switches and persists the typing difficulty", () => {
     renderApp("/test");
-    const wordList = screen.getByRole("combobox", { name: "Word list" });
+    const difficulty = screen.getByRole("combobox", { name: "Word difficulty" });
 
-    expect(wordList).toHaveValue("500");
+    expect(difficulty).toHaveValue("beginner");
 
-    fireEvent.change(wordList, { target: { value: "1000" } });
+    fireEvent.change(difficulty, { target: { value: "mixed" } });
 
-    expect(wordList).toHaveValue("1000");
+    expect(difficulty).toHaveValue("mixed");
     expect(JSON.parse(localStorage.getItem("typekor:settings")!)).toMatchObject({
-      wordListSize: 1000,
+      wordDifficulty: "mixed",
     });
+  });
+
+  it("migrates legacy word-list sizes to difficulty", () => {
+    localStorage.setItem(
+      "typekor:settings",
+      JSON.stringify({ schemaVersion: 2, wordListSize: 500 }),
+    );
+    renderApp("/test");
+
+    expect(screen.getByRole("combobox", { name: "Word difficulty" })).toHaveValue("intermediate");
+    expect(JSON.parse(localStorage.getItem("typekor:settings")!)).toMatchObject({
+      schemaVersion: 3,
+      wordDifficulty: "intermediate",
+    });
+    expect(JSON.parse(localStorage.getItem("typekor:settings")!)).not.toHaveProperty(
+      "wordListSize",
+    );
   });
 
   it("opens the interactive NIDA keyboard playground from primary navigation", () => {

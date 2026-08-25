@@ -1,3 +1,5 @@
+import type { WordDifficultySelection } from "../data/wordList";
+
 export interface PerformanceSample {
   second: number;
   elapsedMs: number;
@@ -10,6 +12,13 @@ export interface PerformanceSample {
   correctCodePoints: number;
   incorrectClusters: number;
   rawKeystrokes: number;
+  rawCpm?: number;
+  rawWpm?: number;
+  inputAccuracy?: number;
+  insertedUnits?: number;
+  errorUnits?: number;
+  correctionUnits?: number;
+  clusterAttempts?: number;
 }
 
 export interface TestResult {
@@ -17,6 +26,7 @@ export interface TestResult {
   startedAt: string;
   mode: "time" | "words";
   modeValue: number;
+  wordDifficulty?: WordDifficultySelection;
   durationMs: number;
   clustersPerMinute: number;
   wordsPerMinute: number;
@@ -26,6 +36,16 @@ export interface TestResult {
   incorrectClusters: number;
   rawKeystrokes: number;
   timeline: PerformanceSample[];
+  analyticsVersion?: 2;
+  rawClustersPerMinute?: number;
+  rawWordsPerMinute?: number;
+  burstClustersPerMinute?: number;
+  burstWordsPerMinute?: number;
+  inputAccuracy?: number;
+  insertedUnits?: number;
+  errorUnits?: number;
+  correctionUnits?: number;
+  clusterAttempts?: number;
 }
 
 export interface HistoryRepository {

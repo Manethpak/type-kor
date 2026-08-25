@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import {
+  ArchiveIcon,
   BookIcon,
   HistoryIcon,
   KeyboardIcon,
-  KeyboardLayoutIcon,
   MoonIcon,
   SettingsIcon,
   SunIcon,
@@ -46,7 +46,7 @@ export function AppShell({
     {
       to: "/keyboard",
       label: "NIDA keyboard",
-      icon: <KeyboardLayoutIcon />,
+      icon: <ArchiveIcon />,
       active: location.pathname === "/keyboard",
     },
     {
@@ -77,7 +77,7 @@ export function AppShell({
           ខ
         </span>
         <span className="absolute left-[48%] top-[42%] text-[11rem] leading-none opacity-[.018] blur-[1px]">
-          ្មែ
+          គ
         </span>
       </div>
 
@@ -141,9 +141,6 @@ export function AppShell({
         data-focus-fade
       >
         <span>Unicode Khmer · orthographic cluster engine</span>
-        <span className="text-[color-mix(in_srgb,var(--accent)_60%,var(--text-dim))] max-[760px]:hidden">
-          បញ្ជីពាក្យសាកល្បង · រង់ចាំការពិនិត្យ
-        </span>
       </footer>
     </div>
   );

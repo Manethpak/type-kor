@@ -67,6 +67,18 @@ test("fades page chrome while keeping the active test progress visible", async (
   await expect(page.getByTestId("word-progress")).toContainText("/ 25 words");
 });
 
+test("switches and persists the typing difficulty", async ({ page }) => {
+  await page.goto("/");
+  const difficulty = page.getByRole("combobox", { name: "Word difficulty" });
+
+  await expect(difficulty).toHaveValue("beginner");
+  await difficulty.selectOption("mixed");
+  await expect(difficulty).toHaveValue("mixed");
+  await expect
+    .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("typekor:settings") ?? "{}")))
+    .toMatchObject({ schemaVersion: 3, wordDifficulty: "mixed" });
+});
+
 test("backspace reopens the previous cluster when the capture buffer is empty", async ({
   page,
 }) => {
@@ -154,17 +166,36 @@ test("completes a deterministic word test and stores the result locally", async 
   await enterText(page, prompt.join(""));
   await expect(page.getByText("លទ្ធផលរបស់អ្នក")).toBeVisible();
   await expect(
-    page.getByRole("img", { name: /Per-second typing speed chart, peak \d+ cpm/ }),
+    page.getByRole("img", {
+      name: /Typing analytics chart: peak \d+ CPM, \d+ WPM, \d+% accuracy/,
+    }),
   ).toBeVisible();
-  await page
-    .getByRole("group", { name: "Result speed unit" })
-    .getByRole("button", { name: "wpm" })
-    .click();
-  await expect(
-    page.getByRole("img", { name: /Per-second typing speed chart, peak \d+ wpm/ }),
-  ).toBeVisible();
+  await expect(page.getByText("Net cluster pace")).toBeVisible();
+  await expect(page.getByText("Net word pace")).toBeVisible();
   await page.getByTitle("Local history").click();
   await expect(page.locator("article")).toHaveCount(1);
+});
+
+test("keeps corrected input errors in the final analytics", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "ពាក្យ" }).click();
+  await page.getByRole("button", { name: "10", exact: true }).click();
+  const prompt = await page.locator("[data-cluster]").allTextContents();
+  const capture = page.locator("textarea[aria-label='Type the displayed Khmer text']");
+
+  await enterText(page, "x");
+  await capture.press("Backspace");
+  await enterText(page, prompt.join(""));
+
+  await expect(page.getByText("លទ្ធផលរបស់អ្នក")).toBeVisible();
+  await expect(
+    page.getByText("កំហុសពេលវាយ", { exact: true }).locator("xpath=following-sibling::dd"),
+  ).toHaveText("1");
+  await expect(
+    page.getByText("ការកែ", { exact: true }).locator("xpath=following-sibling::dd"),
+  ).toHaveText("1");
+  await expect(page.getByText("Net cluster pace")).toBeVisible();
+  await expect(page.getByText("Net word pace")).toBeVisible();
 });
 
 test("switches between the Saffron Ink and Rice Paper themes", async ({ page }) => {

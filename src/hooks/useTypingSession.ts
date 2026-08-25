@@ -8,7 +8,7 @@ import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
-import { commonWordLists, generateWords } from "../data/wordList";
+import { difficultyWordLists, generateMixedWords, generateWords } from "../data/wordList";
 import { khmerTextEngine } from "../engine/khmer";
 import type { OrthographicCluster } from "../engine/types";
 import type { TestResult } from "../storage/types";
@@ -17,9 +17,12 @@ import type { TestSettings } from "../typing/types";
 
 function createPrompt(settings: TestSettings, seed: number): OrthographicCluster[] {
   const count = settings.mode === "words" ? settings.modeValue : 90;
-  const words = generateWords(commonWordLists[settings.wordListSize], count, seed).map(
-    (word, index) =>
-      settings.punctuation && index > 0 && (index + 1) % 12 === 0 ? `${word}។` : word,
+  const selectedWords =
+    settings.wordDifficulty === "mixed"
+      ? generateMixedWords(count, seed)
+      : generateWords(difficultyWordLists[settings.wordDifficulty], count, seed);
+  const words = selectedWords.map((word, index) =>
+    settings.punctuation && index > 0 && (index + 1) % 12 === 0 ? `${word}។` : word,
   );
   return khmerTextEngine.segment(words.join(" "));
 }
@@ -43,20 +46,90 @@ function playTick() {
   oscillator.addEventListener("ended", () => context.close());
 }
 
+function inputDelta(previousValue: string, nextValue: string) {
+  const previous = Array.from(previousValue);
+  const next = Array.from(nextValue);
+  let prefix = 0;
+  while (prefix < previous.length && prefix < next.length && previous[prefix] === next[prefix]) {
+    prefix += 1;
+  }
+  let suffix = 0;
+  while (
+    suffix < previous.length - prefix &&
+    suffix < next.length - prefix &&
+    previous[previous.length - 1 - suffix] === next[next.length - 1 - suffix]
+  ) {
+    suffix += 1;
+  }
+  return {
+    retainedPrefix: next.slice(0, prefix).join(""),
+    inserted: next.slice(prefix, next.length - suffix),
+    deletedUnits: previous.length - prefix - suffix,
+  };
+}
+
+function classifyPendingInput(prompt: OrthographicCluster[], startIndex: number, rawValue: string) {
+  let remaining = rawValue;
+  let index = startIndex;
+  let status: "prefix" | "incorrect" = "prefix";
+
+  while (remaining && index < prompt.length) {
+    const target = prompt[index];
+    const match = khmerTextEngine.compare(target, remaining);
+    if (match === "correct") {
+      remaining = "";
+      index += 1;
+      status = "prefix";
+      break;
+    }
+    if (match === "prefix") {
+      status = "prefix";
+      break;
+    }
+
+    const attempts = khmerTextEngine.segment(remaining);
+    if (attempts.length > 1) {
+      remaining = remaining.slice(attempts[0].end);
+      index += 1;
+      continue;
+    }
+    status = "incorrect";
+    break;
+  }
+
+  if (remaining && index >= prompt.length) status = "incorrect";
+
+  return { index, remaining, status };
+}
+
+export function countInsertedInputErrors(
+  prompt: OrthographicCluster[],
+  currentIndex: number,
+  retainedPrefix: string,
+  inserted: string[],
+): number {
+  let analysis = classifyPendingInput(prompt, currentIndex, retainedPrefix);
+  let errors = 0;
+  for (const unit of inserted) {
+    analysis = classifyPendingInput(prompt, analysis.index, `${analysis.remaining}${unit}`);
+    if (analysis.status === "incorrect") errors += 1;
+  }
+  return errors;
+}
+
 export function useTypingSession(settings: TestSettings, onComplete: (result: TestResult) => void) {
   const [seed, setSeed] = useState(() => Date.now());
-  const promptSettingsKey = `${settings.mode}:${settings.modeValue}:${settings.punctuation}:${settings.wordListSize}`;
+  const promptSettingsKey = `${settings.mode}:${settings.modeValue}:${settings.punctuation}:${settings.wordDifficulty}`;
   const prompt = useMemo(
     () => createPrompt(settings, seed),
-    [seed, settings.mode, settings.modeValue, settings.punctuation, settings.wordListSize],
+    [seed, settings.mode, settings.modeValue, settings.punctuation, settings.wordDifficulty],
   );
   const [typing, dispatch] = useReducer(typingReducer, prompt, createTypingState);
   const [result, setResult] = useState<TestResult | null>(null);
   const [clock, setClock] = useState(() => Date.now());
   const composingRef = useRef(false);
+  const compositionStartValueRef = useRef("");
   const savingRef = useRef(false);
-  const beforeInputRecordedRef = useRef(false);
-  const lastSampledSecondRef = useRef(0);
   const promptSettingsKeyRef = useRef(promptSettingsKey);
 
   useEffect(() => {
@@ -68,7 +141,6 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
   useEffect(() => {
     setResult(null);
     savingRef.current = false;
-    lastSampledSecondRef.current = 0;
     dispatch({ type: "reset", prompt });
   }, [prompt]);
 
@@ -77,17 +149,6 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
     const timer = window.setInterval(() => setClock(Date.now()), 100);
     return () => window.clearInterval(timer);
   }, [typing.finished, typing.startedAt]);
-
-  useEffect(() => {
-    if (typing.startedAt === null || typing.finished) return;
-    const elapsedSecond = Math.floor((clock - typing.startedAt) / 1_000);
-    if (elapsedSecond <= lastSampledSecondRef.current) return;
-
-    for (let second = lastSampledSecondRef.current + 1; second <= elapsedSecond; second += 1) {
-      dispatch({ type: "sample", elapsedMs: second * 1_000 });
-    }
-    lastSampledSecondRef.current = elapsedSecond;
-  }, [clock, typing.finished, typing.startedAt]);
 
   useEffect(() => {
     if (settings.mode !== "time" || typing.startedAt === null || typing.finished) return;
@@ -99,10 +160,16 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
   useEffect(() => {
     if (!typing.finished || result || savingRef.current) return;
     savingRef.current = true;
-    const completed = calculateResult(typing, settings.mode, settings.modeValue, Date.now());
+    const completed = calculateResult(
+      typing,
+      settings.mode,
+      settings.modeValue,
+      Date.now(),
+      settings.wordDifficulty,
+    );
     setResult(completed);
     onComplete(completed);
-  }, [onComplete, result, settings.mode, settings.modeValue, typing]);
+  }, [onComplete, result, settings.mode, settings.modeValue, settings.wordDifficulty, typing]);
 
   const restart = useCallback(() => {
     const nextSeed = Date.now();
@@ -110,12 +177,11 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
     setSeed(nextSeed);
     setResult(null);
     savingRef.current = false;
-    lastSampledSecondRef.current = 0;
     dispatch({ type: "reset", prompt: nextPrompt });
   }, [settings]);
 
   const processInput = useCallback(
-    (rawValue: string) => {
+    (rawValue: string, at: number) => {
       if (typing.finished) return;
       let remaining = rawValue;
       let index = typing.currentIndex;
@@ -124,7 +190,7 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
         const target = typing.prompt[index];
         const match = khmerTextEngine.compare(target, remaining);
         if (match === "correct") {
-          dispatch({ type: "commit", attempt: remaining, correct: true });
+          dispatch({ type: "commit", at, attempt: remaining, correct: true });
           if (settings.sound && target.kind === "khmer") playTick();
           remaining = "";
           index += 1;
@@ -141,7 +207,7 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
           const consumed = remaining.slice(0, first.end);
           const firstMatch = khmerTextEngine.compare(target, consumed);
           const correct = firstMatch === "correct";
-          dispatch({ type: "commit", attempt: consumed, correct });
+          dispatch({ type: "commit", at, attempt: consumed, correct });
           if (correct && settings.sound && target.kind === "khmer") playTick();
           remaining = remaining.slice(first.end);
           index += 1;
@@ -156,27 +222,46 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
     [settings.sound, typing.currentIndex, typing.finished, typing.prompt],
   );
 
-  const startTest = useCallback(() => {
-    if (typing.startedAt !== null || typing.finished) return;
-    const startedAt = Date.now();
-    setClock(startedAt);
-    dispatch({ type: "start", at: startedAt });
-  }, [typing.finished, typing.startedAt]);
+  const startTest = useCallback(
+    (at = Date.now()) => {
+      if (typing.startedAt !== null || typing.finished) return;
+      setClock(at);
+      dispatch({ type: "start", at });
+    },
+    [typing.finished, typing.startedAt],
+  );
+
+  const recordInputChange = useCallback(
+    (previousValue: string, nextValue: string, at: number) => {
+      const delta = inputDelta(previousValue, nextValue);
+      if (delta.inserted.length === 0 && delta.deletedUnits === 0) return;
+      dispatch({
+        type: "input",
+        at,
+        insertedUnits: delta.inserted.length,
+        errorUnits: countInsertedInputErrors(
+          typing.prompt,
+          typing.currentIndex,
+          delta.retainedPrefix,
+          delta.inserted,
+        ),
+        correctionUnits: delta.deletedUnits,
+      });
+    },
+    [typing.currentIndex, typing.prompt],
+  );
 
   const handleBeforeInput = useCallback(
     (event: FormEvent<HTMLTextAreaElement>) => {
       const native = event.nativeEvent as InputEvent;
-      if (native.inputType?.startsWith("insert") && !composingRef.current && !native.isComposing) {
-        beforeInputRecordedRef.current = true;
-        startTest();
-        dispatch({ type: "keystrokes", count: Array.from(native.data ?? "").length || 1 });
-      }
       if (native.inputType === "deleteContentBackward" && typing.pendingInput.length === 0) {
         event.preventDefault();
-        dispatch({ type: "reopen" });
+        const at = Date.now();
+        dispatch({ type: "input", at, insertedUnits: 0, errorUnits: 0, correctionUnits: 1 });
+        dispatch({ type: "reopen", at });
       }
     },
-    [startTest, typing.pendingInput.length],
+    [typing.pendingInput.length],
   );
 
   const handleInput = useCallback(
@@ -186,34 +271,32 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
         dispatch({ type: "pending", value, status: "prefix" });
         return;
       }
+      const at = Date.now();
       if (value) {
-        startTest();
-        if (!beforeInputRecordedRef.current) {
-          const native = event.nativeEvent as InputEvent;
-          dispatch({ type: "keystrokes", count: Array.from(native.data ?? "").length || 1 });
-        }
+        startTest(at);
       }
-      beforeInputRecordedRef.current = false;
-      processInput(value);
+      recordInputChange(typing.pendingInput, value, at);
+      processInput(value, at);
     },
-    [processInput, startTest],
+    [processInput, recordInputChange, startTest, typing.pendingInput],
   );
 
-  const handleCompositionStart = useCallback(() => {
+  const handleCompositionStart = useCallback((event: FormEvent<HTMLTextAreaElement>) => {
     composingRef.current = true;
+    compositionStartValueRef.current = event.currentTarget.value;
   }, []);
 
   const handleCompositionEnd = useCallback(
     (event: FormEvent<HTMLTextAreaElement>) => {
       composingRef.current = false;
+      const at = Date.now();
       if (event.currentTarget.value) {
-        startTest();
-        dispatch({ type: "keystrokes", count: Array.from(event.currentTarget.value).length });
+        startTest(at);
       }
-      beforeInputRecordedRef.current = false;
-      processInput(event.currentTarget.value);
+      recordInputChange(compositionStartValueRef.current, event.currentTarget.value, at);
+      processInput(event.currentTarget.value, at);
     },
-    [processInput, startTest],
+    [processInput, recordInputChange, startTest],
   );
 
   const handleKeyDown = useCallback(
@@ -226,7 +309,9 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
       ) {
         // Empty text controls do not consistently emit beforeinput for Backspace.
         event.preventDefault();
-        dispatch({ type: "reopen" });
+        const at = Date.now();
+        dispatch({ type: "input", at, insertedUnits: 0, errorUnits: 0, correctionUnits: 1 });
+        dispatch({ type: "reopen", at });
         return;
       }
       if (event.key === "Enter") event.preventDefault();

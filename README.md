@@ -31,8 +31,16 @@ pnpm typecheck   # TypeScript checks
 pnpm words:fetch # Refresh the generated Khmer frequency word pools
 ```
 
-The word-list library exports cumulative `common250Words`, `common500Words`, and
-`common1000Words` pools from `src/data/wordList.ts`. The generated source data is
-kept in `src/data/wordLists.generated.ts` so typing tests work offline.
+The complete Hugging Face dataset, including `sessions` and `clients`, is kept in
+`src/data/khmer-search-frequency.csv` so typing tests work offline. Run
+`pnpm words:fetch` to refresh it.
+
+Each frequency entry also includes NIDA `keyPressCount`, `coengCount`, and a
+`difficultyScore` calculated as `keyPressCount + (coengCount * 2)`. The exported
+`difficultyWordLists` divide words into beginner (score 6 or lower),
+intermediate (7–8), and advanced (9 or higher) pools.
+
+The typing test also offers a mixed difficulty targeting 50% beginner, 30%
+intermediate, and 20% advanced words before deterministic shuffling.
 
 Built with React, TypeScript, Vite, Tailwind CSS, Vitest, and Playwright.

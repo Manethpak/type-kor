@@ -6,24 +6,25 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { ResultView } from "../components/ResultView";
+import { ResultView } from "../components/result/ResultView";
 import { RestartIcon } from "../components/Icons";
-import { SpeedUnitToggle } from "../components/SpeedUnitToggle";
 import { khmerTextEngine } from "../engine/khmer";
 import { useCaretPosition } from "../hooks/useCaretPosition";
 import type { TypingSession } from "../hooks/useTypingSession";
-import type { TestSettings, WordListSize } from "../typing/types";
+import type { WordDifficultySelection } from "../data/wordList";
+import type { TestSettings } from "../typing/types";
 import { cx } from "../utils/classNames";
 
 const controlGroupClass =
-  "flex items-center rounded-lg border border-app-line bg-app-raised px-1 py-1";
+  "flex h-[42px] items-center rounded-lg border border-app-line bg-app-raised px-1 py-1";
 const modeButtonClass =
   "cursor-pointer rounded-md px-2 py-1 text-xs font-medium text-app-dim transition-colors hover:bg-app-accent-soft hover:text-app-accent";
 const selectedButtonClass = "bg-app-accent-soft text-app-accent!";
-const wordListOptions: { size: WordListSize; label: string }[] = [
-  { size: 250, label: "ពាក្យទូទៅ ២៥០" },
-  { size: 500, label: "ពាក្យទូទៅ ៥០០" },
-  { size: 1000, label: "ពាក្យទូទៅ ១០០០" },
+const difficultyOptions: { difficulty: WordDifficultySelection; label: string }[] = [
+  { difficulty: "beginner", label: "កម្រិតដំបូង" },
+  { difficulty: "intermediate", label: "កម្រិតមធ្យម" },
+  { difficulty: "advanced", label: "កម្រិតខ្ពស់" },
+  { difficulty: "mixed", label: "កម្រិតចម្រុះ" },
 ];
 
 export function TypingPage({
@@ -113,22 +114,22 @@ export function TypingPage({
                   </button>
                 ))}
               </div>
-              <div className={`${controlGroupClass} gap-2 px-2`}>
-                <label className="text-[9px] font-semibold uppercase tracking-[.12em] text-app-dim">
-                  បញ្ជីពាក្យ
+              <div className={cx(controlGroupClass, "gap-2 px-2")}>
+                <label className="text-xs font-semibold text-app-dim">
+                  កម្រិតពាក្យ
                   <select
                     className="ml-1.5 cursor-pointer rounded-md border-0 bg-app-surface px-1.5 py-1 text-xs font-medium normal-case tracking-normal text-app-soft outline-none focus:ring-1 focus:ring-app-accent"
-                    aria-label="Word list"
-                    value={settings.wordListSize}
+                    aria-label="Word difficulty"
+                    value={settings.wordDifficulty}
                     onChange={(event) =>
                       onSettingsChange((current) => ({
                         ...current,
-                        wordListSize: Number(event.target.value) as WordListSize,
+                        wordDifficulty: event.target.value as WordDifficultySelection,
                       }))
                     }
                   >
-                    {wordListOptions.map(({ size, label }) => (
-                      <option key={size} value={size}>
+                    {difficultyOptions.map(({ difficulty, label }) => (
+                      <option key={difficulty} value={difficulty}>
                         {label}
                       </option>
                     ))}
@@ -295,15 +296,7 @@ export function TypingPage({
       )}
 
       {session.result && (
-        <ResultView
-          result={session.result}
-          speedUnit={settings.speedUnit}
-          theme={settings.theme}
-          onSpeedUnitChange={(speedUnit) =>
-            onSettingsChange((current) => ({ ...current, speedUnit }))
-          }
-          onRestart={restart}
-        />
+        <ResultView result={session.result} theme={settings.theme} onRestart={restart} />
       )}
     </section>
   );
