@@ -44,10 +44,10 @@ export function AppShell({
       active: location.pathname.startsWith("/learn"),
     },
     {
-      to: "/keyboard",
-      label: "NIDA keyboard",
+      to: "/keyboard-guide",
+      label: "Keyboard guide",
       icon: <ArchiveIcon />,
-      active: location.pathname === "/keyboard",
+      active: location.pathname === "/keyboard-guide",
     },
     {
       to: "/history",
@@ -140,7 +140,7 @@ export function AppShell({
         className="mx-auto flex w-[min(1180px,calc(100%_-_48px))] justify-between border-t border-app-line py-6 pt-[18px] text-[11px] tracking-[.08em] text-app-dim max-[760px]:w-[calc(100%_-_30px)] max-[760px]:pb-20"
         data-focus-fade
       >
-        <span>Unicode Khmer · orthographic cluster engine</span>
+        {/* keep for future */}
       </footer>
     </div>
   );

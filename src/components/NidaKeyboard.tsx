@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { displayNidaOutput, NIDA_KEY_ROWS, outputForLayer, type NidaLayer } from "../learning/nida";
 import type { PhysicalKeyHint } from "../learning/types";
 import { cx } from "../utils/classNames";
+import { getAltGrModifierLabel } from "../utils/platform";
+import { KeyboardKey } from "./KeyboardKey";
 
 export type NidaKeyboardMode = "follow" | "interactable";
 
@@ -30,6 +32,7 @@ function isShiftCode(code: string) {
 }
 
 export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProps) {
+  const altGrModifierLabel = getAltGrModifierLabel();
   const activeLayer = layerForHint(active);
   const [selectedLayer, setSelectedLayer] = useState<NidaLayer>("base");
   const [heldLayer, setHeldLayer] = useState<NidaLayer | null>(null);
@@ -53,7 +56,12 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
     };
 
     const press = (event: KeyboardEvent) => {
-      if (mode === "interactable" && event.code === "AltRight") {
+      const isAltGr =
+        event.code === "AltRight" || event.getModifierState("AltGraph") || rightAltHeldRef.current;
+      const isBrowserShortcut = event.metaKey || (event.ctrlKey && !isAltGr);
+      const isInteractiveKey = layoutCodes.has(event.code) || event.code === "AltRight";
+
+      if (mode === "interactable" && isInteractiveKey && !isBrowserShortcut) {
         event.preventDefault();
       }
       if (event.code === "AltRight" || event.getModifierState("AltGraph")) {
@@ -142,7 +150,7 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
           </p>
           <p className="m-0 mt-1 truncate text-[9px] text-app-dim" aria-live="polite">
             {mode === "follow"
-              ? `Following lesson · ${active ? `next: ${keyInstructionLabel(active)}` : "waiting for a target"}`
+              ? `Following lesson · ${active ? `next: ${keyInstructionLabel(active, altGrModifierLabel)}` : "waiting for a target"}`
               : lastOutput
                 ? `${lastLayoutKey?.key} produces ${displayNidaOutput(lastOutput)}`
                 : "Press or click a key to explore"}
@@ -186,9 +194,9 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
             const pressed = pressedCodes.has(layoutKey.code);
             const output = outputForLayer(layoutKey, layer);
             return (
-              <button
+              <KeyboardKey
                 key={layoutKey.code}
-                className="relative grid h-12 min-w-0 max-w-[50px] flex-1 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface p-0 text-app-dim shadow-[0_3px_0_var(--line)] transition-[color,background,transform,box-shadow,border-color] hover:border-[color-mix(in_srgb,var(--accent)_28%,transparent)] hover:text-app-soft data-[target=true]:-translate-y-0.5 data-[target=true]:border-[color-mix(in_srgb,var(--accent)_55%,transparent)] data-[target=true]:bg-app-accent-soft data-[target=true]:text-app-accent data-[target=true]:shadow-[0_5px_16px_var(--accent-soft)] data-[pressed=true]:translate-y-[2px] data-[pressed=true]:shadow-none data-[highlight=true]:border-[color-mix(in_srgb,var(--accent)_65%,transparent)] data-[highlight=true]:bg-app-accent-soft data-[highlight=true]:text-app-accent data-[feedback=correct]:border-[color-mix(in_srgb,var(--correct)_72%,transparent)] data-[feedback=correct]:bg-[color-mix(in_srgb,var(--correct)_14%,var(--surface))] data-[feedback=correct]:text-app-correct data-[feedback=incorrect]:border-[color-mix(in_srgb,var(--error)_65%,transparent)] data-[feedback=incorrect]:bg-[color-mix(in_srgb,var(--error)_13%,var(--surface))] data-[feedback=incorrect]:text-app-error"
+                width={layoutKey.width ?? 50}
                 data-feedback={feedbackFor(layoutKey.code)}
                 data-highlight={mode === "interactable" && pressed}
                 data-pressed={pressed}
@@ -199,7 +207,6 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
                 onPointerUp={() => releasePointerKey(layoutKey.code)}
                 onPointerCancel={() => releasePointerKey(layoutKey.code)}
                 onPointerLeave={() => releasePointerKey(layoutKey.code)}
-                type="button"
               >
                 <small className="absolute left-1.5 top-0.5 text-[7px] font-semibold opacity-55">
                   {layoutKey.key}
@@ -207,15 +214,15 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
                 <b className="font-khmer text-[15px] font-normal leading-none">
                   {output ? displayNidaOutput(output) : "·"}
                 </b>
-              </button>
+              </KeyboardKey>
             );
           })}
         </div>
       ))}
 
       <div className="mt-2 flex items-end justify-center gap-2">
-        <button
-          className="grid h-9 w-24 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface text-[8px] font-semibold uppercase tracking-[.08em] text-app-dim transition-[transform,color,background,border-color] data-[pressed=true]:translate-y-px data-[highlight=true]:border-[color-mix(in_srgb,var(--accent)_65%,transparent)] data-[highlight=true]:bg-app-accent-soft data-[highlight=true]:text-app-accent data-[target=true]:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] data-[target=true]:text-app-accent"
+        <KeyboardKey
+          width={96}
           data-highlight={
             mode === "interactable" &&
             (pressedCodes.has("ShiftLeft") || pressedCodes.has("ShiftRight"))
@@ -227,12 +234,11 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
           onPointerUp={() => releasePointerKey("ShiftLeft")}
           onPointerCancel={() => releasePointerKey("ShiftLeft")}
           onPointerLeave={() => releasePointerKey("ShiftLeft")}
-          type="button"
         >
           Shift
-        </button>
-        <button
-          className="grid h-9 w-64 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface font-khmer text-[10px] text-app-dim shadow-[0_3px_0_var(--line)] transition-[transform,color,background,border-color,box-shadow] data-[pressed=true]:translate-y-[2px] data-[pressed=true]:shadow-none data-[highlight=true]:border-[color-mix(in_srgb,var(--accent)_65%,transparent)] data-[highlight=true]:bg-app-accent-soft data-[highlight=true]:text-app-accent data-[target=true]:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] data-[target=true]:text-app-accent"
+        </KeyboardKey>
+        <KeyboardKey
+          width={256}
           data-feedback={feedbackFor("Space")}
           data-highlight={mode === "interactable" && pressedCodes.has("Space")}
           data-pressed={pressedCodes.has("Space")}
@@ -242,29 +248,29 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
           onPointerUp={() => releasePointerKey("Space")}
           onPointerCancel={() => releasePointerKey("Space")}
           onPointerLeave={() => releasePointerKey("Space")}
-          type="button"
         >
           {displayNidaOutput(outputForLayer(spaceKey, layer))}
-        </button>
-        <button
-          className="grid h-9 w-24 cursor-pointer place-items-center rounded-md border border-app-line bg-app-surface text-[8px] font-semibold uppercase tracking-[.08em] text-app-dim transition-[transform,color,background,border-color] data-[pressed=true]:translate-y-px data-[highlight=true]:border-[color-mix(in_srgb,var(--accent)_65%,transparent)] data-[highlight=true]:bg-app-accent-soft data-[highlight=true]:text-app-accent data-[target=true]:border-[color-mix(in_srgb,var(--accent)_45%,transparent)] data-[target=true]:text-app-accent"
+        </KeyboardKey>
+        <KeyboardKey
+          width={96}
           data-highlight={mode === "interactable" && pressedCodes.has("AltRight")}
           data-pressed={pressedCodes.has("AltRight")}
           data-target={mode === "follow" && active?.altGr}
-          aria-label="Hold Right Alt"
+          aria-label={`Hold ${altGrModifierLabel}`}
           onPointerDown={() => pressPointerKey("AltRight", "altGr")}
           onPointerUp={() => releasePointerKey("AltRight")}
           onPointerCancel={() => releasePointerKey("AltRight")}
           onPointerLeave={() => releasePointerKey("AltRight")}
-          type="button"
         >
-          Right Alt
-        </button>
+          {altGrModifierLabel}
+        </KeyboardKey>
       </div>
     </div>
   );
 }
 
-function keyInstructionLabel(hint: PhysicalKeyHint): string {
-  return [hint.altGr && "Right Alt", hint.shift && "Shift", hint.key].filter(Boolean).join(" + ");
+function keyInstructionLabel(hint: PhysicalKeyHint, altGrModifierLabel: string): string {
+  return [hint.altGr && altGrModifierLabel, hint.shift && "Shift", hint.key]
+    .filter(Boolean)
+    .join(" + ");
 }

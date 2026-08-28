@@ -183,7 +183,7 @@ try {
   } else if (checkOnly) {
     const current = await readFile(generatedPath, "utf8").catch(() => "");
     if (current !== output) {
-      throw new Error("Generated curriculum is stale. Run `pnpm curriculum:generate`.");
+      throw new Error("Generated curriculum is stale. Run `pnpm lesson:gen`.");
     }
     process.stdout.write("Curriculum sources and generated output are valid.\n");
   } else {

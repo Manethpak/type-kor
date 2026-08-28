@@ -8,6 +8,7 @@ export interface NidaLayoutKey {
   base: string;
   shift: string;
   altGr: string;
+  width?: number;
 }
 
 const key = (
@@ -16,7 +17,8 @@ const key = (
   base: string,
   shift: string,
   altGr = "",
-): NidaLayoutKey => ({ code, key: latin, base, shift, altGr });
+  width?: number,
+): NidaLayoutKey => ({ code, key: latin, base, shift, altGr, width });
 
 /**
  * Khmer (NIDA), CLDR id km-t-k0-windows-extended.
@@ -51,6 +53,7 @@ export const NIDA_KEY_ROWS: NidaLayoutKey[][] = [
     key("KeyP", "P", "ផ", "ភ", "ឰ"),
     key("BracketLeft", "[", "ៀ", "ឿ", "ឩ"),
     key("BracketRight", "]", "ឪ", "ឧ", "ឳ"),
+    key("Backslash", "\\", "ឮ", "ឭ", "\\"),
   ],
   [
     key("KeyA", "A", "ា", "ាំ"),
@@ -64,7 +67,6 @@ export const NIDA_KEY_ROWS: NidaLayoutKey[][] = [
     key("KeyL", "L", "ល", "ឡ"),
     key("Semicolon", ";", "ើ", "ោះ", "៖"),
     key("Quote", "'", "់", "៉", "ៈ"),
-    key("Backslash", "\\", "ឮ", "ឭ", "\\"),
   ],
   [
     key("KeyZ", "Z", "ឋ", "ឍ"),
@@ -118,9 +120,13 @@ export function keySequenceFor(output: string): PhysicalKeyHint[] {
   return hints;
 }
 
-export function keyInstruction(hint: PhysicalKeyHint | undefined): string {
+export function keyInstruction(
+  hint: PhysicalKeyHint | undefined,
+  altGrModifierLabel = "Right Alt",
+): string {
   if (!hint) return "Key guidance unavailable";
-  const modifiers = [hint.altGr && "Right Alt (AltGr)", hint.shift && "Shift"].filter(Boolean);
+  const altGrModifier = `${altGrModifierLabel} (AltGr)`;
+  const modifiers = [hint.altGr && altGrModifier, hint.shift && "Shift"].filter(Boolean);
   return `Press ${[...modifiers, hint.key].join(" + ")}`;
 }
 

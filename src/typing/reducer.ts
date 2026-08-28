@@ -77,6 +77,7 @@ export function typingReducer(state: TypingState, action: TypingAction): TypingS
       const scored = cluster.kind === "khmer";
       const codePoints = Array.from(cluster.comparisonKey).length;
       const currentIndex = state.currentIndex + 1;
+      const finished = currentIndex >= state.prompt.length;
       return {
         ...state,
         states,
@@ -97,7 +98,8 @@ export function typingReducer(state: TypingState, action: TypingAction): TypingS
             clusterAttemptsDelta: scored ? 1 : 0,
           }),
         ],
-        finished: currentIndex >= state.prompt.length,
+        finished,
+        endedAt: finished ? action.at : state.endedAt,
       };
     }
     case "reopen": {

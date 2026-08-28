@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { segmentKhmer } from "../engine/khmer";
-import { countInsertedInputErrors } from "./useTypingSession";
+import { countInsertedInputErrors } from "./input";
 
 describe("input-unit error classification", () => {
   it("accepts each code point in a correct Khmer cluster", () => {

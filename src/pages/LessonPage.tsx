@@ -1,10 +1,20 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import { NidaKeyboard } from "../components/NidaKeyboard";
 import { getLesson, getNextLesson } from "../learning/curriculum";
+import { createLessonSessionState, lessonSessionReducer } from "../learning/lessonSession";
 import { keyInstruction } from "../learning/nida";
 import type { LearningState, Lesson, LessonCheckpoint } from "../learning/types";
 import { khmerTextEngine } from "../engine/khmer";
+import { getAltGrModifierLabel } from "../utils/platform";
 
 function activeHintIndex(lesson: Lesson, stepIndex: number, input: string): number {
   const hints = lesson.steps[stepIndex].keySequence;
@@ -28,19 +38,18 @@ function LessonSession({
   onCheckpoint: (checkpoint: LessonCheckpoint) => void;
   onComplete: (lessonId: string, accuracy: number) => void;
 }) {
+  const altGrModifierLabel = getAltGrModifierLabel();
   const navigate = useNavigate();
   const resumed =
     learningState.checkpoint?.lessonId === lesson.id ? learningState.checkpoint : null;
   const resumedStepIndex = resumed
     ? lesson.steps.findIndex((step) => step.id === resumed.stepId)
     : -1;
-  const [stepIndex, setStepIndex] = useState(resumedStepIndex >= 0 ? resumedStepIndex : 0);
-  const [errors, setErrors] = useState(resumed?.errors ?? 0);
-  const [stepErrors, setStepErrors] = useState(0);
-  const [input, setInput] = useState("");
-  const [status, setStatus] = useState<"prefix" | "incorrect">("prefix");
+  const [session, dispatch] = useReducer(
+    lessonSessionReducer,
+    createLessonSessionState(resumedStepIndex >= 0 ? resumedStepIndex : 0, resumed?.errors ?? 0),
+  );
   const [keyboardVisible, setKeyboardVisible] = useState(true);
-  const [completedAccuracy, setCompletedAccuracy] = useState<number | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const typingAreaRef = useRef<HTMLDivElement>(null);
   const primaryActionRef = useRef<HTMLButtonElement>(null);
@@ -51,9 +60,9 @@ function LessonSession({
   const focusInput = useCallback(() => inputRef.current?.focus({ preventScroll: true }), []);
 
   useEffect(() => {
-    if (completedAccuracy !== null) return;
+    if (session.completedAccuracy !== null) return;
     focusInput();
-  }, [completedAccuracy, focusInput, lesson.id]);
+  }, [focusInput, lesson.id, session.completedAccuracy]);
 
   useEffect(() => {
     const blurInputOutsideTypingArea = (event: PointerEvent) => {
@@ -87,51 +96,46 @@ function LessonSession({
     }
   }, [lesson.id, onCheckpoint, resumed]);
 
-  const step = lesson.steps[stepIndex];
+  const step = lesson.steps[session.stepIndex];
   const hintIndex = useMemo(
-    () => (step ? activeHintIndex(lesson, stepIndex, input) : 0),
-    [input, lesson, step, stepIndex],
+    () => (step ? activeHintIndex(lesson, session.stepIndex, session.input) : 0),
+    [lesson, session.input, session.stepIndex, step],
   );
   const activeHint = step?.keySequence[hintIndex];
 
   const processInput = useCallback(
     (nextInput: string) => {
-      if (!step || completedAccuracy !== null) return;
+      if (!step || session.completedAccuracy !== null) return;
       const attempt = khmerTextEngine.canonicalize(nextInput);
       const target = khmerTextEngine.canonicalize(step.prompt);
-      setInput(nextInput);
 
       if (attempt === target) {
-        const nextStep = stepIndex + 1;
+        const nextStep = session.stepIndex + 1;
         if (nextStep >= lesson.steps.length) {
-          const accuracy = Math.round((lesson.steps.length / (lesson.steps.length + errors)) * 100);
-          setCompletedAccuracy(accuracy);
-          setInput("");
+          const accuracy = Math.round(
+            (lesson.steps.length / (lesson.steps.length + session.errors)) * 100,
+          );
+          dispatch({ type: "lessonCompleted", accuracy });
           onComplete(lesson.id, accuracy);
           return;
         }
-        setStepIndex(nextStep);
-        setStepErrors(0);
-        setInput("");
-        setStatus("prefix");
+        dispatch({ type: "stepCompleted", stepIndex: nextStep });
         onCheckpoint({
           lessonId: lesson.id,
           lessonRevision: lesson.revision,
           stepId: lesson.steps[nextStep].id,
-          errors,
+          errors: session.errors,
         });
         return;
       }
 
       if (!attempt || target.startsWith(attempt)) {
-        setStatus("prefix");
+        dispatch({ type: "inputChanged", input: nextInput, status: "prefix" });
         return;
       }
 
-      const nextErrors = errors + 1;
-      setErrors(nextErrors);
-      setStepErrors((value) => value + 1);
-      setStatus("incorrect");
+      const nextErrors = session.errors + 1;
+      dispatch({ type: "inputChanged", input: nextInput, status: "incorrect" });
       onCheckpoint({
         lessonId: lesson.id,
         lessonRevision: lesson.revision,
@@ -140,33 +144,28 @@ function LessonSession({
       });
     },
     [
-      completedAccuracy,
-      errors,
       lesson.id,
       lesson.steps.length,
       onCheckpoint,
       onComplete,
+      session.completedAccuracy,
+      session.errors,
+      session.stepIndex,
       step,
-      stepIndex,
     ],
   );
 
   const handleChange = (event: FormEvent<HTMLTextAreaElement>) => {
     const value = event.currentTarget.value;
     if (composingRef.current) {
-      setInput(value);
+      dispatch({ type: "inputChanged", input: value, status: "prefix" });
       return;
     }
     processInput(value);
   };
 
   const repeatLesson = useCallback(() => {
-    setStepIndex(0);
-    setErrors(0);
-    setStepErrors(0);
-    setInput("");
-    setStatus("prefix");
-    setCompletedAccuracy(null);
+    dispatch({ type: "restart" });
     onCheckpoint({
       lessonId: lesson.id,
       lessonRevision: lesson.revision,
@@ -191,7 +190,7 @@ function LessonSession({
   }, [navigate, nextLesson, onCheckpoint]);
 
   useEffect(() => {
-    if (completedAccuracy === null) return;
+    if (session.completedAccuracy === null) return;
     primaryActionRef.current?.focus({ preventScroll: true });
 
     const handleCompletionShortcut = (event: KeyboardEvent) => {
@@ -227,10 +226,10 @@ function LessonSession({
 
     window.addEventListener("keydown", handleCompletionShortcut);
     return () => window.removeEventListener("keydown", handleCompletionShortcut);
-  }, [completedAccuracy, continueLesson, repeatLesson]);
+  }, [continueLesson, repeatLesson, session.completedAccuracy]);
 
-  if (completedAccuracy !== null) {
-    const mastered = completedAccuracy >= lesson.masteryAccuracy;
+  if (session.completedAccuracy !== null) {
+    const mastered = session.completedAccuracy >= lesson.masteryAccuracy;
     return (
       <section
         className="mx-auto w-[min(760px,100%)] animate-arrive text-center"
@@ -247,8 +246,9 @@ function LessonSession({
             {mastered ? "អ្នកបានស្ទាត់មេរៀននេះ" : "ហាត់ម្ដងទៀតដើម្បីស្ទាត់"}
           </h1>
           <p className="mx-auto mt-3 max-w-md text-xs leading-relaxed text-app-dim">
-            ភាពត្រឹមត្រូវរបស់អ្នកគឺ <strong className="text-app-accent">{completedAccuracy}%</strong>។
-            ត្រូវការ {lesson.masteryAccuracy}% ដើម្បីសម្គាល់ថាស្ទាត់។
+            ភាពត្រឹមត្រូវរបស់អ្នកគឺ{" "}
+            <strong className="text-app-accent">{session.completedAccuracy}%</strong>។ ត្រូវការ{" "}
+            {lesson.masteryAccuracy}% ដើម្បីសម្គាល់ថាស្ទាត់។
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-2">
             <button
@@ -316,13 +316,13 @@ function LessonSession({
         </div>
         <div className="min-w-24 text-right">
           <b className="text-lg font-medium text-app-accent [font-variant-numeric:tabular-nums]">
-            {stepIndex + 1}
+            {session.stepIndex + 1}
           </b>
           <small className="text-[10px] text-app-dim"> / {lesson.steps.length}</small>
           <div className="mt-2 h-1 overflow-hidden rounded bg-app-surface">
             <span
               className="block h-full bg-app-accent transition-[width] duration-300"
-              style={{ width: `${((stepIndex + 1) / lesson.steps.length) * 100}%` }}
+              style={{ width: `${((session.stepIndex + 1) / lesson.steps.length) * 100}%` }}
             />
           </div>
         </div>
@@ -331,7 +331,7 @@ function LessonSession({
       <div
         ref={typingAreaRef}
         className="group relative cursor-text rounded-[20px] border border-app-line bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)] px-6 py-9 text-center shadow-[0_24px_70px_var(--shadow)] transition-[border-color] focus-within:border-[color-mix(in_srgb,var(--accent)_34%,transparent)] data-[status=incorrect]:border-[color-mix(in_srgb,var(--error)_42%,transparent)]"
-        data-status={status}
+        data-status={session.status}
         onClick={focusInput}
       >
         <small className="text-[9px] font-semibold uppercase tracking-[.17em] text-app-dim">
@@ -341,12 +341,14 @@ function LessonSession({
           {step.prompt}
         </div>
         <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 font-khmer text-[26px] text-app-accent">
-          {input || <span className="text-app-dim opacity-30">…</span>}
+          {session.input || <span className="text-app-dim opacity-30">…</span>}
         </div>
         <div className="mt-3">
           <div
             className="flex flex-wrap items-center justify-center gap-1.5"
-            aria-label={`Key sequence: ${step.keySequence.map(keyInstruction).join(", ")}`}
+            aria-label={`Key sequence: ${step.keySequence
+              .map((hint) => keyInstruction(hint, altGrModifierLabel))
+              .join(", ")}`}
           >
             {step.keySequence.map((hint, index) => (
               <span
@@ -354,24 +356,24 @@ function LessonSession({
                 className="rounded-md border border-app-line bg-app-surface px-2 py-1 text-[10px] text-app-dim transition-[color,border-color,background] data-[active=true]:border-[color-mix(in_srgb,var(--accent)_48%,transparent)] data-[active=true]:bg-app-accent-soft data-[active=true]:text-app-accent"
                 data-active={index === hintIndex}
               >
-                {hint.altGr && <span className="mr-1 opacity-60">Right Alt +</span>}
+                {hint.altGr && <span className="mr-1 opacity-60">{altGrModifierLabel} +</span>}
                 {hint.shift && <span className="mr-1 opacity-60">Shift +</span>}
                 {hint.key}
               </span>
             ))}
           </div>
           <p className="mb-0 mt-3 min-h-5 text-xs text-app-dim" role="status" aria-live="polite">
-            {status === "incorrect"
-              ? stepErrors >= 2
-                ? `${keyInstruction(activeHint)} — look for the highlighted key`
+            {session.status === "incorrect"
+              ? session.stepErrors >= 2
+                ? `${keyInstruction(activeHint, altGrModifierLabel)} — look for the highlighted key`
                 : "មិនទាន់ត្រូវទេ — លុប ហើយសាកម្ដងទៀត"
-              : keyInstruction(activeHint)}
+              : keyInstruction(activeHint, altGrModifierLabel)}
           </p>
         </div>
         <textarea
           ref={inputRef}
           className="absolute left-1/2 top-1/2 size-0.5 overflow-hidden whitespace-nowrap border-0 p-0 [clip-path:inset(50%)]"
-          value={input}
+          value={session.input}
           onInput={handleChange}
           onChange={() => undefined}
           onCompositionStart={() => {
@@ -388,7 +390,7 @@ function LessonSession({
         />
       </div>
 
-      <div className="mt-6" data-help={stepErrors >= 2}>
+      <div className="mt-6" data-help={session.stepErrors >= 2}>
         <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
           <button
             className="cursor-pointer rounded-md border border-app-line bg-app-raised px-2.5 py-1 text-[9px] font-semibold text-app-dim transition-[color,border-color,background] hover:border-[color-mix(in_srgb,var(--accent)_35%,transparent)] hover:text-app-accent"

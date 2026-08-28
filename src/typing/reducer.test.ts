@@ -88,6 +88,22 @@ describe("typing reducer", () => {
     expect(state).toMatchObject({ startedAt: 1_000, endedAt: 16_000, finished: true });
   });
 
+  it("records the final commit time when the prompt is completed", () => {
+    const prompt = segmentKhmer("ខ្មែរ");
+    let state = createTypingState(prompt);
+    state = typingReducer(state, { type: "start", at: 1_000 });
+    prompt.forEach((cluster, index) => {
+      state = typingReducer(state, {
+        type: "commit",
+        at: index === prompt.length - 1 ? 2_500 : 1_500 + index * 100,
+        attempt: cluster.display,
+        correct: true,
+      });
+    });
+
+    expect(state).toMatchObject({ startedAt: 1_000, endedAt: 2_500, finished: true });
+  });
+
   it("derives cumulative and raw interval analytics from timestamped events", () => {
     const state = {
       ...createTypingState(segmentKhmer("ខ្មែរ")),
@@ -157,19 +173,19 @@ describe("typing reducer", () => {
         correct: true,
       });
     });
-    state = typingReducer(state, { type: "finish", at: 2_500 });
     const result = calculateResult(state, "words", 2, 2_500);
-    expect(result.timeline).toHaveLength(2);
-    expect(result.timeline[1]).toMatchObject({
-      second: 2,
-      elapsedMs: 1_500,
+    const expectedDuration = 500 + (prompt.length - 1) * 100;
+    expect(result.timeline).toHaveLength(1);
+    expect(result.timeline[0]).toMatchObject({
+      second: 1,
+      elapsedMs: expectedDuration,
       correctClusters: prompt.filter((cluster) => cluster.kind === "khmer").length,
     });
     const codePoints = prompt.reduce(
       (total, cluster) => total + Array.from(cluster.comparisonKey).length,
       0,
     );
-    expect(result.wordsPerMinute).toBe(Math.round(codePoints / 5 / (1_500 / 60_000)));
+    expect(result.wordsPerMinute).toBe(Math.round(codePoints / 5 / (expectedDuration / 60_000)));
   });
 
   it("calculates burst speed over a rolling five-second window", () => {

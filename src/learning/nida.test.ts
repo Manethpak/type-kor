@@ -36,7 +36,7 @@ describe("Khmer NIDA keyboard", () => {
   });
 
   it("includes the complete US physical key rows plus Space", () => {
-    expect(NIDA_KEY_ROWS.map((row) => row.length)).toEqual([13, 12, 12, 10, 1]);
+    expect(NIDA_KEY_ROWS.map((row) => row.length)).toEqual([13, 13, 11, 10, 1]);
     expect(NIDA_KEY_ROWS.flat().map((item) => item.code)).toContain("Backquote");
     expect(NIDA_KEY_ROWS.flat().map((item) => item.code)).toContain("BracketLeft");
     expect(NIDA_KEY_ROWS.flat().map((item) => item.code)).toContain("Quote");

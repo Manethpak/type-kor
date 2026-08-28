@@ -98,6 +98,38 @@ describe("NidaKeyboard", () => {
     expect(lessonAltUp.defaultPrevented).toBe(true);
   });
 
+  it("prevents browser actions for demo keys while preserving browser shortcuts", () => {
+    render(<NidaKeyboard active={undefined} mode="interactable" />);
+
+    const quote = new KeyboardEvent("keydown", {
+      code: "Quote",
+      key: "'",
+      bubbles: true,
+      cancelable: true,
+    });
+    const space = new KeyboardEvent("keydown", {
+      code: "Space",
+      key: " ",
+      bubbles: true,
+      cancelable: true,
+    });
+    const find = new KeyboardEvent("keydown", {
+      code: "KeyF",
+      key: "f",
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    window.dispatchEvent(quote);
+    window.dispatchEvent(space);
+    window.dispatchEvent(find);
+
+    expect(quote.defaultPrevented).toBe(true);
+    expect(space.defaultPrevented).toBe(true);
+    expect(find.defaultPrevented).toBe(false);
+  });
+
   it("accepts its mode as a prop and reports lesson attempts", () => {
     const { rerender } = render(
       <NidaKeyboard

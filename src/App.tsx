@@ -6,7 +6,7 @@ import { useAppState } from "./hooks/useAppState";
 import { useLearningProgress } from "./hooks/useLearningProgress";
 import { useTypingSession } from "./hooks/useTypingSession";
 import { HistoryPage } from "./pages/HistoryPage";
-import { KeyboardPlaygroundPage } from "./pages/KeyboardPlaygroundPage";
+import { KeyboardGuidePage } from "./pages/KeyboardGuidePage";
 import { LearnPage } from "./pages/LearnPage";
 import { LessonPage } from "./pages/LessonPage";
 import { OnboardingPage } from "./pages/OnboardingPage";
@@ -146,7 +146,8 @@ export default function App() {
             <HistoryPage history={history} speedUnit={settings.speedUnit} onClear={clearHistory} />
           }
         />
-        <Route path="/keyboard" element={<KeyboardPlaygroundPage />} />
+        <Route path="/keyboard-guide" element={<KeyboardGuidePage />} />
+        <Route path="/keyboard" element={<Navigate to="/keyboard-guide" replace />} />
         <Route
           path="/settings"
           element={<SettingsPage settings={settings} onChange={setSettings} />}

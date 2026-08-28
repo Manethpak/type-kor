@@ -36,6 +36,7 @@ function normalizeCheckpoint(value: unknown): LessonCheckpoint | null {
         : undefined;
   if (!step) return null;
 
+  // Stable step IDs intentionally preserve a checkpoint across lesson revisions.
   return {
     lessonId: lesson.id,
     lessonRevision: lesson.revision,

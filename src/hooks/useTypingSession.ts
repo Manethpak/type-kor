@@ -8,24 +8,12 @@ import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
-import { difficultyWordLists, generateMixedWords, generateWords } from "../data/wordList";
 import { khmerTextEngine } from "../engine/khmer";
-import type { OrthographicCluster } from "../engine/types";
 import type { TestResult } from "../storage/types";
+import { countInsertedInputErrors, getInputDelta } from "../typing/input";
+import { createTypingPrompt } from "../typing/prompt";
 import { calculateResult, createTypingState, typingReducer } from "../typing/reducer";
 import type { TestSettings } from "../typing/types";
-
-function createPrompt(settings: TestSettings, seed: number): OrthographicCluster[] {
-  const count = settings.mode === "words" ? settings.modeValue : 90;
-  const selectedWords =
-    settings.wordDifficulty === "mixed"
-      ? generateMixedWords(count, seed)
-      : generateWords(difficultyWordLists[settings.wordDifficulty], count, seed);
-  const words = selectedWords.map((word, index) =>
-    settings.punctuation && index > 0 && (index + 1) % 12 === 0 ? `${word}។` : word,
-  );
-  return khmerTextEngine.segment(words.join(" "));
-}
 
 function playTick() {
   const AudioContextClass =
@@ -46,82 +34,11 @@ function playTick() {
   oscillator.addEventListener("ended", () => context.close());
 }
 
-function inputDelta(previousValue: string, nextValue: string) {
-  const previous = Array.from(previousValue);
-  const next = Array.from(nextValue);
-  let prefix = 0;
-  while (prefix < previous.length && prefix < next.length && previous[prefix] === next[prefix]) {
-    prefix += 1;
-  }
-  let suffix = 0;
-  while (
-    suffix < previous.length - prefix &&
-    suffix < next.length - prefix &&
-    previous[previous.length - 1 - suffix] === next[next.length - 1 - suffix]
-  ) {
-    suffix += 1;
-  }
-  return {
-    retainedPrefix: next.slice(0, prefix).join(""),
-    inserted: next.slice(prefix, next.length - suffix),
-    deletedUnits: previous.length - prefix - suffix,
-  };
-}
-
-function classifyPendingInput(prompt: OrthographicCluster[], startIndex: number, rawValue: string) {
-  let remaining = rawValue;
-  let index = startIndex;
-  let status: "prefix" | "incorrect" = "prefix";
-
-  while (remaining && index < prompt.length) {
-    const target = prompt[index];
-    const match = khmerTextEngine.compare(target, remaining);
-    if (match === "correct") {
-      remaining = "";
-      index += 1;
-      status = "prefix";
-      break;
-    }
-    if (match === "prefix") {
-      status = "prefix";
-      break;
-    }
-
-    const attempts = khmerTextEngine.segment(remaining);
-    if (attempts.length > 1) {
-      remaining = remaining.slice(attempts[0].end);
-      index += 1;
-      continue;
-    }
-    status = "incorrect";
-    break;
-  }
-
-  if (remaining && index >= prompt.length) status = "incorrect";
-
-  return { index, remaining, status };
-}
-
-export function countInsertedInputErrors(
-  prompt: OrthographicCluster[],
-  currentIndex: number,
-  retainedPrefix: string,
-  inserted: string[],
-): number {
-  let analysis = classifyPendingInput(prompt, currentIndex, retainedPrefix);
-  let errors = 0;
-  for (const unit of inserted) {
-    analysis = classifyPendingInput(prompt, analysis.index, `${analysis.remaining}${unit}`);
-    if (analysis.status === "incorrect") errors += 1;
-  }
-  return errors;
-}
-
 export function useTypingSession(settings: TestSettings, onComplete: (result: TestResult) => void) {
   const [seed, setSeed] = useState(() => Date.now());
   const promptSettingsKey = `${settings.mode}:${settings.modeValue}:${settings.punctuation}:${settings.wordDifficulty}`;
   const prompt = useMemo(
-    () => createPrompt(settings, seed),
+    () => createTypingPrompt(settings, seed),
     [seed, settings.mode, settings.modeValue, settings.punctuation, settings.wordDifficulty],
   );
   const [typing, dispatch] = useReducer(typingReducer, prompt, createTypingState);
@@ -173,7 +90,7 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
 
   const restart = useCallback(() => {
     const nextSeed = Date.now();
-    const nextPrompt = createPrompt(settings, nextSeed);
+    const nextPrompt = createTypingPrompt(settings, nextSeed);
     setSeed(nextSeed);
     setResult(null);
     savingRef.current = false;
@@ -233,7 +150,7 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
 
   const recordInputChange = useCallback(
     (previousValue: string, nextValue: string, at: number) => {
-      const delta = inputDelta(previousValue, nextValue);
+      const delta = getInputDelta(previousValue, nextValue);
       if (delta.inserted.length === 0 && delta.deletedUnits === 0) return;
       dispatch({
         type: "input",
@@ -325,22 +242,12 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
     settings.mode === "time"
       ? Math.max(0, Math.ceil(settings.modeValue - elapsedMs / 1_000))
       : null;
-  const liveCpm =
-    typing.startedAt === null || elapsedMs < 1_000
-      ? 0
-      : Math.round(typing.correctClusters / (elapsedMs / 60_000));
-  const liveWpm =
-    typing.startedAt === null || elapsedMs < 1_000
-      ? 0
-      : Math.round(typing.correctCodePoints / 5 / (elapsedMs / 60_000));
-
   return {
     handleBeforeInput,
     handleCompositionEnd,
     handleCompositionStart,
     handleInput,
     handleKeyDown,
-    liveSpeed: settings.speedUnit === "cpm" ? liveCpm : liveWpm,
     remainingSeconds,
     restart,
     result,

@@ -53,18 +53,20 @@ describe("timed typing test", () => {
     ).toBeVisible();
   });
 
-  it("switches the live counter between CPM and WPM", () => {
-    renderApp();
+  it("switches and persists the preferred speed unit", () => {
+    renderApp("/settings");
     const switcher = screen.getByRole("group", { name: "Speed unit" });
     const cpm = switcher.querySelector<HTMLButtonElement>("button[aria-pressed='true']")!;
-    expect(cpm).toHaveTextContent("cpm");
+    expect(cpm).toHaveTextContent("CPM");
 
-    fireEvent.click(within(switcher).getByRole("button", { name: "wpm" }));
-    expect(within(switcher).getByRole("button", { name: "wpm" })).toHaveAttribute(
+    fireEvent.click(within(switcher).getByRole("button", { name: "WPM" }));
+    expect(within(switcher).getByRole("button", { name: "WPM" })).toHaveAttribute(
       "aria-pressed",
       "true",
     );
-    expect(screen.getByTestId("live-speed").nextElementSibling).toHaveTextContent("wpm");
+    expect(JSON.parse(localStorage.getItem("typekor:settings")!)).toMatchObject({
+      speedUnit: "wpm",
+    });
   });
 
   it("renders route pages and supports browser-style navigation", () => {
@@ -109,21 +111,27 @@ describe("timed typing test", () => {
     );
   });
 
-  it("opens the interactive NIDA keyboard playground from primary navigation", () => {
+  it("opens the keyboard guide from primary navigation", () => {
     renderApp("/test");
-    fireEvent.click(screen.getByTitle("NIDA keyboard"));
+    fireEvent.click(screen.getByTitle("Keyboard guide"));
 
-    expect(screen.getByRole("heading", { name: "សាកល្បងក្ដារចុចខ្មែរ" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "មគ្គុទ្ទេសក៍ក្ដារចុច / Keyboard Guide" })).toBeVisible();
     expect(screen.getByTestId("nida-keyboard")).toHaveAttribute("data-mode", "interactable");
     expect(screen.getByRole("group", { name: "Keyboard layer" })).toBeVisible();
+  });
+
+  it("redirects the old keyboard route to the keyboard guide", () => {
+    renderApp("/keyboard");
+
+    expect(screen.getByRole("heading", { name: "មគ្គុទ្ទេសក៍ក្ដារចុច / Keyboard Guide" })).toBeVisible();
   });
 
   it("onboards once and remembers the selected learning experience", () => {
     localStorage.removeItem("typekor:app-state");
     renderApp();
 
-    expect(screen.getByRole("heading", { name: "តើអ្នកចង់ចាប់ផ្ដើមដោយរបៀបណា?" })).toBeVisible();
-    fireEvent.click(screen.getByRole("button", { name: /រៀន Learn/ }));
+    expect(screen.getByRole("heading", { name: "Typing ភាសាខ្មែរជាមួយក្ដារចុច NIDA" })).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: /រៀន Learning mode/ }));
 
     expect(screen.getByRole("heading", { name: "រៀនវាយអក្សរខ្មែរ" })).toBeVisible();
     expect(JSON.parse(localStorage.getItem("typekor:app-state")!)).toMatchObject({
@@ -291,6 +299,6 @@ describe("timed typing test", () => {
   it("falls back to onboarding when app state is malformed", () => {
     localStorage.setItem("typekor:app-state", "not-json");
     renderApp();
-    expect(screen.getByRole("heading", { name: "តើអ្នកចង់ចាប់ផ្ដើមដោយរបៀបណា?" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Typing ភាសាខ្មែរជាមួយក្ដារចុច NIDA" })).toBeVisible();
   });
 });

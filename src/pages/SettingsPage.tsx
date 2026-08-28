@@ -43,13 +43,14 @@ export function SettingsPage({
               <p>CPM សម្រាប់ចង្កោមខ្មែរ ឬ WPM ស្តង់ដារ ៥ តួអក្សរ</p>
             </div>
           </div>
-          <div className="grid shrink-0 gap-1">
+          <div className="grid shrink-0 gap-1" role="group" aria-label="Speed unit">
             <button
               className={cx(
                 segmentedButtonClass,
                 settings.speedUnit === "cpm" && selectedButtonClass,
               )}
               onClick={() => update("speedUnit", "cpm")}
+              aria-pressed={settings.speedUnit === "cpm"}
             >
               CPM
             </button>
@@ -59,6 +60,7 @@ export function SettingsPage({
                 settings.speedUnit === "wpm" && selectedButtonClass,
               )}
               onClick={() => update("speedUnit", "wpm")}
+              aria-pressed={settings.speedUnit === "wpm"}
             >
               WPM
             </button>

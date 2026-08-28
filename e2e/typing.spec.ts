@@ -205,21 +205,22 @@ test("switches between the Saffron Ink and Rice Paper themes", async ({ page }) 
   await expect(page.locator("html")).toHaveAttribute("data-theme", "paper");
 });
 
-test("switches the live speed display between CPM and WPM", async ({ page }) => {
+test("switches and persists the preferred speed unit", async ({ page }) => {
   await page.goto("/");
+  await page.getByTitle("Settings").click();
   const unitSwitch = page.getByRole("group", { name: "Speed unit" });
-  await expect(unitSwitch.getByRole("button", { name: "cpm" })).toHaveAttribute(
+  await expect(unitSwitch.getByRole("button", { name: "CPM" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
-  await unitSwitch.getByRole("button", { name: "wpm" }).click();
-  await expect(unitSwitch.getByRole("button", { name: "wpm" })).toHaveAttribute(
+  await unitSwitch.getByRole("button", { name: "WPM" }).click();
+  await expect(unitSwitch.getByRole("button", { name: "WPM" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
-  await expect(page.getByTestId("live-speed").locator("xpath=following-sibling::small")).toHaveText(
-    "wpm",
-  );
+  await expect
+    .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("typekor:settings") ?? "{}")))
+    .toMatchObject({ speedUnit: "wpm" });
 });
 
 test("routes with hash URLs and preserves the typing session across navigation", async ({
@@ -248,8 +249,8 @@ test("onboards into Learn and resumes the saved lesson step", async ({ page }) =
   });
   await page.reload();
 
-  await expect(page.getByRole("heading", { name: "តើអ្នកចង់ចាប់ផ្ដើមដោយរបៀបណា?" })).toBeVisible();
-  await page.getByRole("button", { name: /រៀន Learn/ }).click();
+  await expect(page.getByRole("heading", { name: "Typing ភាសាខ្មែរជាមួយក្ដារចុច NIDA" })).toBeVisible();
+  await page.getByRole("button", { name: /រៀន Learning mode/ }).click();
   await expect(page).toHaveURL(/#\/learn$/);
   await page.getByRole("button", { name: /ក · ល · ស · ហ/ }).click();
 

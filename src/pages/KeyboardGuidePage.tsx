@@ -48,7 +48,6 @@ const layerNotes = [
     bodyKm: "អក្សរ ស្រៈ លេខខ្មែរ និងសញ្ញាដែលប្រើញឹកញាប់។ គ្រាប់ចុច Space បញ្ចូល ZWSP សម្រាប់ព្រំដែនពាក្យ។",
     bodyEn:
       "Khmer letters, vowels, numerals, and frequent marks. The Space key inserts ZWSP as an invisible word boundary.",
-    sample: "ក េ ១ ។",
   },
   {
     number: "02",
@@ -57,7 +56,6 @@ const layerNotes = [
     bodyKm: "ព្យញ្ជនៈ ស្រៈ និងសញ្ញាបន្ទាប់បន្សំ។ Shift + Space បញ្ចូលចន្លោះធម្មតាដែលអាចមើលឃើញ។",
     bodyEn:
       "Secondary consonants, vowels, and punctuation. Shift + Space produces a regular visible space.",
-    sample: "គ ឺ ៛ ?",
   },
   {
     number: "03",
@@ -66,7 +64,54 @@ const layerNotes = [
     bodyKm: "តួអក្សរកម្រ សញ្ញារូបិយប័ណ្ណ និងតួអក្សរគ្រប់គ្រងការភ្ជាប់។ Right Alt + Space បញ្ចូល NBSP។",
     bodyEn:
       "Less common characters, currency marks, and join controls. Right Alt + Space produces a non-breaking space.",
-    sample: "ឱ € ZWJ",
+  },
+];
+
+const invisibleCharacters = [
+  {
+    name: "ZWSP",
+    unicode: "U+200B",
+    shortcut: "Space",
+    titleKm: "ព្រំដែនពាក្យដែលមើលមិនឃើញ",
+    titleEn: "Invisible word boundary",
+    bodyKm: "សម្គាល់ព្រំដែនពាក្យ និងអនុញ្ញាតឱ្យអត្ថបទបំបែកបន្ទាត់ ដោយមិនបង្ហាញចន្លោះ។",
+    bodyEn: "Marks a Khmer word boundary and allows a line break without showing a space.",
+  },
+  {
+    name: "Space",
+    unicode: "U+0020",
+    shortcut: "Shift + Space",
+    titleKm: "ចន្លោះធម្មតា",
+    titleEn: "Regular visible space",
+    bodyKm: "បំបែកឃ្លា ក្រុមពាក្យ ឬផ្នែកនៃឈ្មោះ ហើយអាចបំបែកបន្ទាត់បាន។",
+    bodyEn: "Separates clauses, phrases, or parts of a name and permits a line break.",
+  },
+  {
+    name: "NBSP",
+    unicode: "U+00A0",
+    shortcut: "Right Alt + Space",
+    titleKm: "ចន្លោះមិនបំបែកបន្ទាត់",
+    titleEn: "Non-breaking space",
+    bodyKm: "បង្ហាញដូចចន្លោះធម្មតា ប៉ុន្តែរក្សាអត្ថបទទាំងសងខាងឱ្យនៅលើបន្ទាត់តែមួយ។",
+    bodyEn: "Looks like a regular space but keeps the text on both sides on the same line.",
+  },
+  {
+    name: "ZWJ",
+    unicode: "U+200D",
+    shortcut: "Right Alt + `",
+    titleKm: "ស្នើការភ្ជាប់តួអក្សរ",
+    titleEn: "Request a joined form",
+    bodyKm: "ស្នើឱ្យពុម្ពអក្សរបង្កើតទម្រង់អក្សរភ្ជាប់ ជាពិសេសនៅក្នុងពុម្ពអក្សរខ្មែរមូល។",
+    bodyEn: "Requests a ligature or joined form, particularly in traditional Khmer Muul fonts.",
+  },
+  {
+    name: "ZWNJ",
+    unicode: "U+200C",
+    shortcut: "Right Alt + 1",
+    titleKm: "ទប់ស្កាត់ការភ្ជាប់តួអក្សរ",
+    titleEn: "Prevent a joined form",
+    bodyKm: "ទប់ស្កាត់អក្សរភ្ជាប់ និងអាចរក្សារូបរាងត្រឹមត្រូវរបស់សញ្ញាប្ដូរព្យញ្ជនៈ។",
+    bodyEn: "Suppresses a ligature and can preserve the intended form of a consonant shifter.",
   },
 ];
 
@@ -114,6 +159,11 @@ const sources = [
     href: "https://unicode.org/cldr/charts/40/keyboards/layouts/km.html",
   },
   {
+    label: "Unicode Core Specification",
+    detail: "Khmer spacing, consonant shifters, and Muul ligature controls",
+    href: "https://www.unicode.org/versions/Unicode17.0.0/core-spec/chapter-16/",
+  },
+  {
     label: "KhmerOS archive",
     detail: "NiDA Khmer Unicode Keyboard V1.0 files and original layout sheet",
     href: "https://sourceforge.net/projects/khmer/files/Keyboard%20-%20Khmer%20Unicode/NiDA%20Khmer%20Unicode%20Keyboard%20V1.0/",
@@ -132,7 +182,7 @@ function SectionHeading({
   id: string;
 }) {
   return (
-    <div className="mb-7 grid grid-cols-[48px_1fr] items-start gap-4 border-t border-app-line pt-5">
+    <div className="mb-7 grid grid-cols-[48px_1fr] items-start gap-4 border-app-line">
       <span
         className="pt-1 text-[9px] font-bold tracking-[.18em] text-app-accent"
         aria-hidden="true"
@@ -154,11 +204,11 @@ function SectionHeading({
   );
 }
 
-export function KeyboardPlaygroundPage() {
+export function KeyboardGuidePage() {
   return (
     <article
       className="mx-auto w-[min(1000px,100%)] animate-arrive pb-8"
-      aria-labelledby="keyboard-playground-title"
+      aria-labelledby="keyboard-guide-title"
     >
       <header className="relative mb-16 overflow-hidden border-y border-app-line py-9 md:py-12">
         <span
@@ -169,50 +219,34 @@ export function KeyboardPlaygroundPage() {
         </span>
         <div className="relative grid grid-cols-[minmax(0,1.25fr)_minmax(220px,.75fr)] items-end gap-10 max-[720px]:grid-cols-1">
           <div>
-            <p className="mb-4 text-[9px] font-bold uppercase tracking-[.28em] text-app-accent">
+            <p className="mb-4 text-[9px] font-bold uppercase tracking-[.2em] text-app-accent">
               Digital archive · បណ្ណសារឌីជីថល
             </p>
             <h1
-              id="keyboard-playground-title"
-              aria-label="ក្ដារចុចខ្មែរ NIDA / The Khmer NIDA Keyboard"
+              id="keyboard-guide-title"
+              aria-label="មគ្គុទ្ទេសក៍ក្ដារចុច / Keyboard Guide"
               className="m-0 text-app-accent"
             >
               <span className="block font-khmer text-[clamp(43px,7vw,72px)] font-medium leading-[1.12] tracking-[-.025em]">
-                ក្ដារចុចខ្មែរ NIDA
+                មគ្គុទ្ទេសក៍ក្ដារចុច
               </span>
               <span className="mt-3 block font-ui text-[clamp(18px,2.7vw,27px)] font-medium leading-tight tracking-[-.02em] text-app-text">
-                The Khmer NIDA Keyboard
+                Keyboard Guide
               </span>
             </h1>
           </div>
-
-          <div className="border-l border-app-line pl-6 max-[720px]:border-l-0 max-[720px]:border-t max-[720px]:pl-0 max-[720px]:pt-6">
-            <p className="m-0 font-khmer text-[14px] leading-[1.9] text-app-soft">
-              ប្លង់ NIDA គឺជាវិធីរៀបចំគ្រាប់ចុចសម្រាប់បញ្ចូលអក្សរខ្មែរជាយូនីកូដ។ វាមិនមែនជាពុម្ពអក្សរទេ។
-            </p>
-            <p className="mb-0 mt-3 text-[12px] leading-relaxed text-app-dim">
-              NIDA is a keyboard layout for entering Khmer Unicode text. It is not a font: the
-              layout chooses the characters, while a font determines how they look.
-            </p>
+          <div className="relative mt-10 grid grid-cols-3 border-app-line pt-4 max-[520px]:grid-cols-1 max-[520px]:gap-3">
+            {["STANDARD", "3 LAYERS", "UNICODE"].map((value) => (
+              <div
+                className="border-r border-app-line px-4 first:pl-0 last:border-r-0 max-[520px]:border-r-0 max-[520px]:px-0"
+                key={value}
+              >
+                <strong className="block text-[10px] font-bold tracking-[.16em] text-app-accent">
+                  {value}
+                </strong>
+              </div>
+            ))}
           </div>
-        </div>
-
-        <div className="relative mt-10 grid grid-cols-3 border-t border-app-line pt-4 max-[520px]:grid-cols-1 max-[520px]:gap-3">
-          {[
-            ["STANDARD", "ប្លង់ស្តង់ដារ"],
-            ["3 LAYERS", "បីស្រទាប់"],
-            ["UNICODE", "អត្ថបទយូនីកូដ"],
-          ].map(([value, label]) => (
-            <div
-              className="border-r border-app-line px-4 first:pl-0 last:border-r-0 max-[520px]:border-r-0 max-[520px]:px-0"
-              key={value}
-            >
-              <strong className="block text-[10px] font-bold tracking-[.16em] text-app-accent">
-                {value}
-              </strong>
-              <span className="mt-1 block font-khmer text-[11px] text-app-dim">{label}</span>
-            </div>
-          ))}
         </div>
       </header>
 
@@ -240,13 +274,13 @@ export function KeyboardPlaygroundPage() {
                 <h3 className="m-0 font-khmer text-lg font-medium leading-relaxed text-app-text">
                   {event.titleKm}
                 </h3>
-                <p className="mb-0 mt-2 font-khmer text-[13px] leading-[1.9] text-app-soft">
+                <p className="mb-0 mt-2 font-khmer text-[14px] leading-[1.9] text-app-soft">
                   {event.bodyKm}
                 </p>
               </div>
               <div className="pt-1 max-[740px]:col-start-2">
-                <h3 className="m-0 text-[12px] font-semibold text-app-text">{event.titleEn}</h3>
-                <p className="mb-0 mt-2 text-[11px] leading-[1.75] text-app-dim">{event.bodyEn}</p>
+                <h3 className="m-0 text-sm font-semibold text-app-text">{event.titleEn}</h3>
+                <p className="mb-0 mt-2 text-xs leading-[1.75] text-app-dim">{event.bodyEn}</p>
               </div>
             </article>
           ))}
@@ -313,16 +347,95 @@ export function KeyboardPlaygroundPage() {
                 </kbd>
               </div>
               <h3 className="m-0 font-khmer text-xl font-medium">{layer.titleKm}</h3>
-              <p className="mb-0 mt-3 font-khmer text-[12px] leading-[1.85] text-app-soft">
+              <p className="mb-0 mt-3 font-khmer text-sm leading-[1.85] text-app-soft">
                 {layer.bodyKm}
               </p>
-              <p className="mb-12 mt-3 text-[10px] leading-[1.7] text-app-dim">{layer.bodyEn}</p>
-              <span className="absolute bottom-4 right-5 font-khmer text-xl text-app-accent opacity-65 transition-opacity group-hover:opacity-100">
-                {layer.sample}
-              </span>
+              <p className="mb-12 mt-3 text-xs leading-[1.7] text-app-dim">{layer.bodyEn}</p>
             </article>
           ))}
         </div>
+
+        <details className="group mt-4 overflow-hidden rounded-[18px] border border-[color-mix(in_srgb,var(--accent)_28%,var(--line))] bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)]">
+          <summary className="grid cursor-pointer list-none grid-cols-[1fr_auto] items-center gap-6 bg-app-accent-soft px-6 py-6 transition-colors hover:bg-[color-mix(in_srgb,var(--accent)_12%,var(--bg-raised))] focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-app-accent [&::-webkit-details-marker]:hidden">
+            <div>
+              <p className="m-0 text-[9px] font-bold uppercase tracking-[.18em] text-app-accent">
+                Invisible Unicode characters
+              </p>
+              <h3 className="mb-0 mt-3 font-khmer text-[22px] font-medium leading-relaxed text-app-text">
+                ហេតុអ្វីក្ដារចុចខ្មែរត្រូវការពួកវា?
+              </h3>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-right text-[9px] font-semibold uppercase tracking-[.12em] text-app-dim max-[520px]:hidden">
+                5 controls · Open guide
+              </span>
+              <span
+                className="grid size-9 place-items-center rounded-full border border-[color-mix(in_srgb,var(--accent)_35%,var(--line))] bg-app-bg text-lg leading-none text-app-accent transition-transform duration-300 group-open:rotate-45"
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </div>
+          </summary>
+
+          <div className="grid grid-cols-2 gap-8 border-y border-app-line px-6 py-5 max-[700px]:grid-cols-1 max-[700px]:gap-3">
+            <p className="m-0 font-khmer text-[12px] leading-[1.9] text-app-soft">
+              ភាសាខ្មែរជាទូទៅមិនប្រើចន្លោះរវាងពាក្យទេ ហើយពុម្ពអក្សរអាចប្ដូររូបរាង ឬភ្ជាប់តួអក្សរ។
+              តួអក្សរទាំងនេះគ្រប់គ្រងព្រំដែនពាក្យ ការបំបែកបន្ទាត់ និងការភ្ជាប់អក្សរ។
+            </p>
+            <p className="m-0 text-[11px] leading-[1.7] text-app-dim">
+              Khmer normally has no visible spaces between words, and fonts can reshape or join
+              characters. These controls manage word boundaries, line wrapping, and shaping.
+            </p>
+          </div>
+
+          <div className="divide-y divide-app-line px-5">
+            {invisibleCharacters.map((character) => (
+              <article
+                className="grid grid-cols-[74px_150px_1fr_1fr] gap-5 py-5 max-[820px]:grid-cols-[64px_130px_1fr] max-[620px]:grid-cols-[64px_1fr]"
+                key={character.name}
+              >
+                <div>
+                  <strong className="block text-[12px] font-bold tracking-[.08em] text-app-accent">
+                    {character.name}
+                  </strong>
+                  <span className="mt-1 block text-[8px] tracking-[.08em] text-app-dim">
+                    {character.unicode}
+                  </span>
+                </div>
+                <div>
+                  <span className="mb-1.5 block text-[8px] font-bold uppercase tracking-[.14em] text-app-dim">
+                    NIDA key
+                  </span>
+                  <kbd className="inline-block rounded-md border border-app-line bg-app-surface px-2 py-1 text-[9px] font-semibold text-app-text shadow-[0_2px_0_var(--line)]">
+                    {character.shortcut}
+                  </kbd>
+                </div>
+                <div className="max-[620px]:col-start-2">
+                  <h4 className="m-0 font-khmer text-[14px] font-medium leading-relaxed text-app-text">
+                    {character.titleKm}
+                  </h4>
+                  <p className="mb-0 mt-1 font-khmer text-[11px] leading-[1.8] text-app-soft">
+                    {character.bodyKm}
+                  </p>
+                </div>
+                <div className="max-[820px]:col-start-3 max-[620px]:col-start-2">
+                  <h4 className="m-0 text-[11px] font-semibold text-app-text">
+                    {character.titleEn}
+                  </h4>
+                  <p className="mb-0 mt-1.5 text-[10px] leading-[1.7] text-app-dim">
+                    {character.bodyEn}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <p className="m-0 border-t border-app-line px-5 py-4 text-[9px] leading-relaxed text-app-dim">
+            ZWSP and regular Space cover most everyday typing. ZWJ and ZWNJ are advanced controls
+            used when a Khmer font needs explicit shaping instructions.
+          </p>
+        </details>
       </section>
 
       <section className="mb-18" aria-labelledby="impact-title">
