@@ -41,9 +41,6 @@ export function LearnPage({
           <h1 id="learn-title" className="m-0 font-khmer text-[38px] font-medium">
             រៀនវាយអក្សរខ្មែរ
           </h1>
-          <p className="mb-0 mt-2 max-w-xl text-xs leading-relaxed text-app-dim">
-            ដើរតាមមេរៀនដែលបានណែនាំ ឬជ្រើសរើសមេរៀនណាមួយដោយសេរី។ ល្បឿនមិនមែនជាគោលដៅនៅទីនេះទេ។
-          </p>
         </div>
         <div className="rounded-xl border border-app-line bg-app-raised px-4 py-3 text-right">
           <b className="block text-xl font-medium text-app-accent [font-variant-numeric:tabular-nums]">

@@ -362,7 +362,7 @@ export function KeyboardGuidePage() {
                 Invisible Unicode characters
               </p>
               <h3 className="mb-0 mt-3 font-khmer text-[22px] font-medium leading-relaxed text-app-text">
-                ហេតុអ្វីក្ដារចុចខ្មែរត្រូវការពួកវា?
+                ហេតុអ្វីក្ដារចុចខ្មែរត្រូវការ Invisible Unicode?
               </h3>
             </div>
             <div className="flex items-center gap-4">
