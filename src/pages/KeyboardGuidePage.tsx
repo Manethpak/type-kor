@@ -219,15 +219,12 @@ export function KeyboardGuidePage() {
         </span>
         <div className="relative grid grid-cols-[minmax(0,1.25fr)_minmax(220px,.75fr)] items-end gap-10 max-[720px]:grid-cols-1">
           <div>
-            <p className="mb-4 text-[9px] font-bold uppercase tracking-[.2em] text-app-accent">
-              Digital archive · បណ្ណសារឌីជីថល
-            </p>
             <h1
               id="keyboard-guide-title"
               aria-label="មគ្គុទ្ទេសក៍ក្ដារចុច / Keyboard Guide"
               className="m-0 text-app-accent"
             >
-              <span className="block font-khmer text-[clamp(43px,7vw,72px)] font-medium leading-[1.12] tracking-[-.025em]">
+              <span className="block font-khmer text-[clamp(36px,5vw,52px)] font-medium leading-[1.12] tracking-[-.025em]">
                 មគ្គុទ្ទេសក៍ក្ដារចុច
               </span>
               <span className="mt-3 block font-ui text-[clamp(18px,2.7vw,27px)] font-medium leading-tight tracking-[-.02em] text-app-text">

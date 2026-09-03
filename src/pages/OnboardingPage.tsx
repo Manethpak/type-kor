@@ -32,17 +32,14 @@ export function OnboardingPage({
 
       <section className="w-[min(900px,100%)] animate-arrive" aria-labelledby="welcome-title">
         <div className="mb-9 text-center">
-          <div className="mx-auto mb-5 grid size-13 place-items-center rounded-[14px_14px_14px_4px] border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-app-accent-soft font-khmer text-[28px] text-app-accent shadow-[inset_0_0_24px_var(--accent-soft)]">
+          <div className="mx-auto mb-2 grid size-13 place-items-center rounded-[14px_14px_14px_4px] border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-app-accent-soft font-khmer text-[28px] text-app-accent shadow-[inset_0_0_24px_var(--accent-soft)]">
             ក
           </div>
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[.25em] text-app-accent">
-            Welcome to Type ក
-          </p>
           <h1
             id="welcome-title"
-            className="m-0 font-khmer text-[clamp(32px,5vw,48px)] font-medium leading-tight"
+            className="text-lg font-semibold uppercase tracking-widest text-app-accent"
           >
-            Typing ភាសាខ្មែរជាមួយក្ដារចុច NIDA
+            Type ក
           </h1>
         </div>
 
@@ -57,8 +54,8 @@ export function OnboardingPage({
             <span className="mb-12 grid size-11 place-items-center rounded-xl bg-app-accent-soft text-app-accent [&_svg]:size-5">
               <BookIcon />
             </span>
-            <small className="text-[9px] font-bold uppercase tracking-[.2em] text-app-accent">
-              Guided path
+            <small className="text-[9px] font-bold uppercase tracking-widest text-app-accent">
+              Guided learning
             </small>
             <h2 className="mb-2 mt-2 font-khmer text-[30px] font-medium">
               រៀន <span className="font-ui text-sm font-medium text-app-dim">Learning mode</span>
@@ -79,8 +76,8 @@ export function OnboardingPage({
             <span className="mb-12 grid size-11 place-items-center rounded-xl bg-app-accent-soft text-app-accent [&_svg]:size-5">
               <KeyboardIcon />
             </span>
-            <small className="text-[9px] font-bold uppercase tracking-[.2em] text-app-accent">
-              Focused measure
+            <small className="text-[9px] font-bold uppercase tracking-widest text-app-accent">
+              Practice & Measure
             </small>
             <h2 className="mb-2 mt-2 font-khmer text-[30px] font-medium">
               សាកល្បង <span className="font-ui text-sm font-medium text-app-dim">Testing mode</span>

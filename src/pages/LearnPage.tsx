@@ -35,9 +35,6 @@ export function LearnPage({
     <section className="mx-auto w-[min(920px,100%)] animate-arrive" aria-labelledby="learn-title">
       <div className="mb-8 grid grid-cols-[1fr_auto] items-end gap-5 border-b border-app-line pb-6 max-[680px]:grid-cols-1">
         <div>
-          <p className="mb-2 text-[10px] font-bold uppercase tracking-[.19em] text-app-accent">
-            NIDA learning path
-          </p>
           <h1 id="learn-title" className="m-0 font-khmer text-[38px] font-medium">
             រៀនវាយអក្សរខ្មែរ
           </h1>
