@@ -2,6 +2,7 @@
 schemaVersion: 1
 id: vowels
 order: 3
+tier: core
 title:
   km: ស្រៈ និងសញ្ញា
   en: Vowels and marks

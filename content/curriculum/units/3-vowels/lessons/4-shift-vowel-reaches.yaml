@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: shift-vowel-reaches
+revision: 1
+unitId: vowels
+order: 4
+title:
+  km: ឺ · ឿ · ាំ · ៃ · ះ
+  en: Shift vowel reaches
+description:
+  km: ពង្រីកការប្រើ Shift ជាមួយស្រៈ និងសញ្ញា។
+  en: Extend Shift practice with vowels and signs.
+masteryAccuracy: 90
+steps:
+  - id: keu
+    prompt: កឺ
+  - id: kuoe
+    prompt: កឿ
+  - id: kam
+    prompt: កាំ
+  - id: kai
+    prompt: កៃ
+  - id: kah
+    prompt: កះ
+  - id: seu
+    prompt: សឺ
+  - id: suoe
+    prompt: សឿ
+  - id: sam
+    prompt: សាំ
+  - id: sai
+    prompt: សៃ
+  - id: sah
+    prompt: សះ

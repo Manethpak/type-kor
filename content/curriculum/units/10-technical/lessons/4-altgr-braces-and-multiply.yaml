@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: altgr-braces-and-multiply
+revision: 1
+unitId: technical
+order: 4
+title:
+  km: "{ · } · ×"
+  en: AltGr braces and multiplication
+description:
+  km: ហាត់វង់ក្រចកអង្កាញ់ និងសញ្ញាគុណ។
+  en: Practice braces and the multiplication sign.
+masteryAccuracy: 90
+steps:
+  - {
+      id: open-one,
+      kind: key,
+      label: { km: វង់ក្រចកអង្កាញ់បើក, en: Opening brace },
+      target: { code: Digit9, layer: altGr },
+    }
+  - {
+      id: close-one,
+      kind: key,
+      label: { km: វង់ក្រចកអង្កាញ់បិទ, en: Closing brace },
+      target: { code: Digit0, layer: altGr },
+    }
+  - {
+      id: multiply-one,
+      kind: key,
+      label: { km: សញ្ញាគុណ ×, en: Multiplication sign },
+      target: { code: Minus, layer: altGr },
+    }
+  - {
+      id: open-two,
+      kind: key,
+      label: { km: វង់ក្រចកអង្កាញ់បើក, en: Opening brace },
+      target: { code: Digit9, layer: altGr },
+    }
+  - {
+      id: close-two,
+      kind: key,
+      label: { km: វង់ក្រចកអង្កាញ់បិទ, en: Closing brace },
+      target: { code: Digit0, layer: altGr },
+    }
+  - {
+      id: multiply-two,
+      kind: key,
+      label: { km: សញ្ញាគុណ ×, en: Multiplication sign },
+      target: { code: Minus, layer: altGr },
+    }
+  - {
+      id: open-three,
+      kind: key,
+      label: { km: វង់ក្រចកអង្កាញ់បើក, en: Opening brace },
+      target: { code: Digit9, layer: altGr },
+    }
+  - {
+      id: close-three,
+      kind: key,
+      label: { km: វង់ក្រចកអង្កាញ់បិទ, en: Closing brace },
+      target: { code: Digit0, layer: altGr },
+    }
+  - {
+      id: multiply-three,
+      kind: key,
+      label: { km: សញ្ញាគុណ ×, en: Multiplication sign },
+      target: { code: Minus, layer: altGr },
+    }
+  - {
+      id: multiply-four,
+      kind: key,
+      label: { km: សញ្ញាគុណ ×, en: Multiplication sign },
+      target: { code: Minus, layer: altGr },
+    }

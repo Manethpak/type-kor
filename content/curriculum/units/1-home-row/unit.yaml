@@ -2,6 +2,7 @@
 schemaVersion: 1
 id: home-row
 order: 1
+tier: core
 title:
   km: ជួរគោល
   en: Home row

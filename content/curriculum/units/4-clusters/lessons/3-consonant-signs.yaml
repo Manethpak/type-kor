@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: consonant-signs
+revision: 1
+unitId: clusters
+order: 3
+title:
+  km: ៊ · ៍ · ័ · ៏ · ៌
+  en: Consonant signs
+description:
+  km: ហាត់សញ្ញាប្តូរ និងសញ្ញាបន្ថែមលើព្យញ្ជនៈ។
+  en: Practice consonant shifters and additional marks.
+masteryAccuracy: 90
+steps:
+  - id: shifter
+    prompt: ក៊
+  - id: bantoc
+    prompt: ក៍
+  - id: sanha-muoy
+    prompt: ក័
+  - id: sanha-pi
+    prompt: ក៏
+  - id: robat
+    prompt: ក៌
+  - id: shifter-sa
+    prompt: ស៊
+  - id: bantoc-sa
+    prompt: ស៍
+  - id: sanha-muoy-sa
+    prompt: ស័
+  - id: sanha-pi-sa
+    prompt: ស៏
+  - id: robat-sa
+    prompt: ស៌

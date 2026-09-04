@@ -2,6 +2,7 @@
 schemaVersion: 1
 id: consonants
 order: 2
+tier: core
 title:
   km: ព្យញ្ជនៈ
   en: Consonants

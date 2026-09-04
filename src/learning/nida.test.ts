@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { keyInstruction, keySequenceFor, NIDA_KEY_ROWS } from "./nida";
+import { keyHintFor, keyInstruction, keySequenceFor, NIDA_KEY_ROWS } from "./nida";
 
 function layoutKey(code: string) {
   return NIDA_KEY_ROWS.flat().find((item) => item.code === code)!;
@@ -41,5 +41,11 @@ describe("Khmer NIDA keyboard", () => {
     expect(NIDA_KEY_ROWS.flat().map((item) => item.code)).toContain("BracketLeft");
     expect(NIDA_KEY_ROWS.flat().map((item) => item.code)).toContain("Quote");
     expect(NIDA_KEY_ROWS.flat().map((item) => item.code)).toContain("Space");
+  });
+
+  it("creates exact modifier-aware targets for key drills", () => {
+    expect(keyHintFor("Space", "base")).toMatchObject({ output: "\u200B", shift: false });
+    expect(keyHintFor("Space", "shift")).toMatchObject({ output: " ", shift: true });
+    expect(keyHintFor("Space", "altGr")).toMatchObject({ output: "\u00A0", altGr: true });
   });
 });

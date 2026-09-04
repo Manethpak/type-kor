@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: base-vowel-reaches
+revision: 1
+unitId: vowels
+order: 3
+title:
+  km: ោ · ៀ · ើ · ់ · ុំ
+  en: Base vowel reaches
+description:
+  km: ហាត់ស្រៈ និងសញ្ញានៅផ្នែកខាងស្តាំ។
+  en: Practice vowels and signs on the right side.
+masteryAccuracy: 90
+steps:
+  - id: kao
+    prompt: កោ
+  - id: kie
+    prompt: កៀ
+  - id: koe
+    prompt: កើ
+  - id: kak
+    prompt: ក់
+  - id: kom
+    prompt: កុំ
+  - id: sao
+    prompt: សោ
+  - id: sie
+    prompt: សៀ
+  - id: soe
+    prompt: សើ
+  - id: sak
+    prompt: ស់
+  - id: som
+    prompt: សុំ

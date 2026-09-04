@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: shift-consonants-left
+revision: 1
+unitId: consonants
+order: 4
+title:
+  km: ឈ · ឌ · ធ · ឍ · ឃ
+  en: Shift consonants, left hand
+description:
+  km: ប្រើ Shift ជាមួយគ្រាប់ចុចខាងឆ្វេង។
+  en: Use Shift with left-hand consonant keys.
+masteryAccuracy: 90
+steps:
+  - id: chho
+    prompt: ឈ
+  - id: do
+    prompt: ឌ
+  - id: tho
+    prompt: ធ
+  - id: ttho
+    prompt: ឍ
+  - id: kho
+    prompt: ឃ
+  - id: chho-ka
+    prompt: ឈក
+  - id: do-la
+    prompt: ឌល
+  - id: tho-na
+    prompt: ធន
+  - id: ttho-ma
+    prompt: ឍម
+  - id: kho-ra
+    prompt: ឃរ

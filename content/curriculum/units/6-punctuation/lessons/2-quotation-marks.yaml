@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: quotation-marks
+revision: 1
+unitId: punctuation
+order: 2
+title:
+  km: « · »
+  en: Quotation marks
+description:
+  km: ប្រើសញ្ញាសម្រង់បើក និងបិទ។
+  en: Use opening and closing quotation marks.
+masteryAccuracy: 90
+steps:
+  - id: open-one
+    prompt: «
+  - id: close-one
+    prompt: »
+  - id: pair-one
+    prompt: «»
+  - id: ka
+    prompt: «ក»
+  - id: sa
+    prompt: «ស»
+  - id: open-two
+    prompt: «
+  - id: close-two
+    prompt: »
+  - id: pair-two
+    prompt: «»
+  - id: number
+    prompt: «១»
+  - id: word
+    prompt: «សាលា»

@@ -5,6 +5,7 @@
       "schemaVersion": 1,
       "id": "home-row",
       "order": 1,
+      "tier": "core",
       "title": {
         "km": "ជួរគោល",
         "en": "Home row"
@@ -18,6 +19,7 @@
       "schemaVersion": 1,
       "id": "consonants",
       "order": 2,
+      "tier": "core",
       "title": {
         "km": "ព្យញ្ជនៈ",
         "en": "Consonants"
@@ -31,6 +33,7 @@
       "schemaVersion": 1,
       "id": "vowels",
       "order": 3,
+      "tier": "core",
       "title": {
         "km": "ស្រៈ និងសញ្ញា",
         "en": "Vowels and marks"
@@ -44,6 +47,7 @@
       "schemaVersion": 1,
       "id": "clusters",
       "order": 4,
+      "tier": "core",
       "title": {
         "km": "ជើងអក្សរ",
         "en": "Subscript clusters"
@@ -55,8 +59,37 @@
     },
     {
       "schemaVersion": 1,
-      "id": "words",
+      "id": "numbers",
       "order": 5,
+      "tier": "core",
+      "title": {
+        "km": "លេខខ្មែរ",
+        "en": "Khmer numerals"
+      },
+      "description": {
+        "km": "វាយលេខខ្មែរទាំងដប់ដោយប្រើជួរខាងលើ។",
+        "en": "Type all ten Khmer numerals on the number row."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "punctuation",
+      "order": 6,
+      "tier": "core",
+      "title": {
+        "km": "សញ្ញា និងចន្លោះ",
+        "en": "Punctuation and spacing"
+      },
+      "description": {
+        "km": "ប្រើសញ្ញាខ្មែរ និងចន្លោះតាមបរិបទត្រឹមត្រូវ។",
+        "en": "Use Khmer punctuation and spacing in the right context."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "words",
+      "order": 7,
+      "tier": "core",
       "title": {
         "km": "ពាក្យ និងឃ្លា",
         "en": "Words and phrases"
@@ -64,6 +97,48 @@
       "description": {
         "km": "ភ្ជាប់ជំនាញទាំងអស់ទៅជាពាក្យ និងឃ្លាខ្លីៗ។",
         "en": "Combine every skill in common words and short phrases."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "advanced-khmer",
+      "order": 8,
+      "tier": "advanced",
+      "title": {
+        "km": "អក្សរខ្មែរកម្រិតខ្ពស់",
+        "en": "Advanced Khmer characters"
+      },
+      "description": {
+        "km": "បំពេញអក្សរឯករាជ្យ និងសញ្ញាខ្មែរដែលប្រើមិនញឹកញាប់។",
+        "en": "Complete the independent vowels and less common Khmer signs."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "controls",
+      "order": 9,
+      "tier": "advanced",
+      "title": {
+        "km": "តួអក្សរមើលមិនឃើញ",
+        "en": "Invisible controls"
+      },
+      "description": {
+        "km": "ស្គាល់ ZWJ, ZWNJ និង NBSP ដោយការហាត់គ្រាប់ចុចផ្ទាល់។",
+        "en": "Learn ZWJ, ZWNJ, and NBSP with direct key drills."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "technical",
+      "order": 10,
+      "tier": "technical",
+      "title": {
+        "km": "សញ្ញាបច្ចេកទេស",
+        "en": "Technical symbols"
+      },
+      "description": {
+        "km": "បំពេញសញ្ញា ASCII រូបិយប័ណ្ណ និងសញ្ញាសរសេរកូដ។",
+        "en": "Complete ASCII, currency, and coding symbols."
       }
     }
   ],
@@ -201,6 +276,10 @@
           "prompt": "ច"
         },
         {
+          "id": "da",
+          "prompt": "ដ"
+        },
+        {
           "id": "dara",
           "prompt": "តារា"
         },
@@ -252,19 +331,193 @@
         },
         {
           "id": "kit",
-          "prompt": "គិត"
+          "prompt": "គត"
         },
         {
           "id": "cheat",
-          "prompt": "ជាតិ"
+          "prompt": "ជរ"
         },
         {
           "id": "tuk",
-          "prompt": "ទឹក"
+          "prompt": "ទយ"
         },
         {
           "id": "pit",
-          "prompt": "ពិត"
+          "prompt": "ពច"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "base-consonant-reaches",
+      "revision": 1,
+      "unitId": "consonants",
+      "order": 3,
+      "title": {
+        "km": "ឆ · ផ · ថ · ឋ · ខ",
+        "en": "Base consonant reaches"
+      },
+      "description": {
+        "km": "ហាត់ព្យញ្ជនៈនៅគែម និងជួរខាងក្រោម។",
+        "en": "Practice consonants on the outer and lower reaches."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "chha",
+          "prompt": "ឆ"
+        },
+        {
+          "id": "pha",
+          "prompt": "ផ"
+        },
+        {
+          "id": "tha",
+          "prompt": "ថ"
+        },
+        {
+          "id": "ttha",
+          "prompt": "ឋ"
+        },
+        {
+          "id": "kha",
+          "prompt": "ខ"
+        },
+        {
+          "id": "chha-ka",
+          "prompt": "ឆក"
+        },
+        {
+          "id": "pha-la",
+          "prompt": "ផល"
+        },
+        {
+          "id": "tha-na",
+          "prompt": "ថន"
+        },
+        {
+          "id": "ttha-ma",
+          "prompt": "ឋម"
+        },
+        {
+          "id": "kha-ma",
+          "prompt": "ខម"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "shift-consonants-left",
+      "revision": 1,
+      "unitId": "consonants",
+      "order": 4,
+      "title": {
+        "km": "ឈ · ឌ · ធ · ឍ · ឃ",
+        "en": "Shift consonants, left hand"
+      },
+      "description": {
+        "km": "ប្រើ Shift ជាមួយគ្រាប់ចុចខាងឆ្វេង។",
+        "en": "Use Shift with left-hand consonant keys."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "chho",
+          "prompt": "ឈ"
+        },
+        {
+          "id": "do",
+          "prompt": "ឌ"
+        },
+        {
+          "id": "tho",
+          "prompt": "ធ"
+        },
+        {
+          "id": "ttho",
+          "prompt": "ឍ"
+        },
+        {
+          "id": "kho",
+          "prompt": "ឃ"
+        },
+        {
+          "id": "chho-ka",
+          "prompt": "ឈក"
+        },
+        {
+          "id": "do-la",
+          "prompt": "ឌល"
+        },
+        {
+          "id": "tho-na",
+          "prompt": "ធន"
+        },
+        {
+          "id": "ttho-ma",
+          "prompt": "ឍម"
+        },
+        {
+          "id": "kho-ra",
+          "prompt": "ឃរ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "shift-consonants-right",
+      "revision": 1,
+      "unitId": "consonants",
+      "order": 5,
+      "title": {
+        "km": "អ · ញ · ឡ · ភ · ណ",
+        "en": "Shift consonants, right hand"
+      },
+      "description": {
+        "km": "ប្រើ Shift ជាមួយគ្រាប់ចុចខាងស្តាំ។",
+        "en": "Use Shift with right-hand consonant keys."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "a",
+          "prompt": "អ"
+        },
+        {
+          "id": "nho",
+          "prompt": "ញ"
+        },
+        {
+          "id": "la",
+          "prompt": "ឡ"
+        },
+        {
+          "id": "pho",
+          "prompt": "ភ"
+        },
+        {
+          "id": "na",
+          "prompt": "ណ"
+        },
+        {
+          "id": "a-ka",
+          "prompt": "អក"
+        },
+        {
+          "id": "nho-la",
+          "prompt": "ញល"
+        },
+        {
+          "id": "la-na",
+          "prompt": "ឡន"
+        },
+        {
+          "id": "pho-sa",
+          "prompt": "ភស"
+        },
+        {
+          "id": "na-ma",
+          "prompt": "ណម"
         }
       ]
     },
@@ -315,6 +568,10 @@
         {
           "id": "taa",
           "prompt": "តា"
+        },
+        {
+          "id": "keu",
+          "prompt": "កឹ"
         }
       ]
     },
@@ -365,6 +622,184 @@
         {
           "id": "pov",
           "prompt": "ពៅ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "base-vowel-reaches",
+      "revision": 1,
+      "unitId": "vowels",
+      "order": 3,
+      "title": {
+        "km": "ោ · ៀ · ើ · ់ · ុំ",
+        "en": "Base vowel reaches"
+      },
+      "description": {
+        "km": "ហាត់ស្រៈ និងសញ្ញានៅផ្នែកខាងស្តាំ។",
+        "en": "Practice vowels and signs on the right side."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "kao",
+          "prompt": "កោ"
+        },
+        {
+          "id": "kie",
+          "prompt": "កៀ"
+        },
+        {
+          "id": "koe",
+          "prompt": "កើ"
+        },
+        {
+          "id": "kak",
+          "prompt": "ក់"
+        },
+        {
+          "id": "kom",
+          "prompt": "កុំ"
+        },
+        {
+          "id": "sao",
+          "prompt": "សោ"
+        },
+        {
+          "id": "sie",
+          "prompt": "សៀ"
+        },
+        {
+          "id": "soe",
+          "prompt": "សើ"
+        },
+        {
+          "id": "sak",
+          "prompt": "ស់"
+        },
+        {
+          "id": "som",
+          "prompt": "សុំ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "shift-vowel-reaches",
+      "revision": 1,
+      "unitId": "vowels",
+      "order": 4,
+      "title": {
+        "km": "ឺ · ឿ · ាំ · ៃ · ះ",
+        "en": "Shift vowel reaches"
+      },
+      "description": {
+        "km": "ពង្រីកការប្រើ Shift ជាមួយស្រៈ និងសញ្ញា។",
+        "en": "Extend Shift practice with vowels and signs."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "keu",
+          "prompt": "កឺ"
+        },
+        {
+          "id": "kuoe",
+          "prompt": "កឿ"
+        },
+        {
+          "id": "kam",
+          "prompt": "កាំ"
+        },
+        {
+          "id": "kai",
+          "prompt": "កៃ"
+        },
+        {
+          "id": "kah",
+          "prompt": "កះ"
+        },
+        {
+          "id": "seu",
+          "prompt": "សឺ"
+        },
+        {
+          "id": "suoe",
+          "prompt": "សឿ"
+        },
+        {
+          "id": "sam",
+          "prompt": "សាំ"
+        },
+        {
+          "id": "sai",
+          "prompt": "សៃ"
+        },
+        {
+          "id": "sah",
+          "prompt": "សះ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "compound-vowel-endings",
+      "revision": 1,
+      "unitId": "vowels",
+      "order": 5,
+      "title": {
+        "km": "ោះ · េះ · ំ · ុះ",
+        "en": "Compound endings"
+      },
+      "description": {
+        "km": "ហាត់គ្រាប់ចុចដែលបញ្ចូលស្រៈ និងសញ្ញារួមគ្នា។",
+        "en": "Practice keys that produce combined vowel endings."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "kaoh",
+          "prompt": "កោះ"
+        },
+        {
+          "id": "keh",
+          "prompt": "កេះ"
+        },
+        {
+          "id": "kam",
+          "prompt": "កំ"
+        },
+        {
+          "id": "koh",
+          "prompt": "កុះ"
+        },
+        {
+          "id": "consonant-shifter",
+          "prompt": "ក៉"
+        },
+        {
+          "id": "saoh",
+          "prompt": "សោះ"
+        },
+        {
+          "id": "seh",
+          "prompt": "សេះ"
+        },
+        {
+          "id": "sam",
+          "prompt": "សំ"
+        },
+        {
+          "id": "soh",
+          "prompt": "សុះ"
+        },
+        {
+          "id": "maoh",
+          "prompt": "មោះ"
+        },
+        {
+          "id": "mem",
+          "prompt": "មំ"
         }
       ]
     },
@@ -470,6 +905,434 @@
     },
     {
       "schemaVersion": 1,
+      "id": "consonant-signs",
+      "revision": 1,
+      "unitId": "clusters",
+      "order": 3,
+      "title": {
+        "km": "៊ · ៍ · ័ · ៏ · ៌",
+        "en": "Consonant signs"
+      },
+      "description": {
+        "km": "ហាត់សញ្ញាប្តូរ និងសញ្ញាបន្ថែមលើព្យញ្ជនៈ។",
+        "en": "Practice consonant shifters and additional marks."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "shifter",
+          "prompt": "ក៊"
+        },
+        {
+          "id": "bantoc",
+          "prompt": "ក៍"
+        },
+        {
+          "id": "sanha-muoy",
+          "prompt": "ក័"
+        },
+        {
+          "id": "sanha-pi",
+          "prompt": "ក៏"
+        },
+        {
+          "id": "robat",
+          "prompt": "ក៌"
+        },
+        {
+          "id": "shifter-sa",
+          "prompt": "ស៊"
+        },
+        {
+          "id": "bantoc-sa",
+          "prompt": "ស៍"
+        },
+        {
+          "id": "sanha-muoy-sa",
+          "prompt": "ស័"
+        },
+        {
+          "id": "sanha-pi-sa",
+          "prompt": "ស៏"
+        },
+        {
+          "id": "robat-sa",
+          "prompt": "ស៌"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "digits-one-five",
+      "revision": 1,
+      "unitId": "numbers",
+      "order": 1,
+      "title": {
+        "km": "១ · ២ · ៣ · ៤ · ៥",
+        "en": "Khmer digits one to five"
+      },
+      "description": {
+        "km": "ចាប់ផ្តើមជួរលេខពី ១ ដល់ ៥។",
+        "en": "Begin the number row with digits one through five."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "one",
+          "prompt": "១"
+        },
+        {
+          "id": "two",
+          "prompt": "២"
+        },
+        {
+          "id": "three",
+          "prompt": "៣"
+        },
+        {
+          "id": "four",
+          "prompt": "៤"
+        },
+        {
+          "id": "five",
+          "prompt": "៥"
+        },
+        {
+          "id": "one-two",
+          "prompt": "១២"
+        },
+        {
+          "id": "three-four",
+          "prompt": "៣៤"
+        },
+        {
+          "id": "five-four",
+          "prompt": "៥៤"
+        },
+        {
+          "id": "two-three",
+          "prompt": "២៣"
+        },
+        {
+          "id": "one-to-five",
+          "prompt": "១២៣៤៥"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "digits-six-zero",
+      "revision": 1,
+      "unitId": "numbers",
+      "order": 2,
+      "title": {
+        "km": "៦ · ៧ · ៨ · ៩ · ០",
+        "en": "Khmer digits six to zero"
+      },
+      "description": {
+        "km": "បញ្ចប់ជួរលេខពី ៦ ដល់ ០។",
+        "en": "Complete the number row with six through zero."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "six",
+          "prompt": "៦"
+        },
+        {
+          "id": "seven",
+          "prompt": "៧"
+        },
+        {
+          "id": "eight",
+          "prompt": "៨"
+        },
+        {
+          "id": "nine",
+          "prompt": "៩"
+        },
+        {
+          "id": "zero",
+          "prompt": "០"
+        },
+        {
+          "id": "six-seven",
+          "prompt": "៦៧"
+        },
+        {
+          "id": "eight-nine",
+          "prompt": "៨៩"
+        },
+        {
+          "id": "nine-zero",
+          "prompt": "៩០"
+        },
+        {
+          "id": "seven-eight",
+          "prompt": "៧៨"
+        },
+        {
+          "id": "six-to-zero",
+          "prompt": "៦៧៨៩០"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "khmer-punctuation",
+      "revision": 1,
+      "unitId": "punctuation",
+      "order": 1,
+      "title": {
+        "km": "។ · ៗ · ៛ · ៕",
+        "en": "Khmer punctuation"
+      },
+      "description": {
+        "km": "ហាត់សញ្ញាបញ្ចប់ ការធ្វើឡើងវិញ រូបិយប័ណ្ណ និងសម្រង់។",
+        "en": "Practice sentence, repetition, currency, and quotation marks."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "khan",
+          "prompt": "។"
+        },
+        {
+          "id": "repetition",
+          "prompt": "ៗ"
+        },
+        {
+          "id": "riel",
+          "prompt": "៛"
+        },
+        {
+          "id": "bariyoosan",
+          "prompt": "៕"
+        },
+        {
+          "id": "double-repetition",
+          "prompt": "ៗៗ"
+        },
+        {
+          "id": "khan-repeat",
+          "prompt": "។ៗ"
+        },
+        {
+          "id": "riel-one",
+          "prompt": "៛១"
+        },
+        {
+          "id": "riel-two",
+          "prompt": "២៛"
+        },
+        {
+          "id": "double-khan",
+          "prompt": "។។"
+        },
+        {
+          "id": "mixed",
+          "prompt": "១៛។"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "quotation-marks",
+      "revision": 1,
+      "unitId": "punctuation",
+      "order": 2,
+      "title": {
+        "km": "« · »",
+        "en": "Quotation marks"
+      },
+      "description": {
+        "km": "ប្រើសញ្ញាសម្រង់បើក និងបិទ។",
+        "en": "Use opening and closing quotation marks."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "open-one",
+          "prompt": "«"
+        },
+        {
+          "id": "close-one",
+          "prompt": "»"
+        },
+        {
+          "id": "pair-one",
+          "prompt": "«»"
+        },
+        {
+          "id": "ka",
+          "prompt": "«ក»"
+        },
+        {
+          "id": "sa",
+          "prompt": "«ស»"
+        },
+        {
+          "id": "open-two",
+          "prompt": "«"
+        },
+        {
+          "id": "close-two",
+          "prompt": "»"
+        },
+        {
+          "id": "pair-two",
+          "prompt": "«»"
+        },
+        {
+          "id": "number",
+          "prompt": "«១»"
+        },
+        {
+          "id": "word",
+          "prompt": "«សាលា»"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "spacing-keys",
+      "revision": 1,
+      "unitId": "punctuation",
+      "order": 3,
+      "title": {
+        "km": "ចន្លោះពាក្យ និងចន្លោះឃ្លា",
+        "en": "Word and phrase spacing"
+      },
+      "description": {
+        "km": "ប្រៀបធៀប ZWSP ជាមួយចន្លោះធម្មតា។",
+        "en": "Distinguish a zero-width word boundary from visible space."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "zwsp-one",
+          "kind": "key",
+          "label": {
+            "km": "ព្រំដែនពាក្យ ZWSP",
+            "en": "Zero-width word boundary"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "base"
+          }
+        },
+        {
+          "id": "space-one",
+          "kind": "key",
+          "label": {
+            "km": "ចន្លោះធម្មតា",
+            "en": "Visible space"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "zwsp-two",
+          "kind": "key",
+          "label": {
+            "km": "ព្រំដែនពាក្យ ZWSP",
+            "en": "Zero-width word boundary"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "base"
+          }
+        },
+        {
+          "id": "space-two",
+          "kind": "key",
+          "label": {
+            "km": "ចន្លោះធម្មតា",
+            "en": "Visible space"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "zwsp-three",
+          "kind": "key",
+          "label": {
+            "km": "ព្រំដែនពាក្យ ZWSP",
+            "en": "Zero-width word boundary"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "base"
+          }
+        },
+        {
+          "id": "space-three",
+          "kind": "key",
+          "label": {
+            "km": "ចន្លោះធម្មតា",
+            "en": "Visible space"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "zwsp-four",
+          "kind": "key",
+          "label": {
+            "km": "ព្រំដែនពាក្យ ZWSP",
+            "en": "Zero-width word boundary"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "base"
+          }
+        },
+        {
+          "id": "space-four",
+          "kind": "key",
+          "label": {
+            "km": "ចន្លោះធម្មតា",
+            "en": "Visible space"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "zwsp-five",
+          "kind": "key",
+          "label": {
+            "km": "ព្រំដែនពាក្យ ZWSP",
+            "en": "Zero-width word boundary"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "base"
+          }
+        },
+        {
+          "id": "space-five",
+          "kind": "key",
+          "label": {
+            "km": "ចន្លោះធម្មតា",
+            "en": "Visible space"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "shift"
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
       "id": "common-words",
       "revision": 1,
       "unitId": "words",
@@ -565,6 +1428,1124 @@
         {
           "id": "type-clearly",
           "prompt": "វាយ ច្បាស់"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "base-independent-vowels",
+      "revision": 1,
+      "unitId": "advanced-khmer",
+      "order": 1,
+      "title": {
+        "km": "ឥ · ឲ · ឪ · ឮ",
+        "en": "Base independent vowels"
+      },
+      "description": {
+        "km": "ស្គាល់ស្រៈនិស្ស័យនៅស្រទាប់គោល។",
+        "en": "Learn independent vowels on the Base layer."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "ei-one",
+          "prompt": "ឥ"
+        },
+        {
+          "id": "ao-one",
+          "prompt": "ឲ"
+        },
+        {
+          "id": "au-one",
+          "prompt": "ឪ"
+        },
+        {
+          "id": "lue-one",
+          "prompt": "ឮ"
+        },
+        {
+          "id": "pair-one",
+          "prompt": "ឥឲ"
+        },
+        {
+          "id": "ei-two",
+          "prompt": "ឥ"
+        },
+        {
+          "id": "ao-two",
+          "prompt": "ឲ"
+        },
+        {
+          "id": "au-two",
+          "prompt": "ឪ"
+        },
+        {
+          "id": "lue-two",
+          "prompt": "ឮ"
+        },
+        {
+          "id": "pair-two",
+          "prompt": "ឪឮ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "shift-independent-vowels",
+      "revision": 1,
+      "unitId": "advanced-khmer",
+      "order": 2,
+      "title": {
+        "km": "ឬ · ឧ · ឭ",
+        "en": "Shift independent vowels"
+      },
+      "description": {
+        "km": "ហាត់ស្រៈនិស្ស័យដែលប្រើ Shift។",
+        "en": "Practice independent vowels reached with Shift."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "rue-one",
+          "prompt": "ឬ"
+        },
+        {
+          "id": "ou-one",
+          "prompt": "ឧ"
+        },
+        {
+          "id": "lue-one",
+          "prompt": "ឭ"
+        },
+        {
+          "id": "pair-one",
+          "prompt": "ឬឧ"
+        },
+        {
+          "id": "pair-two",
+          "prompt": "ឧឭ"
+        },
+        {
+          "id": "rue-two",
+          "prompt": "ឬ"
+        },
+        {
+          "id": "ou-two",
+          "prompt": "ឧ"
+        },
+        {
+          "id": "lue-two",
+          "prompt": "ឭ"
+        },
+        {
+          "id": "pair-three",
+          "prompt": "ឭឬ"
+        },
+        {
+          "id": "mixed",
+          "prompt": "ឬឧឭ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "altgr-independent-vowels",
+      "revision": 1,
+      "unitId": "advanced-khmer",
+      "order": 3,
+      "title": {
+        "km": "ឯ · ឫ · ឦ · ឱ · ឰ",
+        "en": "AltGr independent vowels"
+      },
+      "description": {
+        "km": "ប្រើ Right Alt ដើម្បីបញ្ចូលស្រៈនិស្ស័យកម្រ។",
+        "en": "Use Right Alt for less common independent vowels."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "ae-one",
+          "prompt": "ឯ"
+        },
+        {
+          "id": "ryy-one",
+          "prompt": "ឫ"
+        },
+        {
+          "id": "ii-one",
+          "prompt": "ឦ"
+        },
+        {
+          "id": "ao-one",
+          "prompt": "ឱ"
+        },
+        {
+          "id": "ai-one",
+          "prompt": "ឰ"
+        },
+        {
+          "id": "ae-two",
+          "prompt": "ឯ"
+        },
+        {
+          "id": "ryy-two",
+          "prompt": "ឫ"
+        },
+        {
+          "id": "ii-two",
+          "prompt": "ឦ"
+        },
+        {
+          "id": "ao-two",
+          "prompt": "ឱ"
+        },
+        {
+          "id": "ai-two",
+          "prompt": "ឰ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "altgr-vowels-and-stops",
+      "revision": 1,
+      "unitId": "advanced-khmer",
+      "order": 4,
+      "title": {
+        "km": "ឩ · ឳ · ៖ · ៈ",
+        "en": "AltGr vowels and stops"
+      },
+      "description": {
+        "km": "បញ្ចប់ស្រៈនិស្ស័យ និងសញ្ញាបញ្ឈប់ខ្មែរ។",
+        "en": "Complete independent vowels and Khmer stop marks."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "u-one",
+          "prompt": "ឩ"
+        },
+        {
+          "id": "au-one",
+          "prompt": "ឳ"
+        },
+        {
+          "id": "colon-one",
+          "prompt": "៖"
+        },
+        {
+          "id": "stop-one",
+          "prompt": "ៈ"
+        },
+        {
+          "id": "vowel-pair",
+          "prompt": "ឩឳ"
+        },
+        {
+          "id": "u-two",
+          "prompt": "ឩ"
+        },
+        {
+          "id": "au-two",
+          "prompt": "ឳ"
+        },
+        {
+          "id": "colon-two",
+          "prompt": "៖"
+        },
+        {
+          "id": "stop-two",
+          "prompt": "ៈ"
+        },
+        {
+          "id": "stop-pair",
+          "prompt": "៖ៈ"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "rare-khmer-signs",
+      "revision": 1,
+      "unitId": "advanced-khmer",
+      "order": 5,
+      "title": {
+        "km": "៑ · ៙ · ៚ · ៎",
+        "en": "Rare Khmer signs"
+      },
+      "description": {
+        "km": "ហាត់សញ្ញាខ្មែរដែលប្រើក្នុងបរិបទពិសេស។",
+        "en": "Practice Khmer signs used in specialized contexts."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "sign-one",
+          "prompt": "៑"
+        },
+        {
+          "id": "sign-two",
+          "prompt": "៙"
+        },
+        {
+          "id": "sign-three",
+          "prompt": "៚"
+        },
+        {
+          "id": "sign-four",
+          "prompt": "៎"
+        },
+        {
+          "id": "pair-one",
+          "prompt": "៑៙"
+        },
+        {
+          "id": "sign-one-repeat",
+          "prompt": "៑"
+        },
+        {
+          "id": "sign-two-repeat",
+          "prompt": "៙"
+        },
+        {
+          "id": "sign-three-repeat",
+          "prompt": "៚"
+        },
+        {
+          "id": "sign-four-repeat",
+          "prompt": "៎"
+        },
+        {
+          "id": "pair-two",
+          "prompt": "៚៎"
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "invisible-controls",
+      "revision": 1,
+      "unitId": "controls",
+      "order": 1,
+      "title": {
+        "km": "ZWJ · ZWNJ · NBSP",
+        "en": "Invisible controls"
+      },
+      "description": {
+        "km": "ហាត់ Right Alt ជាមួយតួអក្សរគ្រប់គ្រងការភ្ជាប់ និងចន្លោះ។",
+        "en": "Practice Right Alt with join controls and non-breaking space."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "zwj-one",
+          "kind": "key",
+          "label": {
+            "km": "តួភ្ជាប់ ZWJ",
+            "en": "Zero-width joiner"
+          },
+          "target": {
+            "code": "Backquote",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "zwnj-one",
+          "kind": "key",
+          "label": {
+            "km": "តួមិនភ្ជាប់ ZWNJ",
+            "en": "Zero-width non-joiner"
+          },
+          "target": {
+            "code": "Digit1",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "nbsp-one",
+          "kind": "key",
+          "label": {
+            "km": "ចន្លោះមិនបំបែក NBSP",
+            "en": "Non-breaking space"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "zwj-two",
+          "kind": "key",
+          "label": {
+            "km": "តួភ្ជាប់ ZWJ",
+            "en": "Zero-width joiner"
+          },
+          "target": {
+            "code": "Backquote",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "zwnj-two",
+          "kind": "key",
+          "label": {
+            "km": "តួមិនភ្ជាប់ ZWNJ",
+            "en": "Zero-width non-joiner"
+          },
+          "target": {
+            "code": "Digit1",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "nbsp-two",
+          "kind": "key",
+          "label": {
+            "km": "ចន្លោះមិនបំបែក NBSP",
+            "en": "Non-breaking space"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "zwj-three",
+          "kind": "key",
+          "label": {
+            "km": "តួភ្ជាប់ ZWJ",
+            "en": "Zero-width joiner"
+          },
+          "target": {
+            "code": "Backquote",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "zwnj-three",
+          "kind": "key",
+          "label": {
+            "km": "តួមិនភ្ជាប់ ZWNJ",
+            "en": "Zero-width non-joiner"
+          },
+          "target": {
+            "code": "Digit1",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "nbsp-three",
+          "kind": "key",
+          "label": {
+            "km": "ចន្លោះមិនបំបែក NBSP",
+            "en": "Non-breaking space"
+          },
+          "target": {
+            "code": "Space",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "zwj-four",
+          "kind": "key",
+          "label": {
+            "km": "តួភ្ជាប់ ZWJ",
+            "en": "Zero-width joiner"
+          },
+          "target": {
+            "code": "Backquote",
+            "layer": "altGr"
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "shift-technical-symbols",
+      "revision": 1,
+      "unitId": "technical",
+      "order": 1,
+      "title": {
+        "km": "! · \" · % · ( · )",
+        "en": "Shift symbols"
+      },
+      "description": {
+        "km": "ហាត់សញ្ញាទូទៅនៅជួរលេខដោយប្រើ Shift។",
+        "en": "Practice common number-row symbols with Shift."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "exclamation-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាឧទាន !",
+            "en": "Exclamation mark"
+          },
+          "target": {
+            "code": "Digit1",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "quote-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា \"",
+            "en": "Double quote"
+          },
+          "target": {
+            "code": "Digit3",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "percent-one",
+          "kind": "key",
+          "label": {
+            "km": "ភាគរយ %",
+            "en": "Percent sign"
+          },
+          "target": {
+            "code": "Digit5",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "open-one",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកបើក (",
+            "en": "Opening parenthesis"
+          },
+          "target": {
+            "code": "Digit9",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "close-one",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកបិទ )",
+            "en": "Closing parenthesis"
+          },
+          "target": {
+            "code": "Digit0",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "exclamation-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាឧទាន !",
+            "en": "Exclamation mark"
+          },
+          "target": {
+            "code": "Digit1",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "quote-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា \"",
+            "en": "Double quote"
+          },
+          "target": {
+            "code": "Digit3",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "percent-two",
+          "kind": "key",
+          "label": {
+            "km": "ភាគរយ %",
+            "en": "Percent sign"
+          },
+          "target": {
+            "code": "Digit5",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "open-two",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកបើក (",
+            "en": "Opening parenthesis"
+          },
+          "target": {
+            "code": "Digit9",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "close-two",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកបិទ )",
+            "en": "Closing parenthesis"
+          },
+          "target": {
+            "code": "Digit0",
+            "layer": "shift"
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "shift-technical-operators",
+      "revision": 1,
+      "unitId": "technical",
+      "order": 2,
+      "title": {
+        "km": "= · ?",
+        "en": "Shift operators"
+      },
+      "description": {
+        "km": "ហាត់សញ្ញាស្មើ និងសញ្ញាសួរ។",
+        "en": "Practice the equals and question-mark keys."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "equal-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាស្មើ =",
+            "en": "Equals sign"
+          },
+          "target": {
+            "code": "Equal",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "question-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាសួរ ?",
+            "en": "Question mark"
+          },
+          "target": {
+            "code": "Slash",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "equal-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាស្មើ =",
+            "en": "Equals sign"
+          },
+          "target": {
+            "code": "Equal",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "question-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាសួរ ?",
+            "en": "Question mark"
+          },
+          "target": {
+            "code": "Slash",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "equal-three",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាស្មើ =",
+            "en": "Equals sign"
+          },
+          "target": {
+            "code": "Equal",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "question-three",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាសួរ ?",
+            "en": "Question mark"
+          },
+          "target": {
+            "code": "Slash",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "equal-four",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាស្មើ =",
+            "en": "Equals sign"
+          },
+          "target": {
+            "code": "Equal",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "question-four",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាសួរ ?",
+            "en": "Question mark"
+          },
+          "target": {
+            "code": "Slash",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "equal-five",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាស្មើ =",
+            "en": "Equals sign"
+          },
+          "target": {
+            "code": "Equal",
+            "layer": "shift"
+          }
+        },
+        {
+          "id": "question-five",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាសួរ ?",
+            "en": "Question mark"
+          },
+          "target": {
+            "code": "Slash",
+            "layer": "shift"
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "altgr-number-symbols",
+      "revision": 1,
+      "unitId": "technical",
+      "order": 3,
+      "title": {
+        "km": "@ · $ · € · *",
+        "en": "AltGr number symbols"
+      },
+      "description": {
+        "km": "ប្រើ Right Alt សម្រាប់សញ្ញាទំនាក់ទំនង រូបិយប័ណ្ណ និងគុណ។",
+        "en": "Use Right Alt for communication, currency, and multiplication symbols."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "at-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា @",
+            "en": "At sign"
+          },
+          "target": {
+            "code": "Digit2",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "dollar-one",
+          "kind": "key",
+          "label": {
+            "km": "ដុល្លារ $",
+            "en": "Dollar sign"
+          },
+          "target": {
+            "code": "Digit4",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "euro-one",
+          "kind": "key",
+          "label": {
+            "km": "អឺរ៉ូ €",
+            "en": "Euro sign"
+          },
+          "target": {
+            "code": "Digit5",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "star-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាផ្កាយ *",
+            "en": "Asterisk"
+          },
+          "target": {
+            "code": "Digit8",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "at-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា @",
+            "en": "At sign"
+          },
+          "target": {
+            "code": "Digit2",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "dollar-two",
+          "kind": "key",
+          "label": {
+            "km": "ដុល្លារ $",
+            "en": "Dollar sign"
+          },
+          "target": {
+            "code": "Digit4",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "euro-two",
+          "kind": "key",
+          "label": {
+            "km": "អឺរ៉ូ €",
+            "en": "Euro sign"
+          },
+          "target": {
+            "code": "Digit5",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "star-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាផ្កាយ *",
+            "en": "Asterisk"
+          },
+          "target": {
+            "code": "Digit8",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "at-three",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា @",
+            "en": "At sign"
+          },
+          "target": {
+            "code": "Digit2",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "star-three",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាផ្កាយ *",
+            "en": "Asterisk"
+          },
+          "target": {
+            "code": "Digit8",
+            "layer": "altGr"
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "altgr-braces-and-multiply",
+      "revision": 1,
+      "unitId": "technical",
+      "order": 4,
+      "title": {
+        "km": "{ · } · ×",
+        "en": "AltGr braces and multiplication"
+      },
+      "description": {
+        "km": "ហាត់វង់ក្រចកអង្កាញ់ និងសញ្ញាគុណ។",
+        "en": "Practice braces and the multiplication sign."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "open-one",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកអង្កាញ់បើក",
+            "en": "Opening brace"
+          },
+          "target": {
+            "code": "Digit9",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "close-one",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកអង្កាញ់បិទ",
+            "en": "Closing brace"
+          },
+          "target": {
+            "code": "Digit0",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "multiply-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាគុណ ×",
+            "en": "Multiplication sign"
+          },
+          "target": {
+            "code": "Minus",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "open-two",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកអង្កាញ់បើក",
+            "en": "Opening brace"
+          },
+          "target": {
+            "code": "Digit9",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "close-two",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកអង្កាញ់បិទ",
+            "en": "Closing brace"
+          },
+          "target": {
+            "code": "Digit0",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "multiply-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាគុណ ×",
+            "en": "Multiplication sign"
+          },
+          "target": {
+            "code": "Minus",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "open-three",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកអង្កាញ់បើក",
+            "en": "Opening brace"
+          },
+          "target": {
+            "code": "Digit9",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "close-three",
+          "kind": "key",
+          "label": {
+            "km": "វង់ក្រចកអង្កាញ់បិទ",
+            "en": "Closing brace"
+          },
+          "target": {
+            "code": "Digit0",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "multiply-three",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាគុណ ×",
+            "en": "Multiplication sign"
+          },
+          "target": {
+            "code": "Minus",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "multiply-four",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាគុណ ×",
+            "en": "Multiplication sign"
+          },
+          "target": {
+            "code": "Minus",
+            "layer": "altGr"
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "altgr-technical-punctuation",
+      "revision": 1,
+      "unitId": "technical",
+      "order": 5,
+      "title": {
+        "km": "\\\\ · , · . · /",
+        "en": "AltGr technical punctuation"
+      },
+      "description": {
+        "km": "បំពេញសញ្ញាសម្រាប់ឯកសារ តំណ និងការសរសេរកូដ។",
+        "en": "Complete punctuation used in files, links, and code."
+      },
+      "masteryAccuracy": 90,
+      "steps": [
+        {
+          "id": "backslash-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា backslash",
+            "en": "Backslash"
+          },
+          "target": {
+            "code": "Backslash",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "comma-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាក្បៀស",
+            "en": "Comma"
+          },
+          "target": {
+            "code": "Comma",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "period-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាចុច .",
+            "en": "Period"
+          },
+          "target": {
+            "code": "Period",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "slash-one",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា slash",
+            "en": "Slash"
+          },
+          "target": {
+            "code": "Slash",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "backslash-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា backslash",
+            "en": "Backslash"
+          },
+          "target": {
+            "code": "Backslash",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "comma-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាក្បៀស",
+            "en": "Comma"
+          },
+          "target": {
+            "code": "Comma",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "period-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញាចុច .",
+            "en": "Period"
+          },
+          "target": {
+            "code": "Period",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "slash-two",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា slash",
+            "en": "Slash"
+          },
+          "target": {
+            "code": "Slash",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "backslash-three",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា backslash",
+            "en": "Backslash"
+          },
+          "target": {
+            "code": "Backslash",
+            "layer": "altGr"
+          }
+        },
+        {
+          "id": "slash-three",
+          "kind": "key",
+          "label": {
+            "km": "សញ្ញា slash",
+            "en": "Slash"
+          },
+          "target": {
+            "code": "Slash",
+            "layer": "altGr"
+          }
         }
       ]
     }

@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: shift-technical-operators
+revision: 1
+unitId: technical
+order: 2
+title:
+  km: "= · ?"
+  en: Shift operators
+description:
+  km: ហាត់សញ្ញាស្មើ និងសញ្ញាសួរ។
+  en: Practice the equals and question-mark keys.
+masteryAccuracy: 90
+steps:
+  - {
+      id: equal-one,
+      kind: key,
+      label: { km: សញ្ញាស្មើ =, en: Equals sign },
+      target: { code: Equal, layer: shift },
+    }
+  - {
+      id: question-one,
+      kind: key,
+      label: { km: សញ្ញាសួរ ?, en: Question mark },
+      target: { code: Slash, layer: shift },
+    }
+  - {
+      id: equal-two,
+      kind: key,
+      label: { km: សញ្ញាស្មើ =, en: Equals sign },
+      target: { code: Equal, layer: shift },
+    }
+  - {
+      id: question-two,
+      kind: key,
+      label: { km: សញ្ញាសួរ ?, en: Question mark },
+      target: { code: Slash, layer: shift },
+    }
+  - {
+      id: equal-three,
+      kind: key,
+      label: { km: សញ្ញាស្មើ =, en: Equals sign },
+      target: { code: Equal, layer: shift },
+    }
+  - {
+      id: question-three,
+      kind: key,
+      label: { km: សញ្ញាសួរ ?, en: Question mark },
+      target: { code: Slash, layer: shift },
+    }
+  - {
+      id: equal-four,
+      kind: key,
+      label: { km: សញ្ញាស្មើ =, en: Equals sign },
+      target: { code: Equal, layer: shift },
+    }
+  - {
+      id: question-four,
+      kind: key,
+      label: { km: សញ្ញាសួរ ?, en: Question mark },
+      target: { code: Slash, layer: shift },
+    }
+  - {
+      id: equal-five,
+      kind: key,
+      label: { km: សញ្ញាស្មើ =, en: Equals sign },
+      target: { code: Equal, layer: shift },
+    }
+  - {
+      id: question-five,
+      kind: key,
+      label: { km: សញ្ញាសួរ ?, en: Question mark },
+      target: { code: Slash, layer: shift },
+    }

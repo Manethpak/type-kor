@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: khmer-punctuation
+revision: 1
+unitId: punctuation
+order: 1
+title:
+  km: ។ · ៗ · ៛ · ៕
+  en: Khmer punctuation
+description:
+  km: ហាត់សញ្ញាបញ្ចប់ ការធ្វើឡើងវិញ រូបិយប័ណ្ណ និងសម្រង់។
+  en: Practice sentence, repetition, currency, and quotation marks.
+masteryAccuracy: 90
+steps:
+  - id: khan
+    prompt: ។
+  - id: repetition
+    prompt: ៗ
+  - id: riel
+    prompt: ៛
+  - id: bariyoosan
+    prompt: ៕
+  - id: double-repetition
+    prompt: ៗៗ
+  - id: khan-repeat
+    prompt: ។ៗ
+  - id: riel-one
+    prompt: ៛១
+  - id: riel-two
+    prompt: ២៛
+  - id: double-khan
+    prompt: ។។
+  - id: mixed
+    prompt: ១៛។

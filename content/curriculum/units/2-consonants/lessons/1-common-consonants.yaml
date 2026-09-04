@@ -20,6 +20,8 @@ steps:
     prompt: យ
   - id: cha
     prompt: ច
+  - id: da
+    prompt: ដ
   - id: dara
     prompt: តារា
   - id: chan

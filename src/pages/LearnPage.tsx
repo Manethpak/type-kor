@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { curriculum, lessons } from "../learning/curriculum";
+import { keyHintId } from "../learning/nida";
 import type { LearningState, Lesson, LessonCheckpoint } from "../learning/types";
 import { cx } from "../utils/classNames";
 
@@ -11,7 +12,22 @@ export function LearnPage({
   onCheckpoint: (checkpoint: LessonCheckpoint) => void;
 }) {
   const navigate = useNavigate();
-  const mastered = lessons.filter((lesson) => learningState.progress[lesson.id]?.masteredAt).length;
+  const coreLessonIds = new Set(
+    curriculum
+      .filter((unit) => unit.tier === "core")
+      .flatMap((unit) => unit.lessons.map((lesson) => lesson.id)),
+  );
+  const coreMastered = lessons.filter(
+    (lesson) => coreLessonIds.has(lesson.id) && learningState.progress[lesson.id]?.masteredAt,
+  ).length;
+  const masteredMappings = new Set(
+    lessons
+      .filter((lesson) => learningState.progress[lesson.id]?.masteredAt)
+      .flatMap((lesson) => lesson.steps.flatMap((step) => step.keySequence.map(keyHintId))),
+  );
+  const totalMappings = new Set(
+    lessons.flatMap((lesson) => lesson.steps.flatMap((step) => step.keySequence.map(keyHintId))),
+  ).size;
   const recommended =
     (learningState.checkpoint &&
       lessons.find((lesson) => lesson.id === learningState.checkpoint?.lessonId)) ||
@@ -41,9 +57,14 @@ export function LearnPage({
         </div>
         <div className="rounded-xl border border-app-line bg-app-raised px-4 py-3 text-right">
           <b className="block text-xl font-medium text-app-accent [font-variant-numeric:tabular-nums]">
-            {mastered}/{lessons.length}
+            {coreMastered}/{coreLessonIds.size}
           </b>
-          <small className="text-[9px] uppercase tracking-[.14em] text-app-dim">mastered</small>
+          <small className="text-[9px] uppercase tracking-[.14em] text-app-dim">
+            core mastered
+          </small>
+          <small className="mt-1 block text-[9px] text-app-dim">
+            {masteredMappings.size}/{totalMappings} key mappings
+          </small>
         </div>
       </div>
 
@@ -85,6 +106,13 @@ export function LearnPage({
                 {String(unit.order).padStart(2, "0")}
               </span>
               <div>
+                <small className="mb-1 block text-[8px] font-bold uppercase tracking-[.14em] text-app-accent">
+                  {unit.tier === "core"
+                    ? "ផ្លូវសិក្សាគោល"
+                    : unit.tier === "advanced"
+                      ? "កម្រិតខ្ពស់"
+                      : "សញ្ញាបច្ចេកទេស"}
+                </small>
                 <h2 id={`${unit.id}-title`} className="m-0 font-khmer text-xl font-medium">
                   {unit.title.km}
                 </h2>

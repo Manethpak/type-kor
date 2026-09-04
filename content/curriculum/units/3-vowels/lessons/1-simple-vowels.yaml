@@ -28,3 +28,5 @@ steps:
     prompt: មេ
   - id: taa
     prompt: តា
+  - id: keu
+    prompt: កឹ

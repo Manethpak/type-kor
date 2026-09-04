@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=../../unit.schema.json
+schemaVersion: 1
+id: punctuation
+order: 6
+tier: core
+title:
+  km: សញ្ញា និងចន្លោះ
+  en: Punctuation and spacing
+description:
+  km: ប្រើសញ្ញាខ្មែរ និងចន្លោះតាមបរិបទត្រឹមត្រូវ។
+  en: Use Khmer punctuation and spacing in the right context.

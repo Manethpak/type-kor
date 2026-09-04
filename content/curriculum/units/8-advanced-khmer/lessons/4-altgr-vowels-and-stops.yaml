@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: altgr-vowels-and-stops
+revision: 1
+unitId: advanced-khmer
+order: 4
+title:
+  km: ឩ · ឳ · ៖ · ៈ
+  en: AltGr vowels and stops
+description:
+  km: បញ្ចប់ស្រៈនិស្ស័យ និងសញ្ញាបញ្ឈប់ខ្មែរ។
+  en: Complete independent vowels and Khmer stop marks.
+masteryAccuracy: 90
+steps:
+  - { id: u-one, prompt: ឩ }
+  - { id: au-one, prompt: ឳ }
+  - { id: colon-one, prompt: ៖ }
+  - { id: stop-one, prompt: ៈ }
+  - { id: vowel-pair, prompt: ឩឳ }
+  - { id: u-two, prompt: ឩ }
+  - { id: au-two, prompt: ឳ }
+  - { id: colon-two, prompt: ៖ }
+  - { id: stop-two, prompt: ៈ }
+  - { id: stop-pair, prompt: ៖ៈ }

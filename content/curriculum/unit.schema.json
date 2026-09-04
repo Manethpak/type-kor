@@ -3,11 +3,12 @@
   "$id": "https://typekor.local/schemas/curriculum-unit.json",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "id", "order", "title", "description"],
+  "required": ["schemaVersion", "id", "order", "tier", "title", "description"],
   "properties": {
     "schemaVersion": { "const": 1 },
     "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "order": { "type": "integer", "minimum": 1 },
+    "tier": { "enum": ["core", "advanced", "technical"] },
     "title": { "$ref": "#/$defs/localizedText" },
     "description": { "$ref": "#/$defs/localizedText" }
   },

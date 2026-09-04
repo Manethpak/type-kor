@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: digits-six-zero
+revision: 1
+unitId: numbers
+order: 2
+title:
+  km: ៦ · ៧ · ៨ · ៩ · ០
+  en: Khmer digits six to zero
+description:
+  km: បញ្ចប់ជួរលេខពី ៦ ដល់ ០។
+  en: Complete the number row with six through zero.
+masteryAccuracy: 90
+steps:
+  - id: six
+    prompt: ៦
+  - id: seven
+    prompt: ៧
+  - id: eight
+    prompt: ៨
+  - id: nine
+    prompt: ៩
+  - id: zero
+    prompt: ០
+  - id: six-seven
+    prompt: ៦៧
+  - id: eight-nine
+    prompt: ៨៩
+  - id: nine-zero
+    prompt: ៩០
+  - id: seven-eight
+    prompt: ៧៨
+  - id: six-to-zero
+    prompt: ៦៧៨៩០

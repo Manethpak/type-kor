@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: invisible-controls
+revision: 1
+unitId: controls
+order: 1
+title:
+  km: ZWJ · ZWNJ · NBSP
+  en: Invisible controls
+description:
+  km: ហាត់ Right Alt ជាមួយតួអក្សរគ្រប់គ្រងការភ្ជាប់ និងចន្លោះ។
+  en: Practice Right Alt with join controls and non-breaking space.
+masteryAccuracy: 90
+steps:
+  - {
+      id: zwj-one,
+      kind: key,
+      label: { km: តួភ្ជាប់ ZWJ, en: Zero-width joiner },
+      target: { code: Backquote, layer: altGr },
+    }
+  - {
+      id: zwnj-one,
+      kind: key,
+      label: { km: តួមិនភ្ជាប់ ZWNJ, en: Zero-width non-joiner },
+      target: { code: Digit1, layer: altGr },
+    }
+  - {
+      id: nbsp-one,
+      kind: key,
+      label: { km: ចន្លោះមិនបំបែក NBSP, en: Non-breaking space },
+      target: { code: Space, layer: altGr },
+    }
+  - {
+      id: zwj-two,
+      kind: key,
+      label: { km: តួភ្ជាប់ ZWJ, en: Zero-width joiner },
+      target: { code: Backquote, layer: altGr },
+    }
+  - {
+      id: zwnj-two,
+      kind: key,
+      label: { km: តួមិនភ្ជាប់ ZWNJ, en: Zero-width non-joiner },
+      target: { code: Digit1, layer: altGr },
+    }
+  - {
+      id: nbsp-two,
+      kind: key,
+      label: { km: ចន្លោះមិនបំបែក NBSP, en: Non-breaking space },
+      target: { code: Space, layer: altGr },
+    }
+  - {
+      id: zwj-three,
+      kind: key,
+      label: { km: តួភ្ជាប់ ZWJ, en: Zero-width joiner },
+      target: { code: Backquote, layer: altGr },
+    }
+  - {
+      id: zwnj-three,
+      kind: key,
+      label: { km: តួមិនភ្ជាប់ ZWNJ, en: Zero-width non-joiner },
+      target: { code: Digit1, layer: altGr },
+    }
+  - {
+      id: nbsp-three,
+      kind: key,
+      label: { km: ចន្លោះមិនបំបែក NBSP, en: Non-breaking space },
+      target: { code: Space, layer: altGr },
+    }
+  - {
+      id: zwj-four,
+      kind: key,
+      label: { km: តួភ្ជាប់ ZWJ, en: Zero-width joiner },
+      target: { code: Backquote, layer: altGr },
+    }

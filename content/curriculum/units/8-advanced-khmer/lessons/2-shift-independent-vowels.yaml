@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: shift-independent-vowels
+revision: 1
+unitId: advanced-khmer
+order: 2
+title:
+  km: ឬ · ឧ · ឭ
+  en: Shift independent vowels
+description:
+  km: ហាត់ស្រៈនិស្ស័យដែលប្រើ Shift។
+  en: Practice independent vowels reached with Shift.
+masteryAccuracy: 90
+steps:
+  - { id: rue-one, prompt: ឬ }
+  - { id: ou-one, prompt: ឧ }
+  - { id: lue-one, prompt: ឭ }
+  - { id: pair-one, prompt: ឬឧ }
+  - { id: pair-two, prompt: ឧឭ }
+  - { id: rue-two, prompt: ឬ }
+  - { id: ou-two, prompt: ឧ }
+  - { id: lue-two, prompt: ឭ }
+  - { id: pair-three, prompt: ឭឬ }
+  - { id: mixed, prompt: ឬឧឭ }

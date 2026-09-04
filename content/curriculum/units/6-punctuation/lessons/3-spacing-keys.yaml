@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: spacing-keys
+revision: 1
+unitId: punctuation
+order: 3
+title:
+  km: ចន្លោះពាក្យ និងចន្លោះឃ្លា
+  en: Word and phrase spacing
+description:
+  km: ប្រៀបធៀប ZWSP ជាមួយចន្លោះធម្មតា។
+  en: Distinguish a zero-width word boundary from visible space.
+masteryAccuracy: 90
+steps:
+  - id: zwsp-one
+    kind: key
+    label: { km: ព្រំដែនពាក្យ ZWSP, en: Zero-width word boundary }
+    target: { code: Space, layer: base }
+  - id: space-one
+    kind: key
+    label: { km: ចន្លោះធម្មតា, en: Visible space }
+    target: { code: Space, layer: shift }
+  - id: zwsp-two
+    kind: key
+    label: { km: ព្រំដែនពាក្យ ZWSP, en: Zero-width word boundary }
+    target: { code: Space, layer: base }
+  - id: space-two
+    kind: key
+    label: { km: ចន្លោះធម្មតា, en: Visible space }
+    target: { code: Space, layer: shift }
+  - id: zwsp-three
+    kind: key
+    label: { km: ព្រំដែនពាក្យ ZWSP, en: Zero-width word boundary }
+    target: { code: Space, layer: base }
+  - id: space-three
+    kind: key
+    label: { km: ចន្លោះធម្មតា, en: Visible space }
+    target: { code: Space, layer: shift }
+  - id: zwsp-four
+    kind: key
+    label: { km: ព្រំដែនពាក្យ ZWSP, en: Zero-width word boundary }
+    target: { code: Space, layer: base }
+  - id: space-four
+    kind: key
+    label: { km: ចន្លោះធម្មតា, en: Visible space }
+    target: { code: Space, layer: shift }
+  - id: zwsp-five
+    kind: key
+    label: { km: ព្រំដែនពាក្យ ZWSP, en: Zero-width word boundary }
+    target: { code: Space, layer: base }
+  - id: space-five
+    kind: key
+    label: { km: ចន្លោះធម្មតា, en: Visible space }
+    target: { code: Space, layer: shift }

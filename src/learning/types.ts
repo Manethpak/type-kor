@@ -13,11 +13,24 @@ export interface PhysicalKeyHint {
   output: string;
 }
 
-export interface LessonStep {
+export type CurriculumTier = "core" | "advanced" | "technical";
+
+export interface TypingLessonStep {
   id: string;
+  kind: "typing";
   prompt: string;
   keySequence: PhysicalKeyHint[];
 }
+
+export interface KeyLessonStep {
+  id: string;
+  kind: "key";
+  label: LocalizedText;
+  target: PhysicalKeyHint;
+  keySequence: PhysicalKeyHint[];
+}
+
+export type LessonStep = TypingLessonStep | KeyLessonStep;
 
 export interface Lesson {
   schemaVersion: 1;
@@ -35,6 +48,7 @@ export interface LessonUnit {
   schemaVersion: 1;
   id: string;
   order: number;
+  tier: CurriculumTier;
   title: LocalizedText;
   description: LocalizedText;
   lessons: Lesson[];

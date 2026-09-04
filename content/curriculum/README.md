@@ -28,3 +28,20 @@ The numeric prefixes must match each file's `order`, while IDs remain stable ins
 6. Run `pnpm lesson:gen` and commit both the YAML and generated JSON.
 
 To add a unit, create `units/<order>-<id>/unit.yaml` plus its `lessons/` directory. `pnpm lesson:check` validates folder and file naming, parent-unit ownership, schemas, duplicate IDs and ordering, unit references, Unicode normalization, and NIDA key coverage. Key sequences are derived from `src/learning/nida.ts` and must not be authored in YAML.
+
+Units use the `core`, `advanced`, or `technical` tier. Keep lessons focused: the generator rejects a lesson that introduces more than five previously unseen key-layer mappings.
+
+Most steps are normal typing prompts. Use a modifier-aware key drill when the output is invisible or text comparison cannot distinguish it:
+
+```yaml
+- id: zero-width-space
+  kind: key
+  label:
+    km: ព្រំដែនពាក្យ ZWSP
+    en: Zero-width word boundary
+  target:
+    code: Space
+    layer: base
+```
+
+The complete curriculum must exercise every Base, Shift, and AltGr mapping in the NIDA layout.

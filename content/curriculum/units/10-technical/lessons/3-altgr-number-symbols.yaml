@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: altgr-number-symbols
+revision: 1
+unitId: technical
+order: 3
+title:
+  km: "@ · $ · € · *"
+  en: AltGr number symbols
+description:
+  km: ប្រើ Right Alt សម្រាប់សញ្ញាទំនាក់ទំនង រូបិយប័ណ្ណ និងគុណ។
+  en: Use Right Alt for communication, currency, and multiplication symbols.
+masteryAccuracy: 90
+steps:
+  - {
+      id: at-one,
+      kind: key,
+      label: { km: សញ្ញា @, en: At sign },
+      target: { code: Digit2, layer: altGr },
+    }
+  - {
+      id: dollar-one,
+      kind: key,
+      label: { km: ដុល្លារ $, en: Dollar sign },
+      target: { code: Digit4, layer: altGr },
+    }
+  - {
+      id: euro-one,
+      kind: key,
+      label: { km: អឺរ៉ូ €, en: Euro sign },
+      target: { code: Digit5, layer: altGr },
+    }
+  - {
+      id: star-one,
+      kind: key,
+      label: { km: សញ្ញាផ្កាយ *, en: Asterisk },
+      target: { code: Digit8, layer: altGr },
+    }
+  - {
+      id: at-two,
+      kind: key,
+      label: { km: សញ្ញា @, en: At sign },
+      target: { code: Digit2, layer: altGr },
+    }
+  - {
+      id: dollar-two,
+      kind: key,
+      label: { km: ដុល្លារ $, en: Dollar sign },
+      target: { code: Digit4, layer: altGr },
+    }
+  - {
+      id: euro-two,
+      kind: key,
+      label: { km: អឺរ៉ូ €, en: Euro sign },
+      target: { code: Digit5, layer: altGr },
+    }
+  - {
+      id: star-two,
+      kind: key,
+      label: { km: សញ្ញាផ្កាយ *, en: Asterisk },
+      target: { code: Digit8, layer: altGr },
+    }
+  - {
+      id: at-three,
+      kind: key,
+      label: { km: សញ្ញា @, en: At sign },
+      target: { code: Digit2, layer: altGr },
+    }
+  - {
+      id: star-three,
+      kind: key,
+      label: { km: សញ្ញាផ្កាយ *, en: Asterisk },
+      target: { code: Digit8, layer: altGr },
+    }

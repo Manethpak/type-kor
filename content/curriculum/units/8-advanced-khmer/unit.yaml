@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=../../unit.schema.json
+schemaVersion: 1
+id: advanced-khmer
+order: 8
+tier: advanced
+title:
+  km: អក្សរខ្មែរកម្រិតខ្ពស់
+  en: Advanced Khmer characters
+description:
+  km: បំពេញអក្សរឯករាជ្យ និងសញ្ញាខ្មែរដែលប្រើមិនញឹកញាប់។
+  en: Complete the independent vowels and less common Khmer signs.

@@ -17,7 +17,9 @@ import { khmerTextEngine } from "../engine/khmer";
 import { getAltGrModifierLabel } from "../utils/platform";
 
 function activeHintIndex(lesson: Lesson, stepIndex: number, input: string): number {
-  const hints = lesson.steps[stepIndex].keySequence;
+  const step = lesson.steps[stepIndex];
+  if (step.kind === "key") return 0;
+  const hints = step.keySequence;
   const normalizedInput = khmerTextEngine.canonicalize(input);
   let produced = "";
   for (let index = 0; index < hints.length; index += 1) {
@@ -59,10 +61,12 @@ function LessonSession({
 
   const focusInput = useCallback(() => inputRef.current?.focus({ preventScroll: true }), []);
 
+  const step = lesson.steps[session.stepIndex];
+
   useEffect(() => {
-    if (session.completedAccuracy !== null) return;
+    if (session.completedAccuracy !== null || step.kind === "key") return;
     focusInput();
-  }, [focusInput, lesson.id, session.completedAccuracy]);
+  }, [focusInput, lesson.id, session.completedAccuracy, step.id, step.kind]);
 
   useEffect(() => {
     const blurInputOutsideTypingArea = (event: PointerEvent) => {
@@ -96,36 +100,47 @@ function LessonSession({
     }
   }, [lesson.id, onCheckpoint, resumed]);
 
-  const step = lesson.steps[session.stepIndex];
   const hintIndex = useMemo(
     () => (step ? activeHintIndex(lesson, session.stepIndex, session.input) : 0),
     [lesson, session.input, session.stepIndex, step],
   );
   const activeHint = step?.keySequence[hintIndex];
 
+  const completeStep = useCallback(() => {
+    const nextStep = session.stepIndex + 1;
+    if (nextStep >= lesson.steps.length) {
+      const accuracy = Math.round(
+        (lesson.steps.length / (lesson.steps.length + session.errors)) * 100,
+      );
+      dispatch({ type: "lessonCompleted", accuracy });
+      onComplete(lesson.id, accuracy);
+      return;
+    }
+    dispatch({ type: "stepCompleted", stepIndex: nextStep });
+    onCheckpoint({
+      lessonId: lesson.id,
+      lessonRevision: lesson.revision,
+      stepId: lesson.steps[nextStep].id,
+      errors: session.errors,
+    });
+  }, [
+    lesson.id,
+    lesson.revision,
+    lesson.steps,
+    onCheckpoint,
+    onComplete,
+    session.errors,
+    session.stepIndex,
+  ]);
+
   const processInput = useCallback(
     (nextInput: string) => {
-      if (!step || session.completedAccuracy !== null) return;
+      if (step.kind !== "typing" || session.completedAccuracy !== null) return;
       const attempt = khmerTextEngine.canonicalize(nextInput);
       const target = khmerTextEngine.canonicalize(step.prompt);
 
       if (attempt === target) {
-        const nextStep = session.stepIndex + 1;
-        if (nextStep >= lesson.steps.length) {
-          const accuracy = Math.round(
-            (lesson.steps.length / (lesson.steps.length + session.errors)) * 100,
-          );
-          dispatch({ type: "lessonCompleted", accuracy });
-          onComplete(lesson.id, accuracy);
-          return;
-        }
-        dispatch({ type: "stepCompleted", stepIndex: nextStep });
-        onCheckpoint({
-          lessonId: lesson.id,
-          lessonRevision: lesson.revision,
-          stepId: lesson.steps[nextStep].id,
-          errors: session.errors,
-        });
+        completeStep();
         return;
       }
 
@@ -145,15 +160,57 @@ function LessonSession({
     },
     [
       lesson.id,
-      lesson.steps.length,
+      completeStep,
       onCheckpoint,
-      onComplete,
       session.completedAccuracy,
       session.errors,
       session.stepIndex,
       step,
     ],
   );
+
+  useEffect(() => {
+    if (step.kind !== "key" || session.completedAccuracy !== null) return;
+    const handleKeyDrill = (event: KeyboardEvent) => {
+      if (
+        event.repeat ||
+        event.isComposing ||
+        event.metaKey ||
+        /^(Shift|Alt|Control)/u.test(event.key)
+      ) {
+        return;
+      }
+      event.preventDefault();
+      const altGr = event.getModifierState("AltGraph") || event.altKey;
+      const layerMatches = step.target.altGr
+        ? altGr && !event.shiftKey
+        : step.target.shift
+          ? event.shiftKey && !altGr
+          : !event.shiftKey && !altGr;
+      if (event.code === step.target.code && layerMatches) {
+        completeStep();
+        return;
+      }
+      const nextErrors = session.errors + 1;
+      dispatch({ type: "inputChanged", input: "", status: "incorrect" });
+      onCheckpoint({
+        lessonId: lesson.id,
+        lessonRevision: lesson.revision,
+        stepId: step.id,
+        errors: nextErrors,
+      });
+    };
+    window.addEventListener("keydown", handleKeyDrill);
+    return () => window.removeEventListener("keydown", handleKeyDrill);
+  }, [
+    completeStep,
+    lesson.id,
+    lesson.revision,
+    onCheckpoint,
+    session.completedAccuracy,
+    session.errors,
+    step,
+  ]);
 
   const handleChange = (event: FormEvent<HTMLTextAreaElement>) => {
     const value = event.currentTarget.value;
@@ -330,19 +387,26 @@ function LessonSession({
 
       <div
         ref={typingAreaRef}
-        className="group relative cursor-text rounded-[20px] border border-app-line bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)] px-6 py-9 text-center shadow-[0_24px_70px_var(--shadow)] transition-[border-color] focus-within:border-[color-mix(in_srgb,var(--accent)_34%,transparent)] data-[status=incorrect]:border-[color-mix(in_srgb,var(--error)_42%,transparent)]"
+        className="group relative rounded-[20px] border border-app-line bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)] px-6 py-9 text-center shadow-[0_24px_70px_var(--shadow)] transition-[border-color] focus-within:border-[color-mix(in_srgb,var(--accent)_34%,transparent)] data-[status=incorrect]:border-[color-mix(in_srgb,var(--error)_42%,transparent)] data-[typing=true]:cursor-text"
         data-status={session.status}
-        onClick={focusInput}
+        data-typing={step.kind === "typing"}
+        onClick={step.kind === "typing" ? focusInput : undefined}
       >
         <small className="text-[9px] font-semibold uppercase tracking-[.17em] text-app-dim">
-          Type this
+          {step.kind === "typing" ? "Type this" : "Press this key"}
         </small>
         <div className="my-5 min-h-[86px] font-khmer text-[clamp(48px,9vw,72px)] leading-[1.45] text-app-text [text-shadow:0_0_28px_var(--accent-soft)]">
-          {step.prompt}
+          {step.kind === "typing" ? step.prompt : step.label.km}
         </div>
-        <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 font-khmer text-[26px] text-app-accent">
-          {session.input || <span className="text-app-dim opacity-30">…</span>}
-        </div>
+        {step.kind === "typing" ? (
+          <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 font-khmer text-[26px] text-app-accent">
+            {session.input || <span className="text-app-dim opacity-30">…</span>}
+          </div>
+        ) : (
+          <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 text-xs text-app-dim">
+            {step.label.en}
+          </div>
+        )}
         <div className="mt-3">
           <div
             className="flex flex-wrap items-center justify-center gap-1.5"
@@ -370,24 +434,26 @@ function LessonSession({
               : keyInstruction(activeHint, altGrModifierLabel)}
           </p>
         </div>
-        <textarea
-          ref={inputRef}
-          className="absolute left-1/2 top-1/2 size-0.5 overflow-hidden whitespace-nowrap border-0 p-0 [clip-path:inset(50%)]"
-          value={session.input}
-          onInput={handleChange}
-          onChange={() => undefined}
-          onCompositionStart={() => {
-            composingRef.current = true;
-          }}
-          onCompositionEnd={(event) => {
-            composingRef.current = false;
-            processInput(event.currentTarget.value);
-          }}
-          autoCapitalize="off"
-          autoCorrect="off"
-          spellCheck={false}
-          aria-label={`Type ${step.prompt}`}
-        />
+        {step.kind === "typing" && (
+          <textarea
+            ref={inputRef}
+            className="absolute left-1/2 top-1/2 size-0.5 overflow-hidden whitespace-nowrap border-0 p-0 [clip-path:inset(50%)]"
+            value={session.input}
+            onInput={handleChange}
+            onChange={() => undefined}
+            onCompositionStart={() => {
+              composingRef.current = true;
+            }}
+            onCompositionEnd={(event) => {
+              composingRef.current = false;
+              processInput(event.currentTarget.value);
+            }}
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-label={`Type ${step.prompt}`}
+          />
+        )}
       </div>
 
       <div className="mt-6" data-help={session.stepErrors >= 2}>

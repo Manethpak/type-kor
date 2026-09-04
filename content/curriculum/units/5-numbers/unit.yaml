@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=../../unit.schema.json
+schemaVersion: 1
+id: numbers
+order: 5
+tier: core
+title:
+  km: លេខខ្មែរ
+  en: Khmer numerals
+description:
+  km: វាយលេខខ្មែរទាំងដប់ដោយប្រើជួរខាងលើ។
+  en: Type all ten Khmer numerals on the number row.

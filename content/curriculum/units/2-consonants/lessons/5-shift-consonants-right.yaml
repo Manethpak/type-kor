@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: shift-consonants-right
+revision: 1
+unitId: consonants
+order: 5
+title:
+  km: អ · ញ · ឡ · ភ · ណ
+  en: Shift consonants, right hand
+description:
+  km: ប្រើ Shift ជាមួយគ្រាប់ចុចខាងស្តាំ។
+  en: Use Shift with right-hand consonant keys.
+masteryAccuracy: 90
+steps:
+  - id: a
+    prompt: អ
+  - id: nho
+    prompt: ញ
+  - id: la
+    prompt: ឡ
+  - id: pho
+    prompt: ភ
+  - id: na
+    prompt: ណ
+  - id: a-ka
+    prompt: អក
+  - id: nho-la
+    prompt: ញល
+  - id: la-na
+    prompt: ឡន
+  - id: pho-sa
+    prompt: ភស
+  - id: na-ma
+    prompt: ណម

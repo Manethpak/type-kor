@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=../../unit.schema.json
 schemaVersion: 1
 id: words
-order: 5
+order: 7
+tier: core
 title:
   km: ពាក្យ និងឃ្លា
   en: Words and phrases

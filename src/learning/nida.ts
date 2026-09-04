@@ -134,6 +134,23 @@ export function outputForLayer(layoutKey: NidaLayoutKey, layer: NidaLayer): stri
   return layoutKey[layer];
 }
 
+export function keyHintFor(code: string, layer: NidaLayer): PhysicalKeyHint | undefined {
+  const layoutKey = NIDA_KEY_ROWS.flat().find((item) => item.code === code);
+  const output = layoutKey?.[layer];
+  if (!layoutKey || !output) return undefined;
+  return {
+    code,
+    key: layoutKey.key,
+    shift: layer === "shift",
+    altGr: layer === "altGr",
+    output,
+  };
+}
+
+export function keyHintId(hint: PhysicalKeyHint): string {
+  return `${hint.code}:${hint.altGr ? "altGr" : hint.shift ? "shift" : "base"}`;
+}
+
 export function displayNidaOutput(output: string): string {
   const names: Record<string, string> = {
     "\u200B": "ZWSP",

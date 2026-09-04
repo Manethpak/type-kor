@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: altgr-technical-punctuation
+revision: 1
+unitId: technical
+order: 5
+title:
+  km: '\\ · , · . · /'
+  en: AltGr technical punctuation
+description:
+  km: បំពេញសញ្ញាសម្រាប់ឯកសារ តំណ និងការសរសេរកូដ។
+  en: Complete punctuation used in files, links, and code.
+masteryAccuracy: 90
+steps:
+  - {
+      id: backslash-one,
+      kind: key,
+      label: { km: សញ្ញា backslash, en: Backslash },
+      target: { code: Backslash, layer: altGr },
+    }
+  - {
+      id: comma-one,
+      kind: key,
+      label: { km: សញ្ញាក្បៀស, en: Comma },
+      target: { code: Comma, layer: altGr },
+    }
+  - {
+      id: period-one,
+      kind: key,
+      label: { km: សញ្ញាចុច ., en: Period },
+      target: { code: Period, layer: altGr },
+    }
+  - {
+      id: slash-one,
+      kind: key,
+      label: { km: សញ្ញា slash, en: Slash },
+      target: { code: Slash, layer: altGr },
+    }
+  - {
+      id: backslash-two,
+      kind: key,
+      label: { km: សញ្ញា backslash, en: Backslash },
+      target: { code: Backslash, layer: altGr },
+    }
+  - {
+      id: comma-two,
+      kind: key,
+      label: { km: សញ្ញាក្បៀស, en: Comma },
+      target: { code: Comma, layer: altGr },
+    }
+  - {
+      id: period-two,
+      kind: key,
+      label: { km: សញ្ញាចុច ., en: Period },
+      target: { code: Period, layer: altGr },
+    }
+  - {
+      id: slash-two,
+      kind: key,
+      label: { km: សញ្ញា slash, en: Slash },
+      target: { code: Slash, layer: altGr },
+    }
+  - {
+      id: backslash-three,
+      kind: key,
+      label: { km: សញ្ញា backslash, en: Backslash },
+      target: { code: Backslash, layer: altGr },
+    }
+  - {
+      id: slash-three,
+      kind: key,
+      label: { km: សញ្ញា slash, en: Slash },
+      target: { code: Slash, layer: altGr },
+    }

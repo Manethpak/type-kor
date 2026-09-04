@@ -2,6 +2,7 @@
 schemaVersion: 1
 id: clusters
 order: 4
+tier: core
 title:
   km: ជើងអក្សរ
   en: Subscript clusters

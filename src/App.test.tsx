@@ -44,8 +44,10 @@ describe("timed typing test", () => {
     });
 
     expect(screen.getByTestId("countdown")).toHaveTextContent("1");
-    await act(() => vi.advanceTimersByTimeAsync(1_100));
-    expect(screen.getByText("លទ្ធផលរបស់អ្នក")).toBeVisible();
+    for (let elapsed = 0; elapsed < 1_100; elapsed += 100) {
+      await act(() => vi.advanceTimersByTimeAsync(100));
+    }
+    expect(screen.getByRole("heading", { name: "ចង្វាក់នៃការវាយរបស់អ្នក" })).toBeVisible();
     expect(
       screen.getByRole("img", {
         name: /Typing analytics chart: peak \d+ CPM, \d+ WPM, \d+% accuracy/,
@@ -74,7 +76,7 @@ describe("timed typing test", () => {
     expect(screen.getByRole("heading", { name: "ការកំណត់" })).toBeVisible();
 
     fireEvent.click(screen.getByTitle("Local history"));
-    expect(screen.getByRole("heading", { name: "ប្រវត្តិការវាយ" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "ប្រវត្តិលទ្ធផលវាយអក្សរ" })).toBeVisible();
 
     fireEvent.click(screen.getByTitle("Typing test"));
     expect(screen.getByLabelText("Khmer typing test")).toBeVisible();
@@ -130,7 +132,7 @@ describe("timed typing test", () => {
     localStorage.removeItem("typekor:app-state");
     renderApp();
 
-    expect(screen.getByRole("heading", { name: "Typing ភាសាខ្មែរជាមួយក្ដារចុច NIDA" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Type ក" })).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: /រៀន Learning mode/ }));
 
     expect(screen.getByRole("heading", { name: "រៀនវាយអក្សរខ្មែរ" })).toBeVisible();
@@ -267,6 +269,17 @@ describe("timed typing test", () => {
     expect(screen.getByTestId("nida-keyboard")).toHaveAttribute("data-mode", "follow");
   });
 
+  it("grades exact modifier layers in key-drill lessons", () => {
+    renderApp("/learn/spacing-keys");
+
+    expect(screen.getByText("ព្រំដែនពាក្យ ZWSP")).toBeVisible();
+    fireEvent.keyDown(window, { key: " ", code: "Space" });
+    expect(screen.getByText("ចន្លោះធម្មតា")).toBeVisible();
+
+    fireEvent.keyDown(window, { key: " ", code: "Space", shiftKey: true });
+    expect(screen.getByText("ព្រំដែនពាក្យ ZWSP")).toBeVisible();
+  });
+
   it("continues with Enter and repeats with R after completing a lesson", () => {
     renderApp("/learn/home-anchors");
     for (const prompt of ["ក", "ល", "ស", "ហ", "កល", "សក", "ហល", "សាលា"]) {
@@ -299,6 +312,6 @@ describe("timed typing test", () => {
   it("falls back to onboarding when app state is malformed", () => {
     localStorage.setItem("typekor:app-state", "not-json");
     renderApp();
-    expect(screen.getByRole("heading", { name: "Typing ភាសាខ្មែរជាមួយក្ដារចុច NIDA" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Type ក" })).toBeVisible();
   });
 });

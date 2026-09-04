@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: shift-technical-symbols
+revision: 1
+unitId: technical
+order: 1
+title:
+  km: '! · " · % · ( · )'
+  en: Shift symbols
+description:
+  km: ហាត់សញ្ញាទូទៅនៅជួរលេខដោយប្រើ Shift។
+  en: Practice common number-row symbols with Shift.
+masteryAccuracy: 90
+steps:
+  - {
+      id: exclamation-one,
+      kind: key,
+      label: { km: សញ្ញាឧទាន !, en: Exclamation mark },
+      target: { code: Digit1, layer: shift },
+    }
+  - {
+      id: quote-one,
+      kind: key,
+      label: { km: សញ្ញា ", en: Double quote },
+      target: { code: Digit3, layer: shift },
+    }
+  - {
+      id: percent-one,
+      kind: key,
+      label: { km: ភាគរយ %, en: Percent sign },
+      target: { code: Digit5, layer: shift },
+    }
+  - {
+      id: open-one,
+      kind: key,
+      label: { km: វង់ក្រចកបើក (, en: Opening parenthesis },
+      target: { code: Digit9, layer: shift },
+    }
+  - {
+      id: close-one,
+      kind: key,
+      label: { km: វង់ក្រចកបិទ ), en: Closing parenthesis },
+      target: { code: Digit0, layer: shift },
+    }
+  - {
+      id: exclamation-two,
+      kind: key,
+      label: { km: សញ្ញាឧទាន !, en: Exclamation mark },
+      target: { code: Digit1, layer: shift },
+    }
+  - {
+      id: quote-two,
+      kind: key,
+      label: { km: សញ្ញា ", en: Double quote },
+      target: { code: Digit3, layer: shift },
+    }
+  - {
+      id: percent-two,
+      kind: key,
+      label: { km: ភាគរយ %, en: Percent sign },
+      target: { code: Digit5, layer: shift },
+    }
+  - {
+      id: open-two,
+      kind: key,
+      label: { km: វង់ក្រចកបើក (, en: Opening parenthesis },
+      target: { code: Digit9, layer: shift },
+    }
+  - {
+      id: close-two,
+      kind: key,
+      label: { km: វង់ក្រចកបិទ ), en: Closing parenthesis },
+      target: { code: Digit0, layer: shift },
+    }

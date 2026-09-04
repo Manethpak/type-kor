@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: digits-one-five
+revision: 1
+unitId: numbers
+order: 1
+title:
+  km: ១ · ២ · ៣ · ៤ · ៥
+  en: Khmer digits one to five
+description:
+  km: ចាប់ផ្តើមជួរលេខពី ១ ដល់ ៥។
+  en: Begin the number row with digits one through five.
+masteryAccuracy: 90
+steps:
+  - id: one
+    prompt: ១
+  - id: two
+    prompt: ២
+  - id: three
+    prompt: ៣
+  - id: four
+    prompt: ៤
+  - id: five
+    prompt: ៥
+  - id: one-two
+    prompt: ១២
+  - id: three-four
+    prompt: ៣៤
+  - id: five-four
+    prompt: ៥៤
+  - id: two-three
+    prompt: ២៣
+  - id: one-to-five
+    prompt: ១២៣៤៥

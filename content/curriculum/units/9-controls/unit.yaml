@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=../../unit.schema.json
+schemaVersion: 1
+id: controls
+order: 9
+tier: advanced
+title:
+  km: តួអក្សរមើលមិនឃើញ
+  en: Invisible controls
+description:
+  km: ស្គាល់ ZWJ, ZWNJ និង NBSP ដោយការហាត់គ្រាប់ចុចផ្ទាល់។
+  en: Learn ZWJ, ZWNJ, and NBSP with direct key drills.

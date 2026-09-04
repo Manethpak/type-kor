@@ -21,10 +21,10 @@ steps:
   - id: po
     prompt: ព
   - id: kit
-    prompt: គិត
+    prompt: គត
   - id: cheat
-    prompt: ជាតិ
+    prompt: ជរ
   - id: tuk
-    prompt: ទឹក
+    prompt: ទយ
   - id: pit
-    prompt: ពិត
+    prompt: ពច

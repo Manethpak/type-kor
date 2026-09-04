@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=../../unit.schema.json
+schemaVersion: 1
+id: technical
+order: 10
+tier: technical
+title:
+  km: សញ្ញាបច្ចេកទេស
+  en: Technical symbols
+description:
+  km: បំពេញសញ្ញា ASCII រូបិយប័ណ្ណ និងសញ្ញាសរសេរកូដ។
+  en: Complete ASCII, currency, and coding symbols.

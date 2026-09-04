@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: base-independent-vowels
+revision: 1
+unitId: advanced-khmer
+order: 1
+title:
+  km: ឥ · ឲ · ឪ · ឮ
+  en: Base independent vowels
+description:
+  km: ស្គាល់ស្រៈនិស្ស័យនៅស្រទាប់គោល។
+  en: Learn independent vowels on the Base layer.
+masteryAccuracy: 90
+steps:
+  - { id: ei-one, prompt: ឥ }
+  - { id: ao-one, prompt: ឲ }
+  - { id: au-one, prompt: ឪ }
+  - { id: lue-one, prompt: ឮ }
+  - { id: pair-one, prompt: ឥឲ }
+  - { id: ei-two, prompt: ឥ }
+  - { id: ao-two, prompt: ឲ }
+  - { id: au-two, prompt: ឪ }
+  - { id: lue-two, prompt: ឮ }
+  - { id: pair-two, prompt: ឪឮ }

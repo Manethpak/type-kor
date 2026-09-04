@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 import { parseDocument } from "yaml";
-import { keySequenceFor } from "../src/learning/nida.ts";
+import { keyHintFor, keySequenceFor, NIDA_KEY_ROWS } from "../src/learning/nida.ts";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentDirectory = path.join(root, "content", "curriculum");
@@ -80,11 +80,28 @@ function formatSchemaErrors(errors) {
     .join("; ");
 }
 
+function hintId(hint) {
+  return `${hint.code}:${hint.altGr ? "altGr" : hint.shift ? "shift" : "base"}`;
+}
+
+function hintsForStep(lesson, step) {
+  if (step.kind === "key") {
+    const hint = keyHintFor(step.target.code, step.target.layer);
+    if (!hint) {
+      throw new Error(
+        `lessons/${lesson.id}: step ${step.id} references an unavailable NIDA key layer`,
+      );
+    }
+    return [hint];
+  }
+  return keySequenceFor(step.prompt);
+}
+
 function validateNidaCoverage(lesson) {
   for (const step of lesson.steps) {
-    const reconstructed = keySequenceFor(step.prompt)
-      .map((hint) => hint.output)
-      .join("");
+    const hints = hintsForStep(lesson, step);
+    if (step.kind === "key") continue;
+    const reconstructed = hints.map((hint) => hint.output).join("");
     if (reconstructed !== step.prompt) {
       const missing = Array.from(step.prompt).filter(
         (character) => !keySequenceFor(character).length,
@@ -172,6 +189,31 @@ async function generate() {
       (left, right) =>
         unitOrder.get(left.unitId) - unitOrder.get(right.unitId) || left.order - right.order,
     );
+
+  const expectedMappings = new Set(
+    NIDA_KEY_ROWS.flat().flatMap((layoutKey) =>
+      ["base", "shift", "altGr"]
+        .filter((layer) => layoutKey[layer])
+        .map((layer) => `${layoutKey.code}:${layer}`),
+    ),
+  );
+  const taughtMappings = new Set();
+  for (const lesson of lessons) {
+    const lessonMappings = new Set(
+      lesson.steps.flatMap((step) => hintsForStep(lesson, step).map(hintId)),
+    );
+    const introduced = [...lessonMappings].filter((mapping) => !taughtMappings.has(mapping));
+    if (introduced.length > 5) {
+      throw new Error(
+        `lessons/${lesson.id}: introduces ${introduced.length} key mappings (${introduced.join(", ")}); focused lessons may introduce at most 5`,
+      );
+    }
+    for (const mapping of lessonMappings) taughtMappings.add(mapping);
+  }
+  const missingMappings = [...expectedMappings].filter((mapping) => !taughtMappings.has(mapping));
+  if (missingMappings.length) {
+    throw new Error(`Curriculum does not cover NIDA mappings: ${missingMappings.join(", ")}`);
+  }
 
   return `${JSON.stringify({ schemaVersion: 1, units, lessons }, null, 2)}\n`;
 }

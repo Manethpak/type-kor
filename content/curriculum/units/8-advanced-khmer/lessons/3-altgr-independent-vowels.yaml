@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: altgr-independent-vowels
+revision: 1
+unitId: advanced-khmer
+order: 3
+title:
+  km: ឯ · ឫ · ឦ · ឱ · ឰ
+  en: AltGr independent vowels
+description:
+  km: ប្រើ Right Alt ដើម្បីបញ្ចូលស្រៈនិស្ស័យកម្រ។
+  en: Use Right Alt for less common independent vowels.
+masteryAccuracy: 90
+steps:
+  - { id: ae-one, prompt: ឯ }
+  - { id: ryy-one, prompt: ឫ }
+  - { id: ii-one, prompt: ឦ }
+  - { id: ao-one, prompt: ឱ }
+  - { id: ai-one, prompt: ឰ }
+  - { id: ae-two, prompt: ឯ }
+  - { id: ryy-two, prompt: ឫ }
+  - { id: ii-two, prompt: ឦ }
+  - { id: ao-two, prompt: ឱ }
+  - { id: ai-two, prompt: ឰ }

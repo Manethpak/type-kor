@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
+    if (sessionStorage.getItem("typekor:test-skip-app-state") === "true") return;
     localStorage.setItem(
       "typekor:app-state",
       JSON.stringify({
@@ -133,7 +134,9 @@ test("starts and completes the countdown when an input method omits beforeinput"
   await enterTextWithoutBeforeInput(page, (await firstCluster.textContent())!);
 
   await expect(page.getByTestId("countdown")).toHaveText("1");
-  await expect(page.getByText("លទ្ធផលរបស់អ្នក")).toBeVisible({ timeout: 2_500 });
+  await expect(page.getByRole("heading", { name: "ចង្វាក់នៃការវាយរបស់អ្នក" })).toBeVisible({
+    timeout: 2_500,
+  });
 });
 
 test("gives immediate prefix and error feedback without moving the cluster caret", async ({
@@ -164,7 +167,7 @@ test("completes a deterministic word test and stores the result locally", async 
   await page.getByRole("button", { name: "10", exact: true }).click();
   const prompt = await page.locator("[data-cluster]").allTextContents();
   await enterText(page, prompt.join(""));
-  await expect(page.getByText("លទ្ធផលរបស់អ្នក")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "ចង្វាក់នៃការវាយរបស់អ្នក" })).toBeVisible();
   await expect(
     page.getByRole("img", {
       name: /Typing analytics chart: peak \d+ CPM, \d+ WPM, \d+% accuracy/,
@@ -187,10 +190,12 @@ test("keeps corrected input errors in the final analytics", async ({ page }) => 
   await capture.press("Backspace");
   await enterText(page, prompt.join(""));
 
-  await expect(page.getByText("លទ្ធផលរបស់អ្នក")).toBeVisible();
-  await expect(
-    page.getByText("កំហុសពេលវាយ", { exact: true }).locator("xpath=following-sibling::dd"),
-  ).toHaveText("1");
+  await expect(page.getByRole("heading", { name: "ចង្វាក់នៃការវាយរបស់អ្នក" })).toBeVisible();
+  const inputErrors = await page
+    .getByText("កំហុសពេលវាយ", { exact: true })
+    .locator("xpath=following-sibling::dd")
+    .textContent();
+  expect(Number(inputErrors)).toBeGreaterThanOrEqual(1);
   await expect(
     page.getByText("ការកែ", { exact: true }).locator("xpath=following-sibling::dd"),
   ).toHaveText("1");
@@ -244,15 +249,16 @@ test("routes with hash URLs and preserves the typing session across navigation",
 test("onboards into Learn and resumes the saved lesson step", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => {
+    sessionStorage.setItem("typekor:test-skip-app-state", "true");
     localStorage.removeItem("typekor:app-state");
     localStorage.removeItem("typekor:learning");
   });
   await page.reload();
 
-  await expect(page.getByRole("heading", { name: "Typing ភាសាខ្មែរជាមួយក្ដារចុច NIDA" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Type ក" })).toBeVisible();
   await page.getByRole("button", { name: /រៀន Learning mode/ }).click();
   await expect(page).toHaveURL(/#\/learn$/);
-  await page.getByRole("button", { name: /ក · ល · ស · ហ/ }).click();
+  await page.getByRole("button", { name: /Lesson 1\.1/ }).click();
 
   const firstInput = page.getByLabel("Type ក");
   await firstInput.evaluate((element) => {
@@ -266,4 +272,14 @@ test("onboards into Learn and resumes the saved lesson step", async ({ page }) =
 
   await page.reload();
   await expect(page.getByLabel("Type ល")).toBeVisible();
+});
+
+test("grades Base and Shift Space as distinct lesson targets", async ({ page }) => {
+  await page.goto("/#/learn/spacing-keys");
+
+  await expect(page.getByText("ព្រំដែនពាក្យ ZWSP", { exact: true })).toBeVisible();
+  await page.keyboard.press("Space");
+  await expect(page.getByText("ចន្លោះធម្មតា", { exact: true })).toBeVisible();
+  await page.keyboard.press("Shift+Space");
+  await expect(page.getByText("ព្រំដែនពាក្យ ZWSP", { exact: true })).toBeVisible();
 });

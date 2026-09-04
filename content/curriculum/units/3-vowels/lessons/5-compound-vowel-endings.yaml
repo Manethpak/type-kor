@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: compound-vowel-endings
+revision: 1
+unitId: vowels
+order: 5
+title:
+  km: ោះ · េះ · ំ · ុះ
+  en: Compound endings
+description:
+  km: ហាត់គ្រាប់ចុចដែលបញ្ចូលស្រៈ និងសញ្ញារួមគ្នា។
+  en: Practice keys that produce combined vowel endings.
+masteryAccuracy: 90
+steps:
+  - id: kaoh
+    prompt: កោះ
+  - id: keh
+    prompt: កេះ
+  - id: kam
+    prompt: កំ
+  - id: koh
+    prompt: កុះ
+  - id: consonant-shifter
+    prompt: ក៉
+  - id: saoh
+    prompt: សោះ
+  - id: seh
+    prompt: សេះ
+  - id: sam
+    prompt: សំ
+  - id: soh
+    prompt: សុះ
+  - id: maoh
+    prompt: មោះ
+  - id: mem
+    prompt: មំ

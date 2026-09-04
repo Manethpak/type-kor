@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: base-consonant-reaches
+revision: 1
+unitId: consonants
+order: 3
+title:
+  km: ឆ · ផ · ថ · ឋ · ខ
+  en: Base consonant reaches
+description:
+  km: ហាត់ព្យញ្ជនៈនៅគែម និងជួរខាងក្រោម។
+  en: Practice consonants on the outer and lower reaches.
+masteryAccuracy: 90
+steps:
+  - id: chha
+    prompt: ឆ
+  - id: pha
+    prompt: ផ
+  - id: tha
+    prompt: ថ
+  - id: ttha
+    prompt: ឋ
+  - id: kha
+    prompt: ខ
+  - id: chha-ka
+    prompt: ឆក
+  - id: pha-la
+    prompt: ផល
+  - id: tha-na
+    prompt: ថន
+  - id: ttha-ma
+    prompt: ឋម
+  - id: kha-ma
+    prompt: ខម

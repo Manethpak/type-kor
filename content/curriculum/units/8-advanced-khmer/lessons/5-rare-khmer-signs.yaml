@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../lesson.schema.json
+schemaVersion: 1
+id: rare-khmer-signs
+revision: 1
+unitId: advanced-khmer
+order: 5
+title:
+  km: ៑ · ៙ · ៚ · ៎
+  en: Rare Khmer signs
+description:
+  km: ហាត់សញ្ញាខ្មែរដែលប្រើក្នុងបរិបទពិសេស។
+  en: Practice Khmer signs used in specialized contexts.
+masteryAccuracy: 90
+steps:
+  - { id: sign-one, prompt: ៑ }
+  - { id: sign-two, prompt: ៙ }
+  - { id: sign-three, prompt: ៚ }
+  - { id: sign-four, prompt: ៎ }
+  - { id: pair-one, prompt: ៑៙ }
+  - { id: sign-one-repeat, prompt: ៑ }
+  - { id: sign-two-repeat, prompt: ៙ }
+  - { id: sign-three-repeat, prompt: ៚ }
+  - { id: sign-four-repeat, prompt: ៎ }
+  - { id: pair-two, prompt: ៚៎ }
