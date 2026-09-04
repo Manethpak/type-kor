@@ -32,7 +32,7 @@ export function OnboardingPage({
 
       <section className="w-[min(900px,100%)] animate-arrive" aria-labelledby="welcome-title">
         <div className="mb-9 text-center">
-          <div className="mx-auto mb-2 grid size-13 place-items-center rounded-[14px_14px_14px_4px] border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-app-accent-soft font-khmer text-[28px] text-app-accent shadow-[inset_0_0_24px_var(--accent-soft)]">
+          <div className="mx-auto mb-2 grid size-13 place-items-center rounded-[14px_14px_14px_4px] border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-app-accent-soft font-khmer text-3xl text-app-accent shadow-[inset_0_0_24px_var(--accent-soft)]">
             ក
           </div>
           <h1
@@ -46,7 +46,7 @@ export function OnboardingPage({
         <div className="grid grid-cols-2 gap-3 max-[700px]:grid-cols-1">
           <button className={choiceClass} onClick={() => onSelect("learn")}>
             <span
-              className="absolute right-5 top-3 font-khmer text-[110px] leading-none text-app-accent opacity-[.035] transition-opacity group-hover:opacity-[.07]"
+              className="absolute right-5 top-3 font-khmer text-8xl leading-none text-app-accent opacity-[.035] transition-opacity group-hover:opacity-[.07]"
               aria-hidden="true"
             >
               ក
@@ -54,13 +54,13 @@ export function OnboardingPage({
             <span className="mb-12 grid size-11 place-items-center rounded-xl bg-app-accent-soft text-app-accent [&_svg]:size-5">
               <BookIcon />
             </span>
-            <small className="text-[9px] font-bold uppercase tracking-widest text-app-accent">
+            <small className="text-xs font-bold uppercase tracking-widest text-app-accent">
               Guided learning
             </small>
-            <h2 className="mb-2 mt-2 font-khmer text-[30px] font-medium">
+            <h2 className="mb-2 mt-2 font-khmer text-3xl font-medium">
               រៀន <span className="font-ui text-sm font-medium text-app-dim">Learning mode</span>
             </h2>
-            <p className="max-w-77.5 text-[13px] leading-relaxed text-app-soft">
+            <p className="max-w-77.5 text-sm leading-relaxed text-app-soft">
               រៀន typing ខ្មែរជាមួយក្តារចុច NIDA តាមមេរៀន
             </p>
             <span className="mt-7 inline-flex items-center gap-2 text-xs font-semibold text-app-accent">
@@ -76,13 +76,13 @@ export function OnboardingPage({
             <span className="mb-12 grid size-11 place-items-center rounded-xl bg-app-accent-soft text-app-accent [&_svg]:size-5">
               <KeyboardIcon />
             </span>
-            <small className="text-[9px] font-bold uppercase tracking-widest text-app-accent">
+            <small className="text-xs font-bold uppercase tracking-widest text-app-accent">
               Practice & Measure
             </small>
-            <h2 className="mb-2 mt-2 font-khmer text-[30px] font-medium">
+            <h2 className="mb-2 mt-2 font-khmer text-3xl font-medium">
               សាកល្បង <span className="font-ui text-sm font-medium text-app-dim">Testing mode</span>
             </h2>
-            <p className="max-w-77.5 text-[13px] leading-relaxed text-app-soft">
+            <p className="max-w-77.5 text-sm leading-relaxed text-app-soft">
               វាស់ល្បឿន និងភាពត្រឹមត្រូវតាមពេលវេលា ឬចំនួនពាក្យ ដោយគ្មានជំនួយ។
             </p>
             <span className="mt-7 inline-flex items-center gap-2 text-xs font-semibold text-app-accent">

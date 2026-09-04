@@ -51,7 +51,7 @@ export function LearnPage({
     <section className="mx-auto w-[min(920px,100%)] animate-arrive" aria-labelledby="learn-title">
       <div className="mb-8 grid grid-cols-[1fr_auto] items-end gap-5 border-b border-app-line pb-6 max-[680px]:grid-cols-1">
         <div>
-          <h1 id="learn-title" className="m-0 font-khmer text-[38px] font-medium">
+          <h1 id="learn-title" className="m-0 font-khmer text-4xl font-medium">
             រៀនវាយអក្សរខ្មែរ
           </h1>
         </div>
@@ -59,10 +59,10 @@ export function LearnPage({
           <b className="block text-xl font-medium text-app-accent [font-variant-numeric:tabular-nums]">
             {coreMastered}/{coreLessonIds.size}
           </b>
-          <small className="text-[9px] uppercase tracking-[.14em] text-app-dim">
+          <small className="text-xs uppercase tracking-[.14em] text-app-dim">
             core mastered
           </small>
-          <small className="mt-1 block text-[9px] text-app-dim">
+          <small className="mt-1 block text-xs text-app-dim">
             {masteredMappings.size}/{totalMappings} key mappings
           </small>
         </div>
@@ -77,7 +77,7 @@ export function LearnPage({
             {learningState.checkpoint?.lessonId === recommended.id ? "↳" : "១"}
           </span>
           <span>
-            <small className="text-[9px] font-bold uppercase tracking-[.16em] text-app-accent">
+            <small className="text-xs font-bold uppercase tracking-[.16em] text-app-accent">
               {learningState.checkpoint?.lessonId === recommended.id
                 ? "Continue where you left off"
                 : "Recommended next"}
@@ -85,7 +85,7 @@ export function LearnPage({
             <strong className="mt-1 block font-khmer text-lg font-medium">
               {recommended.title.km}
             </strong>
-            <span className="mt-0.5 block text-[11px] text-app-dim">
+            <span className="mt-0.5 block text-xs text-app-dim">
               {recommended.description.km}
             </span>
           </span>
@@ -102,11 +102,11 @@ export function LearnPage({
         {curriculum.map((unit) => (
           <section key={unit.id} aria-labelledby={`${unit.id}-title`}>
             <div className="mb-3 flex items-start gap-3">
-              <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg border border-app-line bg-app-surface text-[10px] font-semibold text-app-accent">
+              <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg border border-app-line bg-app-surface text-xs font-semibold text-app-accent">
                 {String(unit.order).padStart(2, "0")}
               </span>
               <div>
-                <small className="mb-1 block text-[8px] font-bold uppercase tracking-[.14em] text-app-accent">
+                <small className="mb-1 block text-xs font-bold uppercase tracking-[.14em] text-app-accent">
                   {unit.tier === "core"
                     ? "ផ្លូវសិក្សាគោល"
                     : unit.tier === "advanced"
@@ -116,7 +116,7 @@ export function LearnPage({
                 <h2 id={`${unit.id}-title`} className="m-0 font-khmer text-xl font-medium">
                   {unit.title.km}
                 </h2>
-                <p className="mb-0 mt-0.5 text-[11px] text-app-dim">{unit.description.km}</p>
+                <p className="mb-0 mt-0.5 text-xs text-app-dim">{unit.description.km}</p>
               </div>
             </div>
 
@@ -132,12 +132,12 @@ export function LearnPage({
                     onClick={() => openLesson(lesson)}
                   >
                     <span className="mb-5 flex items-center justify-between">
-                      <small className="text-[9px] font-semibold uppercase tracking-[.13em] text-app-dim">
+                      <small className="text-xs font-semibold uppercase tracking-[.13em] text-app-dim">
                         Lesson {unit.order}.{lessonIndex + 1}
                       </small>
                       <span
                         className={cx(
-                          "grid size-5 place-items-center rounded-full border border-app-line text-[9px] text-app-dim",
+                          "grid size-5 place-items-center rounded-full border border-app-line text-xs text-app-dim",
                           isMastered &&
                             "border-[color-mix(in_srgb,var(--accent)_40%,transparent)] bg-app-accent-soft text-app-accent",
                           isCurrent &&
@@ -154,11 +154,11 @@ export function LearnPage({
                     <strong className="block font-khmer text-lg font-medium transition-colors group-hover:text-app-accent">
                       {lesson.title.km}
                     </strong>
-                    <span className="mt-1 block text-[11px] leading-normal text-app-dim">
+                    <span className="mt-1 block text-xs leading-normal text-app-dim">
                       {lesson.description.km}
                     </span>
                     {progress && (
-                      <small className="mt-2 block text-[9px] text-app-accent">
+                      <small className="mt-2 block text-xs text-app-accent">
                         Best {progress.bestAccuracy}% · {progress.attempts} attempt
                         {progress.attempts === 1 ? "" : "s"}
                       </small>

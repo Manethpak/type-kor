@@ -65,7 +65,7 @@ export function ResultView({
     <div className="mx-auto w-[min(1040px,100%)] animate-arrive">
       <header className="mb-6 flex items-end justify-between gap-5 border-b border-app-line pb-5">
         <div>
-          <h1 className="mt-2 font-khmer text-[clamp(22px,3vw,32px)] font-medium leading-tight">
+          <h1 className="mt-2 font-khmer text-2xl font-medium leading-tight md:text-3xl">
             ចង្វាក់នៃការវាយរបស់អ្នក
           </h1>
         </div>
@@ -85,7 +85,7 @@ export function ResultView({
         >
           <article className="relative min-h-36 border-b border-app-line p-4">
             <span className="absolute inset-x-0 top-0 h-0.5 bg-app-accent" />
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-app-accent">
+            <p className="text-xs font-semibold uppercase tracking-widest text-app-accent">
               Net cluster pace
             </p>
             <div className="mt-4 flex items-end gap-1.5">
@@ -108,7 +108,7 @@ export function ResultView({
 
           <article className="relative min-h-36 border-b border-app-line p-4">
             <span className="absolute inset-x-0 top-0 h-0.5 bg-app-correct" />
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-app-correct">
+            <p className="text-xs font-semibold uppercase tracking-widest text-app-correct">
               Net word pace
             </p>
             <div className="mt-4 flex items-end gap-1.5">
@@ -129,29 +129,26 @@ export function ResultView({
             </div>
           </article>
 
-          <article className="relative flex min-h-28 flex-col justify-between bg-[color-mix(in_srgb,var(--surface)_55%,transparent)] p-4">
+          <article className="relative flex min-h-28 flex-col bg-[color-mix(in_srgb,var(--surface)_55%,transparent)] p-4">
             <div className="flex items-center justify-between gap-3">
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-app-dim">
+              <p className="text-xs font-semibold uppercase tracking-widest text-app-soft">
                 Input accuracy
               </p>
               <span className="size-1.5 rounded-full bg-app-correct shadow-[0_0_0_4px_color-mix(in_srgb,var(--correct)_12%,transparent)]" />
             </div>
             <div className="mt-2 flex items-end gap-1">
-              <strong className="text-4xl font-light leading-none tracking-tighter text-app-text [font-variant-numeric:tabular-nums]">
+              <strong className="text-5xl font-light leading-none tracking-tighter text-app-text [font-variant-numeric:tabular-nums]">
                 {inputAccuracy}
               </strong>
               <span className="pb-0.5 text-base font-light text-app-dim">%</span>
             </div>
-            <p className="mt-2 text-[10px] leading-relaxed text-app-dim">
-              រាល់កំហុសត្រូវបានរាប់ ទោះបានកែត្រឹមត្រូវវិញក៏ដោយ។
-            </p>
           </article>
         </section>
 
         <section className="flex w-full min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-app-line bg-app-raised p-4">
           <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-app-dim">
+              <p className="text-xs font-semibold uppercase tracking-widest text-app-dim">
                 Pace over time
               </p>
               <h2 className="mt-1 font-khmer text-lg font-medium text-app-text">
@@ -159,7 +156,7 @@ export function ResultView({
               </h2>
             </div>
             <div
-              className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-semibold uppercase tracking-wider text-app-dim"
+              className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold uppercase tracking-wider text-app-dim"
               aria-label="Chart legend"
             >
               <span className="flex items-center gap-2 text-app-accent">
@@ -176,33 +173,33 @@ export function ResultView({
           <div className="relative min-h-60 w-full flex-1 rounded-lg bg-[color-mix(in_srgb,var(--surface)_34%,transparent)] px-1 py-2 lg:min-h-48">
             <ReportSpeedChart durationMs={result.durationMs} theme={theme} timeline={timeline} />
           </div>
-          <div className="mt-2 flex justify-between px-1 text-[10px] text-app-dim">
+          <div className="mt-2 flex justify-between px-1 text-xs text-app-dim">
             <span className="text-app-accent">← CPM scale</span>
             <span className="text-app-correct">WPM scale →</span>
           </div>
         </section>
       </div>
 
-      <section className="mt-4" aria-labelledby="activity-heading">
-        <div className="mb-2 flex items-baseline justify-between gap-4 px-1">
-          <h2 id="activity-heading" className="font-khmer text-base font-medium text-app-text">
+      <section className="my-4" aria-labelledby="activity-heading">
+        <div className="my-2 flex items-baseline justify-between gap-4 px-1">
+          <h2 id="activity-heading" className="font-khmer text-xl font-medium text-app-text">
             ព័ត៌មានលម្អិត
           </h2>
-          <span className="text-[10px] uppercase tracking-widest text-app-dim">Input audit</span>
         </div>
         <dl className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {activityMetrics.map((metric) => (
             <div
               key={metric.label}
-              className="group relative min-h-28 overflow-hidden rounded-lg border border-app-line bg-app-raised p-3 transition-[border-color,transform] hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--accent)_28%,transparent)]"
+              className="group relative min-h-24 overflow-hidden rounded-lg border border-app-line bg-app-raised p-3 transition-[border-color,transform] hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--accent)_28%,transparent)]"
               data-tone={metric.tone}
             >
               <span className="absolute right-3 top-3 size-1.5 rounded-full bg-app-dim group-data-[tone=accent]:bg-app-accent group-data-[tone=correct]:bg-app-correct group-data-[tone=error]:bg-app-error" />
-              <dt className="pr-5 text-xs font-medium text-app-dim">{metric.label}</dt>
-              <dd className="mt-2 text-3xl font-light leading-none tracking-tight text-app-text [font-variant-numeric:tabular-nums]">
+              <dt className="pr-5 text-base font-medium text-app-soft tracking-wide">
+                {metric.label}
+              </dt>
+              <dd className="mt-2 text-3xl tracking-tight text-app-text [font-variant-numeric:tabular-nums]">
                 {metric.value}
               </dd>
-              <p className="mt-2 text-[10px] leading-relaxed text-app-dim">{metric.detail}</p>
             </div>
           ))}
         </dl>

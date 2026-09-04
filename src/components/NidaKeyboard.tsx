@@ -145,10 +145,10 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
     >
       <div className="mb-3 flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="m-0 text-[9px] font-semibold uppercase tracking-[.14em] text-app-dim">
+          <p className="m-0 text-xs font-semibold uppercase tracking-[.14em] text-app-dim">
             Khmer NIDA · Complete layout
           </p>
-          <p className="m-0 mt-1 truncate text-[9px] text-app-dim" aria-live="polite">
+          <p className="m-0 mt-1 truncate text-xs text-app-dim" aria-live="polite">
             {mode === "follow"
               ? `Following lesson · ${active ? `next: ${keyInstructionLabel(active, altGrModifierLabel)}` : "waiting for a target"}`
               : lastOutput
@@ -166,7 +166,7 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
             {(Object.keys(layerLabel) as NidaLayer[]).map((option) => (
               <button
                 key={option}
-                className="cursor-pointer rounded-[5px] px-2 py-1 text-[8px] font-semibold uppercase tracking-[.08em] text-app-dim transition-colors hover:text-app-accent data-[selected=true]:bg-app-accent-soft data-[selected=true]:text-app-accent"
+                className="cursor-pointer rounded-[5px] px-2 py-1 text-xs font-semibold uppercase tracking-[.08em] text-app-dim transition-colors hover:text-app-accent data-[selected=true]:bg-app-accent-soft data-[selected=true]:text-app-accent"
                 data-selected={layer === option}
                 aria-pressed={layer === option}
                 onClick={() => setSelectedLayer(option)}
@@ -208,10 +208,10 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
                 onPointerCancel={() => releasePointerKey(layoutKey.code)}
                 onPointerLeave={() => releasePointerKey(layoutKey.code)}
               >
-                <small className="absolute left-1.5 top-0.5 text-[7px] font-semibold opacity-55">
+                <small className="absolute left-1.5 top-0.5 text-xs font-semibold opacity-55">
                   {layoutKey.key}
                 </small>
-                <b className="font-khmer text-[15px] font-normal leading-none">
+                <b className="font-khmer text-sm font-normal leading-none">
                   {output ? displayNidaOutput(output) : "·"}
                 </b>
               </KeyboardKey>

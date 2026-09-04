@@ -184,7 +184,7 @@ function SectionHeading({
   return (
     <div className="mb-7 grid grid-cols-[48px_1fr] items-start gap-4 border-app-line">
       <span
-        className="pt-1 text-[9px] font-bold tracking-[.18em] text-app-accent"
+        className="pt-1 text-xs font-bold tracking-[.18em] text-app-accent"
         aria-hidden="true"
       >
         {number}
@@ -192,11 +192,11 @@ function SectionHeading({
       <div>
         <h2
           id={id}
-          className="m-0 font-khmer text-[clamp(25px,4vw,34px)] font-medium leading-tight"
+          className="m-0 font-khmer text-3xl font-medium leading-tight md:text-4xl"
         >
           {titleKm}
         </h2>
-        <p className="mb-0 mt-1 text-[10px] font-semibold uppercase tracking-[.16em] text-app-dim">
+        <p className="mb-0 mt-1 text-xs font-semibold uppercase tracking-[.16em] text-app-dim">
           {titleEn}
         </p>
       </div>
@@ -212,7 +212,7 @@ export function KeyboardGuidePage() {
     >
       <header className="relative mb-16 overflow-hidden border-y border-app-line py-9 md:py-12">
         <span
-          className="pointer-events-none absolute -right-8 -top-20 font-khmer text-[clamp(180px,32vw,310px)] leading-none text-app-accent opacity-[.025]"
+          className="pointer-events-none absolute -right-8 -top-20 font-khmer text-9xl leading-none text-app-accent opacity-[.025]"
           aria-hidden="true"
         >
           អ
@@ -224,10 +224,10 @@ export function KeyboardGuidePage() {
               aria-label="មគ្គុទ្ទេសក៍ក្ដារចុច / Keyboard Guide"
               className="m-0 text-app-accent"
             >
-              <span className="block font-khmer text-[clamp(36px,5vw,52px)] font-medium leading-[1.12] tracking-[-.025em]">
+              <span className="block font-khmer text-4xl font-medium leading-[1.12] tracking-[-.025em] md:text-5xl">
                 មគ្គុទ្ទេសក៍ក្ដារចុច
               </span>
-              <span className="mt-3 block font-ui text-[clamp(18px,2.7vw,27px)] font-medium leading-tight tracking-[-.02em] text-app-text">
+              <span className="mt-3 block font-ui text-xl font-medium leading-tight tracking-[-.02em] text-app-text md:text-3xl">
                 Keyboard Guide
               </span>
             </h1>
@@ -238,7 +238,7 @@ export function KeyboardGuidePage() {
                 className="border-r border-app-line px-4 first:pl-0 last:border-r-0 max-[520px]:border-r-0 max-[520px]:px-0"
                 key={value}
               >
-                <strong className="block text-[10px] font-bold tracking-[.16em] text-app-accent">
+                <strong className="block text-xs font-bold tracking-[.16em] text-app-accent">
                   {value}
                 </strong>
               </div>
@@ -262,7 +262,7 @@ export function KeyboardGuidePage() {
               key={event.year}
             >
               <div className="relative z-[1] flex items-start">
-                <span className="inline-flex min-h-7 min-w-17 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--accent)_35%,var(--line))] bg-app-bg px-2 text-[9px] font-bold uppercase tracking-[.08em] text-app-accent transition-colors group-hover:bg-app-accent-soft">
+                <span className="inline-flex min-h-7 min-w-17 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--accent)_35%,var(--line))] bg-app-bg px-2 text-xs font-bold uppercase tracking-[.08em] text-app-accent transition-colors group-hover:bg-app-accent-soft">
                   <span className="font-khmer">{event.year}</span>
                   {event.yearEn && <span className="sr-only"> {event.yearEn}</span>}
                 </span>
@@ -271,7 +271,7 @@ export function KeyboardGuidePage() {
                 <h3 className="m-0 font-khmer text-lg font-medium leading-relaxed text-app-text">
                   {event.titleKm}
                 </h3>
-                <p className="mb-0 mt-2 font-khmer text-[14px] leading-[1.9] text-app-soft">
+                <p className="mb-0 mt-2 font-khmer text-sm leading-[1.9] text-app-soft">
                   {event.bodyKm}
                 </p>
               </div>
@@ -294,16 +294,16 @@ export function KeyboardGuidePage() {
 
         <div className="relative overflow-hidden rounded-[24px] border border-[color-mix(in_srgb,var(--accent)_20%,var(--line))] bg-[color-mix(in_srgb,var(--bg-raised)_82%,transparent)] px-4 py-6 shadow-[0_28px_80px_var(--shadow)] md:px-7 md:py-8">
           <span
-            className="pointer-events-none absolute -right-5 -top-16 font-khmer text-[150px] leading-none text-app-accent opacity-[.035]"
+            className="pointer-events-none absolute -right-5 -top-16 font-khmer text-9xl leading-none text-app-accent opacity-[.035]"
             aria-hidden="true"
           >
             ក
           </span>
           <div className="relative mb-6 grid grid-cols-2 gap-6 border-b border-app-line pb-5 max-[650px]:grid-cols-1 max-[650px]:gap-2">
-            <p className="m-0 font-khmer text-[13px] leading-[1.8] text-app-soft">
+            <p className="m-0 font-khmer text-sm leading-[1.8] text-app-soft">
               ចុចគ្រាប់ចុចលើក្ដារចុចរបស់អ្នក ឬចុចលើប្លង់ខាងក្រោម។ សង្កត់ Shift ឬ Right Alt ដើម្បីមើលស្រទាប់ផ្សេងទៀត។
             </p>
-            <p className="m-0 text-[11px] leading-relaxed text-app-dim">
+            <p className="m-0 text-xs leading-relaxed text-app-dim">
               Press your physical keyboard or click a key below. Hold Shift or Right Alt to reveal
               every NIDA layer and see its output.
             </p>
@@ -311,10 +311,10 @@ export function KeyboardGuidePage() {
           <NidaKeyboard active={undefined} mode="interactable" />
           <div className="hidden rounded-xl border border-app-line bg-app-surface px-5 py-7 text-center max-md:block">
             <strong className="font-khmer text-lg font-medium">បើកនៅលើកុំព្យូទ័រ</strong>
-            <p className="mb-0 mt-2 font-khmer text-[12px] leading-relaxed text-app-dim">
+            <p className="mb-0 mt-2 font-khmer text-xs leading-relaxed text-app-dim">
               ប្លង់ក្ដារចុច NIDA ពេញលេញអាចសាកល្បងបាននៅលើអេក្រង់ធំ។
             </p>
-            <p className="mb-0 mt-1 text-[10px] leading-relaxed text-app-dim">
+            <p className="mb-0 mt-1 text-xs leading-relaxed text-app-dim">
               The complete interactive keyboard is available on a larger screen.
             </p>
           </div>
@@ -336,10 +336,10 @@ export function KeyboardGuidePage() {
               key={layer.key}
             >
               <div className="mb-10 flex items-center justify-between">
-                <span className="text-[9px] font-bold tracking-[.16em] text-app-accent">
+                <span className="text-xs font-bold tracking-[.16em] text-app-accent">
                   {layer.number}
                 </span>
-                <kbd className="rounded-md border border-app-line bg-app-surface px-2 py-1 text-[8px] font-semibold text-app-dim shadow-[0_2px_0_var(--line)]">
+                <kbd className="rounded-md border border-app-line bg-app-surface px-2 py-1 text-xs font-semibold text-app-dim shadow-[0_2px_0_var(--line)]">
                   {layer.key}
                 </kbd>
               </div>
@@ -355,15 +355,15 @@ export function KeyboardGuidePage() {
         <details className="group mt-4 overflow-hidden rounded-[18px] border border-[color-mix(in_srgb,var(--accent)_28%,var(--line))] bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)]">
           <summary className="grid cursor-pointer list-none grid-cols-[1fr_auto] items-center gap-6 bg-app-accent-soft px-6 py-6 transition-colors hover:bg-[color-mix(in_srgb,var(--accent)_12%,var(--bg-raised))] focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-app-accent [&::-webkit-details-marker]:hidden">
             <div>
-              <p className="m-0 text-[9px] font-bold uppercase tracking-[.18em] text-app-accent">
+              <p className="m-0 text-xs font-bold uppercase tracking-[.18em] text-app-accent">
                 Invisible Unicode characters
               </p>
-              <h3 className="mb-0 mt-3 font-khmer text-[22px] font-medium leading-relaxed text-app-text">
+              <h3 className="mb-0 mt-3 font-khmer text-2xl font-medium leading-relaxed text-app-text">
                 ហេតុអ្វីក្ដារចុចខ្មែរត្រូវការ Invisible Unicode?
               </h3>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-right text-[9px] font-semibold uppercase tracking-[.12em] text-app-dim max-[520px]:hidden">
+              <span className="text-right text-xs font-semibold uppercase tracking-[.12em] text-app-dim max-[520px]:hidden">
                 5 controls · Open guide
               </span>
               <span
@@ -376,11 +376,11 @@ export function KeyboardGuidePage() {
           </summary>
 
           <div className="grid grid-cols-2 gap-8 border-y border-app-line px-6 py-5 max-[700px]:grid-cols-1 max-[700px]:gap-3">
-            <p className="m-0 font-khmer text-[12px] leading-[1.9] text-app-soft">
+            <p className="m-0 font-khmer text-xs leading-[1.9] text-app-soft">
               ភាសាខ្មែរជាទូទៅមិនប្រើចន្លោះរវាងពាក្យទេ ហើយពុម្ពអក្សរអាចប្ដូររូបរាង ឬភ្ជាប់តួអក្សរ។
               តួអក្សរទាំងនេះគ្រប់គ្រងព្រំដែនពាក្យ ការបំបែកបន្ទាត់ និងការភ្ជាប់អក្សរ។
             </p>
-            <p className="m-0 text-[11px] leading-[1.7] text-app-dim">
+            <p className="m-0 text-xs leading-[1.7] text-app-dim">
               Khmer normally has no visible spaces between words, and fonts can reshape or join
               characters. These controls manage word boundaries, line wrapping, and shaping.
             </p>
@@ -393,34 +393,34 @@ export function KeyboardGuidePage() {
                 key={character.name}
               >
                 <div>
-                  <strong className="block text-[12px] font-bold tracking-[.08em] text-app-accent">
+                  <strong className="block text-xs font-bold tracking-[.08em] text-app-accent">
                     {character.name}
                   </strong>
-                  <span className="mt-1 block text-[8px] tracking-[.08em] text-app-dim">
+                  <span className="mt-1 block text-xs tracking-[.08em] text-app-dim">
                     {character.unicode}
                   </span>
                 </div>
                 <div>
-                  <span className="mb-1.5 block text-[8px] font-bold uppercase tracking-[.14em] text-app-dim">
+                  <span className="mb-1.5 block text-xs font-bold uppercase tracking-[.14em] text-app-dim">
                     NIDA key
                   </span>
-                  <kbd className="inline-block rounded-md border border-app-line bg-app-surface px-2 py-1 text-[9px] font-semibold text-app-text shadow-[0_2px_0_var(--line)]">
+                  <kbd className="inline-block rounded-md border border-app-line bg-app-surface px-2 py-1 text-xs font-semibold text-app-text shadow-[0_2px_0_var(--line)]">
                     {character.shortcut}
                   </kbd>
                 </div>
                 <div className="max-[620px]:col-start-2">
-                  <h4 className="m-0 font-khmer text-[14px] font-medium leading-relaxed text-app-text">
+                  <h4 className="m-0 font-khmer text-sm font-medium leading-relaxed text-app-text">
                     {character.titleKm}
                   </h4>
-                  <p className="mb-0 mt-1 font-khmer text-[11px] leading-[1.8] text-app-soft">
+                  <p className="mb-0 mt-1 font-khmer text-xs leading-[1.8] text-app-soft">
                     {character.bodyKm}
                   </p>
                 </div>
                 <div className="max-[820px]:col-start-3 max-[620px]:col-start-2">
-                  <h4 className="m-0 text-[11px] font-semibold text-app-text">
+                  <h4 className="m-0 text-xs font-semibold text-app-text">
                     {character.titleEn}
                   </h4>
-                  <p className="mb-0 mt-1.5 text-[10px] leading-[1.7] text-app-dim">
+                  <p className="mb-0 mt-1.5 text-xs leading-[1.7] text-app-dim">
                     {character.bodyEn}
                   </p>
                 </div>
@@ -428,7 +428,7 @@ export function KeyboardGuidePage() {
             ))}
           </div>
 
-          <p className="m-0 border-t border-app-line px-5 py-4 text-[9px] leading-relaxed text-app-dim">
+          <p className="m-0 border-t border-app-line px-5 py-4 text-xs leading-relaxed text-app-dim">
             ZWSP and regular Space cover most everyday typing. ZWJ and ZWNJ are advanced controls
             used when a Khmer font needs explicit shaping instructions.
           </p>
@@ -446,18 +446,18 @@ export function KeyboardGuidePage() {
         <div className="grid grid-cols-[1.05fr_1.95fr] gap-3 max-[760px]:grid-cols-1">
           <aside className="relative overflow-hidden rounded-[18px] border border-[color-mix(in_srgb,var(--accent)_32%,var(--line))] bg-app-accent-soft p-6">
             <span
-              className="absolute -bottom-10 -right-6 font-khmer text-[130px] leading-none text-app-accent opacity-[.08]"
+              className="absolute -bottom-10 -right-6 font-khmer text-9xl leading-none text-app-accent opacity-[.08]"
               aria-hidden="true"
             >
               ក
             </span>
-            <p className="m-0 text-[9px] font-bold uppercase tracking-[.18em] text-app-accent">
+            <p className="m-0 text-xs font-bold uppercase tracking-[.18em] text-app-accent">
               Keyboard ≠ Font
             </p>
             <p className="relative mb-0 mt-10 font-khmer text-lg leading-[1.8] text-app-text">
               ក្ដារចុចកំណត់ថាអ្នកបញ្ចូលតួអក្សរអ្វី។ ពុម្ពអក្សរកំណត់ថាតួអក្សរនោះបង្ហាញរូបរាងយ៉ាងដូចម្ដេច។
             </p>
-            <p className="relative mb-0 mt-4 text-[11px] leading-relaxed text-app-dim">
+            <p className="relative mb-0 mt-4 text-xs leading-relaxed text-app-dim">
               A keyboard decides which character you enter. A font decides how that character is
               drawn.
             </p>
@@ -474,13 +474,13 @@ export function KeyboardGuidePage() {
                 </span>
                 <div>
                   <h3 className="m-0 font-khmer text-base font-medium">{note.titleKm}</h3>
-                  <p className="mb-0 mt-1.5 font-khmer text-[11px] leading-[1.8] text-app-soft">
+                  <p className="mb-0 mt-1.5 font-khmer text-xs leading-[1.8] text-app-soft">
                     {note.bodyKm}
                   </p>
                 </div>
                 <div className="max-[640px]:col-start-2">
-                  <h3 className="m-0 text-[11px] font-semibold">{note.titleEn}</h3>
-                  <p className="mb-0 mt-1.5 text-[10px] leading-[1.7] text-app-dim">
+                  <h3 className="m-0 text-xs font-semibold">{note.titleEn}</h3>
+                  <p className="mb-0 mt-1.5 text-xs leading-[1.7] text-app-dim">
                     {note.bodyEn}
                   </p>
                 </div>
@@ -507,17 +507,17 @@ export function KeyboardGuidePage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <span className="pt-0.5 text-[8px] font-bold tracking-[.12em] text-app-accent">
+                <span className="pt-0.5 text-xs font-bold tracking-[.12em] text-app-accent">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span>
-                  <strong className="block text-[11px] font-semibold">{source.label}</strong>
-                  <small className="mt-1 block text-[9px] leading-relaxed text-app-dim">
+                  <strong className="block text-xs font-semibold">{source.label}</strong>
+                  <small className="mt-1 block text-xs leading-relaxed text-app-dim">
                     {source.detail}
                   </small>
                 </span>
                 <span
-                  className="text-[11px] text-app-dim transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-app-accent"
+                  className="text-xs text-app-dim transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-app-accent"
                   aria-hidden="true"
                 >
                   ↗

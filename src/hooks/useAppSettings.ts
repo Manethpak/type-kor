@@ -7,13 +7,13 @@ export const DEFAULT_SETTINGS: TestSettings = {
   wordDifficulty: "beginner",
   speedUnit: "cpm",
   theme: "saffron",
-  fontSize: 49,
+  fontSize: "medium",
   lineHeight: 1.85,
   sound: false,
   punctuation: false,
 };
 
-const SETTINGS_SCHEMA_VERSION = 3;
+const SETTINGS_SCHEMA_VERSION = 4;
 const STORAGE_KEY = "typekor:settings";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -52,11 +52,14 @@ export function normalizeSettings(value: unknown): TestSettings {
     saved.wordDifficulty === "mixed"
       ? saved.wordDifficulty
       : legacyDifficulty;
-  const migratedFontSize =
-    saved.schemaVersion !== SETTINGS_SCHEMA_VERSION &&
-    (saved.fontSize === undefined || saved.fontSize === 43)
-      ? DEFAULT_SETTINGS.fontSize
-      : saved.fontSize;
+  const fontSize =
+    saved.fontSize === "small" || saved.fontSize === "medium" || saved.fontSize === "large"
+      ? saved.fontSize
+      : typeof saved.fontSize === "number" && Number.isFinite(saved.fontSize) && saved.fontSize < 44
+        ? "small"
+        : typeof saved.fontSize === "number" && Number.isFinite(saved.fontSize) && saved.fontSize > 56
+          ? "large"
+          : DEFAULT_SETTINGS.fontSize;
 
   return {
     mode,
@@ -64,7 +67,7 @@ export function normalizeSettings(value: unknown): TestSettings {
     wordDifficulty,
     speedUnit: saved.speedUnit === "wpm" || saved.speedUnit === "cpm" ? saved.speedUnit : "cpm",
     theme: saved.theme === "paper" || saved.theme === "saffron" ? saved.theme : "saffron",
-    fontSize: numberInRange(migratedFontSize, 38, 64, DEFAULT_SETTINGS.fontSize),
+    fontSize,
     lineHeight: numberInRange(saved.lineHeight, 1.5, 2.2, DEFAULT_SETTINGS.lineHeight),
     sound: typeof saved.sound === "boolean" ? saved.sound : DEFAULT_SETTINGS.sound,
     punctuation:

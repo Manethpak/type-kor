@@ -299,7 +299,7 @@ function LessonSession({
           <span className="mx-auto mb-5 grid size-14 place-items-center rounded-full border border-[color-mix(in_srgb,var(--accent)_36%,transparent)] bg-app-accent-soft text-xl text-app-accent">
             {mastered ? "✓" : "↗"}
           </span>
-          <p className="mb-2 text-[9px] font-bold uppercase tracking-[.2em] text-app-accent">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[.2em] text-app-accent">
             Lesson complete
           </p>
           <h1 className="m-0 font-khmer text-3xl font-medium">
@@ -318,7 +318,7 @@ function LessonSession({
               type="button"
             >
               រៀនម្ដងទៀត
-              <kbd className="ml-2 rounded border border-app-line px-1.5 py-0.5 font-ui text-[9px] uppercase">
+              <kbd className="ml-2 rounded border border-app-line px-1.5 py-0.5 font-ui text-xs uppercase">
                 R
               </kbd>
             </button>
@@ -330,7 +330,7 @@ function LessonSession({
                 type="button"
               >
                 មេរៀនបន្ទាប់ →
-                <kbd className="ml-2 rounded border border-[color-mix(in_srgb,var(--bg)_38%,transparent)] px-1.5 py-0.5 font-ui text-[9px] uppercase">
+                <kbd className="ml-2 rounded border border-[color-mix(in_srgb,var(--bg)_38%,transparent)] px-1.5 py-0.5 font-ui text-xs uppercase">
                   Enter
                 </kbd>
               </button>
@@ -342,7 +342,7 @@ function LessonSession({
                 type="button"
               >
                 មើលមេរៀនទាំងអស់
-                <kbd className="ml-2 rounded border border-[color-mix(in_srgb,var(--bg)_38%,transparent)] px-1.5 py-0.5 font-ui text-[9px] uppercase">
+                <kbd className="ml-2 rounded border border-[color-mix(in_srgb,var(--bg)_38%,transparent)] px-1.5 py-0.5 font-ui text-xs uppercase">
                   Enter
                 </kbd>
               </button>
@@ -368,18 +368,15 @@ function LessonSession({
             ←
           </button>
           <div>
-            <p className="mb-1 text-[9px] font-bold uppercase tracking-[.18em] text-app-accent">
-              Khmer NIDA · Lesson
-            </p>
-            <h1 className="m-0 font-khmer text-[28px] font-medium">{lesson.title.km}</h1>
-            <p className="mb-0 mt-1 text-[11px] text-app-dim">{lesson.description.km}</p>
+            <h1 className="m-0 font-khmer text-3xl font-medium">{lesson.title.km}</h1>
+            <p className="mb-0 mt-1 text-sm text-app-soft">{lesson.description.km}</p>
           </div>
         </div>
         <div className="min-w-24 text-right">
           <b className="text-lg font-medium text-app-accent [font-variant-numeric:tabular-nums]">
             {session.stepIndex + 1}
           </b>
-          <small className="text-[10px] text-app-dim"> / {lesson.steps.length}</small>
+          <small className="text-xs text-app-dim"> / {lesson.steps.length}</small>
           <div className="mt-2 h-1 overflow-hidden rounded bg-app-surface">
             <span
               className="block h-full bg-app-accent transition-[width] duration-300"
@@ -396,18 +393,18 @@ function LessonSession({
         data-typing={step.kind === "typing"}
         onClick={step.kind === "typing" ? focusInput : undefined}
       >
-        <small className="text-[9px] font-semibold uppercase tracking-[.17em] text-app-dim">
+        <small className="text-xs font-semibold uppercase tracking-widest text-app-dim">
           {exerciseItem
             ? `លំហាត់ចុងមេរៀន · ${exerciseItem} / ${LESSON_EXERCISE_LENGTH}`
             : step.kind === "typing"
               ? "Type this"
               : "Press this key"}
         </small>
-        <div className="my-5 min-h-[86px] font-khmer text-[clamp(48px,9vw,72px)] leading-[1.45] text-app-text [text-shadow:0_0_28px_var(--accent-soft)]">
+        <div className="my-5 min-h-28 font-khmer text-5xl leading-[1.45] text-app-text [text-shadow:0_0_28px_var(--accent-soft)] sm:text-6xl md:text-7xl">
           {step.kind === "typing" ? step.prompt : step.label.km}
         </div>
         {step.kind === "typing" ? (
-          <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 font-khmer text-[26px] text-app-accent transition-colors group-data-[status=incorrect]:border-app-error group-data-[status=incorrect]:text-app-error">
+          <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 font-khmer text-3xl text-app-accent transition-colors group-data-[status=incorrect]:border-app-error group-data-[status=incorrect]:text-app-error">
             {session.input || <span className="text-app-dim opacity-30">…</span>}
           </div>
         ) : (
@@ -425,7 +422,7 @@ function LessonSession({
             {step.keySequence.map((hint, index) => (
               <span
                 key={`${hint.code}-${index}`}
-                className="rounded-md border border-app-line bg-app-surface px-2 py-1 text-[10px] text-app-dim transition-[color,border-color,background] data-[active=true]:border-[color-mix(in_srgb,var(--accent)_48%,transparent)] data-[active=true]:bg-app-accent-soft data-[active=true]:text-app-accent"
+                className="rounded-md border border-app-line bg-app-surface px-2 py-1 text-xs text-app-dim transition-[color,border-color,background] data-[active=true]:border-[color-mix(in_srgb,var(--accent)_48%,transparent)] data-[active=true]:bg-app-accent-soft data-[active=true]:text-app-accent"
                 data-active={index === hintIndex}
               >
                 {hint.altGr && <span className="mr-1 opacity-60">{altGrModifierLabel} +</span>}
@@ -434,7 +431,7 @@ function LessonSession({
               </span>
             ))}
           </div>
-          <div className="mx-auto mt-4 h-[88px] max-w-lg sm:h-20">
+          <div className="mx-auto mt-4 h-20 max-w-lg sm:h-20">
             {session.status === "incorrect" ? (
               <div
                 key={session.errors}
@@ -455,13 +452,7 @@ function LessonSession({
                 </span>
               </div>
             ) : (
-              <p
-                className="m-0 grid h-full place-items-center text-xs text-app-dim"
-                role="status"
-                aria-live="polite"
-              >
-                {keyInstruction(activeHint, altGrModifierLabel)}
-              </p>
+              <></>
             )}
           </div>
         </div>
@@ -490,7 +481,7 @@ function LessonSession({
       <div className="mt-6" data-help={session.stepErrors >= 2}>
         <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
           <button
-            className="cursor-pointer rounded-md border border-app-line bg-app-raised px-2.5 py-1 text-[9px] font-semibold text-app-dim transition-[color,border-color,background] hover:border-[color-mix(in_srgb,var(--accent)_35%,transparent)] hover:text-app-accent"
+            className="cursor-pointer rounded-md border border-app-line bg-app-raised px-2.5 py-1 text-xs font-semibold text-app-dim transition-[color,border-color,background] hover:border-[color-mix(in_srgb,var(--accent)_35%,transparent)] hover:text-app-accent"
             type="button"
             aria-controls="lesson-nida-keyboard"
             aria-expanded={keyboardVisible}
@@ -504,7 +495,7 @@ function LessonSession({
           {keyboardVisible && (
             <>
               <NidaKeyboard active={activeHint} mode="follow" />
-              <p className="hidden text-center text-[11px] leading-relaxed text-app-dim max-md:block">
+              <p className="hidden text-center text-xs leading-relaxed text-app-dim max-md:block">
                 សូមប្រើប្រាស់នៅលើអេក្រង់ធំ​ឬ​កុំព្យូទ័រដែលមានក្ដារចុច។
               </p>
             </>

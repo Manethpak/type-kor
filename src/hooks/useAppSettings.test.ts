@@ -5,13 +5,13 @@ describe("application settings normalization", () => {
   it("accepts supported persisted values", () => {
     expect(
       normalizeSettings({
-        schemaVersion: 3,
+        schemaVersion: 4,
         mode: "words",
         modeValue: 50,
         wordDifficulty: "mixed",
         speedUnit: "wpm",
         theme: "paper",
-        fontSize: 64,
+        fontSize: "large",
         lineHeight: 2.2,
         sound: true,
         punctuation: true,
@@ -22,7 +22,7 @@ describe("application settings normalization", () => {
       wordDifficulty: "mixed",
       speedUnit: "wpm",
       theme: "paper",
-      fontSize: 64,
+      fontSize: "large",
       lineHeight: 2.2,
       sound: true,
       punctuation: true,
@@ -32,7 +32,7 @@ describe("application settings normalization", () => {
   it("replaces malformed values with safe defaults", () => {
     expect(
       normalizeSettings({
-        schemaVersion: 3,
+        schemaVersion: 4,
         mode: "endless",
         modeValue: -1,
         speedUnit: "fast",
@@ -45,10 +45,10 @@ describe("application settings normalization", () => {
     ).toEqual(DEFAULT_SETTINGS);
   });
 
-  it("migrates legacy word-list sizes and font defaults", () => {
+  it("migrates legacy word-list sizes and font settings", () => {
     expect(normalizeSettings({ schemaVersion: 2, wordListSize: 500, fontSize: 43 })).toMatchObject({
       wordDifficulty: "intermediate",
-      fontSize: DEFAULT_SETTINGS.fontSize,
+      fontSize: "small",
     });
   });
 

@@ -13,6 +13,7 @@ import { useCaretPosition } from "../hooks/useCaretPosition";
 import type { TypingSession } from "../hooks/useTypingSession";
 import type { WordDifficultySelection } from "../data/wordList";
 import type { TestSettings } from "../typing/types";
+import { getFontSizeOption } from "../typing/fontSize";
 import { cx } from "../utils/classNames";
 
 const controlGroupClass =
@@ -74,6 +75,7 @@ export function TypingPage({
   const completedWords = session.typing.prompt
     .slice(0, session.typing.currentIndex)
     .filter((cluster) => cluster.kind === "space").length;
+  const fontSizeClass = getFontSizeOption(settings.fontSize).promptClass;
 
   return (
     <section className="w-full animate-arrive" aria-label="Khmer typing test">
@@ -115,10 +117,10 @@ export function TypingPage({
                 ))}
               </div>
               <div className={cx(controlGroupClass, "gap-2 px-2")}>
-                <label className="text-xs font-semibold text-app-dim">
+                <label className="text-sm text-app-text tracking-wide">
                   កម្រិតពាក្យ
                   <select
-                    className="ml-1.5 cursor-pointer rounded-md border-0 bg-app-surface px-1.5 py-1 text-xs font-medium normal-case tracking-normal text-app-soft outline-none focus:ring-1 focus:ring-app-accent"
+                    className="ml-1.5 cursor-pointer rounded-md border-0 bg-app-surface px-1.5 py-1 normal-case tracking-normal text-app-text/80 outline-none focus:ring-1 focus:ring-app-accent"
                     aria-label="Word difficulty"
                     value={settings.wordDifficulty}
                     onChange={(event) =>
@@ -139,7 +141,7 @@ export function TypingPage({
             </div>
 
             <div
-              className="flex items-center gap-6.5 [&_b]:text-[29px] [&_b]:font-[420] [&_b]:leading-none [&_b]:text-app-accent [&_b]:[font-variant-numeric:tabular-nums] [&_small]:text-[10px] [&_small]:font-semibold [&_small]:uppercase [&_small]:tracking-[.15em] [&_small]:text-app-dim"
+              className="flex items-center gap-6.5 [&_b]:text-3xl [&_b]:font-[420] [&_b]:leading-none [&_b]:text-app-accent [&_b]:[font-variant-numeric:tabular-nums] [&_small]:text-xs [&_small]:font-semibold [&_small]:uppercase [&_small]:tracking-[.15em] [&_small]:text-app-dim"
               aria-live="polite"
             >
               {session.remainingSeconds !== null ? (
@@ -171,15 +173,13 @@ export function TypingPage({
           >
             <div
               ref={surfaceRef}
-              className="prompt-scrollbar relative h-[calc(var(--prompt-size)*var(--prompt-leading)*3.15)] overflow-x-hidden overflow-y-auto px-1 pb-7 pt-3 [mask-image:linear-gradient(to_bottom,transparent,#000_8%,#000_88%,transparent)] [scrollbar-width:none]"
-              style={
-                {
-                  "--prompt-size": `${settings.fontSize}px`,
-                  "--prompt-leading": settings.lineHeight,
-                } as CSSProperties
-              }
+              className={cx(
+                "prompt-scrollbar relative h-[calc(4lh+2.5rem)] overflow-x-hidden overflow-y-auto px-1 pb-7 pt-3 [mask-image:linear-gradient(to_bottom,transparent,#000_8%,#000_88%,transparent)] [scrollbar-width:none]",
+                fontSizeClass,
+              )}
+              style={{ lineHeight: settings.lineHeight }}
             >
-              <div className="select-none text-pretty font-khmer text-[length:var(--prompt-size)] font-normal leading-[var(--prompt-leading)] tracking-[.012em] text-app-dim [word-spacing:.12em] max-[760px]:text-[min(var(--prompt-size),42px)]">
+              <div className="select-none text-pretty font-khmer font-normal tracking-[.012em] text-app-dim [word-spacing:.12em]">
                 {session.typing.prompt.map((cluster, index) => {
                   const active = index === session.typing.currentIndex;
                   const clusterState = session.typing.states[index];
@@ -242,10 +242,10 @@ export function TypingPage({
                   <b className="font-khmer text-base font-normal leading-none">
                     {session.typing.pendingInput}
                   </b>
-                  <small className="text-[9px] opacity-70 [font-variant-numeric:tabular-nums]">
+                  <small className="text-xs opacity-70 [font-variant-numeric:tabular-nums]">
                     {pendingUnits}/{targetUnits}
                   </small>
-                  <i className="text-[9px] not-italic" aria-hidden="true">
+                  <i className="text-xs not-italic" aria-hidden="true">
                     {session.typing.pendingStatus === "incorrect" ? "×" : "●"}
                   </i>
                 </span>
@@ -270,7 +270,7 @@ export function TypingPage({
             />
 
             <div
-              className="mx-auto mt-[9px] flex w-max items-center gap-[9px] text-[13px] text-app-dim transition-colors group-focus-within:text-app-soft"
+              className="mx-auto mt-[9px] flex w-max items-center gap-[9px] text-sm text-app-dim transition-colors group-focus-within:text-app-soft"
               data-focus-fade
             >
               <span className="size-[5px] rounded-full bg-app-accent shadow-[0_0_0_4px_var(--accent-soft)] group-data-[error=true]:bg-app-error group-data-[error=true]:shadow-[0_0_0_4px_color-mix(in_srgb,var(--error)_15%,transparent)]" />
@@ -283,12 +283,12 @@ export function TypingPage({
           </div>
 
           <button
-            className="mx-auto mt-[30px] flex cursor-pointer items-center gap-[9px] rounded-[10px] px-3 py-2 text-[13px] text-app-dim transition-colors hover:bg-app-accent-soft hover:text-app-accent [&_svg]:w-3.5"
+            className="mx-auto mt-[30px] flex cursor-pointer items-center gap-[9px] rounded-[10px] px-3 py-2 text-sm text-app-dim transition-colors hover:bg-app-accent-soft hover:text-app-accent [&_svg]:w-3.5"
             onClick={restart}
             data-focus-fade
           >
             <RestartIcon /> <span>ចាប់ផ្ដើមឡើងវិញ</span>
-            <kbd className="rounded-[5px] border border-b-2 border-app-line bg-app-surface px-1.5 py-0.5 font-ui text-[10px] uppercase text-app-soft">
+            <kbd className="rounded-[5px] border border-b-2 border-app-line bg-app-surface px-1.5 py-0.5 font-ui text-xs uppercase text-app-soft">
               esc
             </kbd>
           </button>

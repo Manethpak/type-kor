@@ -12,13 +12,11 @@ export function SettingsGroup({ id, eyebrow, title, description, children }: Set
   return (
     <section aria-labelledby={id}>
       <header className="mb-3 px-1">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-app-accent">
-          {eyebrow}
-        </p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-app-accent">{eyebrow}</p>
         <h2 id={id} className="mt-1 font-khmer text-xl font-medium text-app-text">
           {title}
         </h2>
-        <p className="mt-1 text-xs leading-relaxed text-app-dim">{description}</p>
+        <p className="mt-1 text-sm leading-relaxed text-app-soft">{description}</p>
       </header>
       <div className="overflow-hidden rounded-2xl border border-app-line bg-app-raised shadow-[0_18px_55px_var(--shadow)]">
         {children}

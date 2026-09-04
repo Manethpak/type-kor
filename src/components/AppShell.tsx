@@ -94,10 +94,10 @@ export function AppShell({
             ក
           </span>
           <span>
-            <strong className="block font-ui text-[22px] font-bold leading-[1.2] tracking-[-.02em]">
+            <strong className="block font-ui text-2xl font-bold leading-[1.2] tracking-[-.02em]">
               Type <span className="font-khmer font-normal">ក</span>
             </strong>
-            <small className="mt-0.5 block text-[9px] font-semibold tracking-[.24em] text-app-dim">
+            <small className="mt-0.5 block text-xs font-semibold tracking-[.24em] text-app-dim">
               TYPEKOR
             </small>
           </span>
@@ -137,7 +137,7 @@ export function AppShell({
       </main>
 
       <footer
-        className="mx-auto flex w-[min(1180px,calc(100%_-_48px))] justify-between border-t border-app-line py-6 pt-[18px] text-[11px] tracking-[.08em] text-app-dim max-[760px]:w-[calc(100%_-_30px)] max-[760px]:pb-20"
+        className="mx-auto flex w-[min(1180px,calc(100%_-_48px))] justify-between border-t border-app-line py-6 pt-[18px] text-xs tracking-[.08em] text-app-dim max-[760px]:w-[calc(100%_-_30px)] max-[760px]:pb-20"
         data-focus-fade
       >
         {/* keep for future */}

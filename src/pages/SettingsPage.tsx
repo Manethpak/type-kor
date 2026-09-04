@@ -2,6 +2,7 @@ import { MoonIcon, RestartIcon, SoundIcon, SunIcon } from "../components/Icons";
 import { SettingCard } from "../components/settings/SettingCard";
 import { SettingsGroup } from "../components/settings/SettingsGroup";
 import type { TestSettings } from "../typing/types";
+import { FONT_SIZE_OPTIONS, getFontSizeOption } from "../typing/fontSize";
 import { cx } from "../utils/classNames";
 
 const optionButtonClass =
@@ -23,11 +24,8 @@ export function SettingsPage({
   return (
     <section className="mx-auto w-full max-w-5xl animate-arrive">
       <header className="mb-8 border-b border-app-line pb-6">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-app-accent">
-          Personal workspace
-        </p>
         <h1 className="mt-2 font-khmer text-4xl font-medium text-app-text">ការកំណត់</h1>
-        <p className="mt-2 max-w-xl font-khmer text-sm leading-relaxed text-app-dim">
+        <p className="mt-2 max-w-xl font-khmer text-base leading-relaxed text-app-dim">
           កែសម្រួលការបង្ហាញ ការវាស់ល្បឿន និងសញ្ញាជំនួយ ឱ្យសមនឹងរបៀបវាយរបស់អ្នក។
         </p>
       </header>
@@ -41,20 +39,22 @@ export function SettingsPage({
             description="កំណត់ពណ៌ ទំហំ និងគម្លាតអក្សរ ដើម្បីឱ្យការអានកាន់តែងាយស្រួល។"
           >
             <div className="border-b border-app-line bg-[color-mix(in_srgb,var(--surface)_45%,transparent)] px-5 py-4">
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-app-dim">
-                មើលជាមុន
-              </span>
               <p
-                className="mt-3 overflow-hidden font-khmer text-app-text"
-                style={{ fontSize: settings.fontSize, lineHeight: settings.lineHeight }}
+                className={cx(
+                  "mt-3 overflow-hidden font-khmer text-app-text",
+                  getFontSizeOption(settings.fontSize).previewClass,
+                )}
+                style={{ lineHeight: settings.lineHeight }}
               >
+                អក្សរខ្មែរ
+                <br />
                 អក្សរខ្មែរ
               </p>
             </div>
 
             <SettingCard icon={<SunIcon />} title="រូបរាង" description="ជ្រើសពណ៌ស្រទន់ដែលងាយស្រួលមើល។">
               <div
-                className="grid w-52 grid-cols-2 rounded-lg bg-app-surface p-1"
+                className="grid grid-cols-2 rounded-lg bg-app-surface p-1"
                 role="group"
                 aria-label="Color theme"
               >
@@ -67,7 +67,7 @@ export function SettingsPage({
                   onClick={() => update("theme", "saffron")}
                   aria-pressed={settings.theme === "saffron"}
                 >
-                  <MoonIcon /> Saffron
+                  <MoonIcon />
                 </button>
                 <button
                   type="button"
@@ -78,26 +78,32 @@ export function SettingsPage({
                   onClick={() => update("theme", "paper")}
                   aria-pressed={settings.theme === "paper"}
                 >
-                  <SunIcon /> Paper
+                  <SunIcon />
                 </button>
               </div>
             </SettingCard>
 
             <SettingCard icon="ក" title="ទំហំអក្សរ" description="ធ្វើឱ្យចង្កោមអក្សរខ្មែរមើលឃើញច្បាស់។">
-              <label className="flex w-48 items-center gap-3">
-                <span className="sr-only">ទំហំអក្សរ</span>
-                <input
-                  className="h-1.5 min-w-0 flex-1 cursor-pointer accent-app-accent"
-                  type="range"
-                  min="38"
-                  max="64"
-                  value={settings.fontSize}
-                  onChange={(event) => update("fontSize", Number(event.target.value))}
-                />
-                <output className="w-12 rounded-md bg-app-accent-soft px-2 py-1 text-center text-xs font-semibold text-app-accent [font-variant-numeric:tabular-nums]">
-                  {settings.fontSize}px
-                </output>
-              </label>
+              <div
+                className="grid grid-cols-3 rounded-lg bg-app-surface p-1"
+                role="group"
+                aria-label="ទំហំអក្សរ"
+              >
+                {FONT_SIZE_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={cx(
+                      optionButtonClass,
+                      settings.fontSize === option.value && selectedButtonClass,
+                    )}
+                    onClick={() => update("fontSize", option.value)}
+                    aria-pressed={settings.fontSize === option.value}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
             </SettingCard>
 
             <SettingCard
@@ -197,7 +203,7 @@ export function SettingsPage({
             </SettingCard>
           </SettingsGroup>
 
-          <SettingsGroup
+          {/* <SettingsGroup
             id="shortcut-settings"
             eyebrow="Shortcut"
             title="ផ្លូវកាត់"
@@ -208,7 +214,7 @@ export function SettingsPage({
                 esc
               </kbd>
             </SettingCard>
-          </SettingsGroup>
+          </SettingsGroup> */}
         </div>
       </div>
 
@@ -217,7 +223,7 @@ export function SettingsPage({
         aria-labelledby="acknowledgement-heading"
       >
         <header>
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-app-accent">
+          <p className="text-xs font-semibold uppercase tracking-widest text-app-accent">
             Data source
           </p>
           <h2
@@ -226,9 +232,6 @@ export function SettingsPage({
           >
             ការទទួលស្គាល់
           </h2>
-          <p className="mt-2 max-w-xs font-khmer text-xs leading-relaxed text-app-dim">
-            ប្រភពពាក្យដែលប្រើសម្រាប់បង្កើតលំហាត់វាយអក្សរ។
-          </p>
         </header>
 
         <article className="rounded-2xl border border-app-line bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)] p-5 md:col-span-2">
@@ -237,19 +240,27 @@ export function SettingsPage({
               ↗
             </span>
             <div>
-              <h3 className="font-khmer text-base font-semibold text-app-text">បញ្ជីពាក្យខ្មែរ</h3>
-              <p className="mt-2 max-w-prose font-khmer text-sm leading-7 text-app-soft">
-                បញ្ជីពាក្យ ១០០, ២៥០ និង ៥០០ ពាក្យ ត្រូវបានបង្កើតពីទិន្នន័យស្វែងរកខ្មែរ របស់ seanghay
-                ដើម្បីជ្រើសពាក្យដែលគេប្រើញឹកញាប់។
+              <h3 className="font-khmer text-lg font-semibold text-app-text">ប្រភពបញ្ជីពាក្យខ្មែរ</h3>
+              <p className="mt-2 max-w-prose font-khmer text-base leading-7 text-app-soft">
+                បញ្ជីពាក្យនៅក្នុងកម្មវីធីនេះបានទាញយកពីទិន្នន័យ khmer-search-frequency នៅលើ{" "}
+                <a
+                  className="text-app-accent underline"
+                  href="https://huggingface.co/datasets/seanghay/khmer-search-frequency"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Hugging Face
+                </a>
+                {" របស់បង "}
+                <a
+                  className="text-app-accent underline"
+                  href="https://seanghay.com"
+                  rel="https://github.manethpak.dev/type-kor"
+                >
+                  Seanghay
+                </a>{" "}
+                ដើម្បីជ្រើសពាក្យដែលគេប្រើញឹកញាប់មកបង្កើតជាមេរៀននិងលំហាត់វាយអក្សរផ្សេងៗ។
               </p>
-              <a
-                className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-app-accent underline decoration-app-accent/35 underline-offset-4 transition-colors hover:decoration-app-accent"
-                href="https://huggingface.co/datasets/seanghay/khmer-search-frequency"
-                target="_blank"
-                rel="noreferrer"
-              >
-                មើល dataset នៅ Hugging Face <span aria-hidden="true">↗</span>
-              </a>
             </div>
           </div>
         </article>

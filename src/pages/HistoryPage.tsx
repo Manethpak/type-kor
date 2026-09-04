@@ -35,7 +35,7 @@ export function HistoryPage({
       </div>
 
       {history.length === 0 ? (
-        <div className="grid min-h-[280px] place-items-center content-center rounded-[18px] border border-dashed border-app-line bg-[color-mix(in_srgb,var(--surface)_45%,transparent)] p-10 text-center [&>svg]:w-[35px] [&>svg]:text-app-accent [&>svg]:opacity-70 [&_h2]:mb-1 [&_h2]:mt-[15px] [&_h2]:font-khmer [&_h2]:text-[22px] [&_h2]:font-medium [&_p]:m-0 [&_p]:text-[13px] [&_p]:text-app-dim">
+        <div className="grid min-h-[280px] place-items-center content-center rounded-[18px] border border-dashed border-app-line bg-[color-mix(in_srgb,var(--surface)_45%,transparent)] p-10 text-center [&>svg]:w-[35px] [&>svg]:text-app-accent [&>svg]:opacity-70 [&_h2]:mb-1 [&_h2]:mt-[15px] [&_h2]:font-khmer [&_h2]:text-2xl [&_h2]:font-medium [&_p]:m-0 [&_p]:text-sm [&_p]:text-app-dim">
           <HistoryIcon />
           <h2>មិនទាន់មានលទ្ធផល</h2>
           <p>សាកល្បងវាយអក្សរម្តង ដើម្បីមើលលទ្ធផលរបស់អ្នកនៅទីនេះ។</p>
@@ -53,11 +53,11 @@ export function HistoryPage({
                   timeStyle: "short",
                 }).format(new Date(item.startedAt))}
               </time>
-              <strong className="text-[22px] font-[450] text-app-accent">
+              <strong className="text-2xl font-[450] text-app-accent">
                 {speedUnit === "cpm"
                   ? item.clustersPerMinute
                   : (item.wordsPerMinute ?? Math.round(item.clustersPerMinute / 5))}
-                <small className="text-[10px] font-medium"> {speedUnit}</small>
+                <small className="text-xs font-medium"> {speedUnit}</small>
               </strong>
               <span className="text-xs text-app-dim">{item.accuracy}% ត្រឹមត្រូវ</span>
               <span className="text-xs text-app-dim">

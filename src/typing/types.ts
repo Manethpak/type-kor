@@ -52,13 +52,15 @@ export type TypingAction =
   | { type: "finish"; at: number }
   | { type: "reset"; prompt: OrthographicCluster[] };
 
+export type FontSize = "small" | "medium" | "large";
+
 export interface TestSettings {
   mode: "time" | "words";
   modeValue: number;
   wordDifficulty: WordDifficultySelection;
   speedUnit: "cpm" | "wpm";
   theme: "saffron" | "paper";
-  fontSize: number;
+  fontSize: FontSize;
   lineHeight: number;
   sound: boolean;
   punctuation: boolean;

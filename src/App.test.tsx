@@ -124,7 +124,7 @@ describe("timed typing test", () => {
 
     expect(screen.getByRole("combobox", { name: "Word difficulty" })).toHaveValue("intermediate");
     expect(JSON.parse(localStorage.getItem("typekor:settings")!)).toMatchObject({
-      schemaVersion: 3,
+      schemaVersion: 4,
       wordDifficulty: "intermediate",
     });
     expect(JSON.parse(localStorage.getItem("typekor:settings")!)).not.toHaveProperty(
