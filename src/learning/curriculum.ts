@@ -1,6 +1,7 @@
 import generatedCurriculum from "../generated/curriculum.json";
+import { createLessonExercise, taughtMappingsAfter } from "./lessonExercise";
 import { keyHintFor, keySequenceFor, type NidaLayer } from "./nida";
-import type { Lesson, LessonUnit, LocalizedText } from "./types";
+import type { Lesson, LessonStep, LessonUnit, LocalizedText } from "./types";
 
 interface GeneratedTypingStep {
   id: string;
@@ -49,9 +50,10 @@ interface GeneratedCurriculum {
 
 const source = generatedCurriculum as GeneratedCurriculum;
 
-export const lessons: Lesson[] = source.lessons.map((lesson) => ({
-  ...lesson,
-  steps: lesson.steps.map((step) => {
+const taughtMappings = new Set<string>();
+
+export const lessons: Lesson[] = source.lessons.map((lesson) => {
+  const authoredSteps: LessonStep[] = lesson.steps.map((step) => {
     if (isGeneratedKeyStep(step)) {
       const target = keyHintFor(step.target.code, step.target.layer);
       if (!target) throw new Error(`Invalid key target in ${lesson.id}/${step.id}`);
@@ -63,8 +65,14 @@ export const lessons: Lesson[] = source.lessons.map((lesson) => ({
       kind: "typing" as const,
       keySequence: keySequenceFor(step.prompt),
     };
-  }),
-}));
+  });
+  const nextTaughtMappings = taughtMappingsAfter(taughtMappings, authoredSteps);
+  const exercise = createLessonExercise(lesson.id, authoredSteps, taughtMappings);
+  taughtMappings.clear();
+  for (const mapping of nextTaughtMappings) taughtMappings.add(mapping);
+
+  return { ...lesson, steps: [...authoredSteps, ...exercise] };
+});
 
 export const curriculum: LessonUnit[] = source.units.map((unit) => ({
   ...unit,

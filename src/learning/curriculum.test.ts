@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { khmerTextEngine } from "../engine/khmer";
 import { lessons } from "./curriculum";
+import { LESSON_EXERCISE_LENGTH } from "./lessonExercise";
 import { keyHintId, NIDA_KEY_ROWS } from "./nida";
 
 describe("learning curriculum", () => {
@@ -39,6 +40,37 @@ describe("learning curriculum", () => {
     expect(new Set(lessons.map((lesson) => lesson.id)).size).toBe(lessons.length);
     for (const lesson of lessons) {
       expect(new Set(lesson.steps.map((step) => step.id)).size).toBe(lesson.steps.length);
+    }
+  });
+
+  it("ends every lesson with a 20-item focused exercise", () => {
+    const taughtMappings = new Set<string>();
+
+    for (const lesson of lessons) {
+      const exercise = lesson.steps.filter((step) => step.review);
+      const authoredSteps = lesson.steps.filter((step) => !step.review);
+      const lessonMappings = new Set(
+        authoredSteps.flatMap((step) => step.keySequence.map(keyHintId)),
+      );
+      const introducedMappings = new Set(
+        [...lessonMappings].filter((mapping) => !taughtMappings.has(mapping)),
+      );
+      const focusMappings = introducedMappings.size > 0 ? introducedMappings : lessonMappings;
+      for (const mapping of lessonMappings) taughtMappings.add(mapping);
+
+      expect(exercise, lesson.id).toHaveLength(LESSON_EXERCISE_LENGTH);
+      expect(lesson.steps.slice(-LESSON_EXERCISE_LENGTH), lesson.id).toEqual(exercise);
+      for (const step of exercise) {
+        const mappings = step.keySequence.map(keyHintId);
+        expect(
+          mappings.every((mapping) => taughtMappings.has(mapping)),
+          lesson.id,
+        ).toBe(true);
+        expect(
+          mappings.some((mapping) => focusMappings.has(mapping)),
+          lesson.id,
+        ).toBe(true);
+      }
     }
   });
 });

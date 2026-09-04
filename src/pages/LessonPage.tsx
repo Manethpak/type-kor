@@ -11,6 +11,7 @@ import { Navigate, useNavigate, useParams } from "react-router";
 import { NidaKeyboard } from "../components/NidaKeyboard";
 import { getLesson, getNextLesson } from "../learning/curriculum";
 import { createLessonSessionState, lessonSessionReducer } from "../learning/lessonSession";
+import { LESSON_EXERCISE_LENGTH } from "../learning/lessonExercise";
 import { keyInstruction } from "../learning/nida";
 import type { LearningState, Lesson, LessonCheckpoint } from "../learning/types";
 import { khmerTextEngine } from "../engine/khmer";
@@ -62,6 +63,8 @@ function LessonSession({
   const focusInput = useCallback(() => inputRef.current?.focus({ preventScroll: true }), []);
 
   const step = lesson.steps[session.stepIndex];
+  const exerciseStartIndex = lesson.steps.findIndex((item) => item.review);
+  const exerciseItem = step.review ? session.stepIndex - exerciseStartIndex + 1 : null;
 
   useEffect(() => {
     if (session.completedAccuracy !== null || step.kind === "key") return;
@@ -299,13 +302,14 @@ function LessonSession({
           <p className="mb-2 text-[9px] font-bold uppercase tracking-[.2em] text-app-accent">
             Lesson complete
           </p>
-          <h1 className="m-0 font-khmer text-[36px] font-medium">
-            {mastered ? "អ្នកបានស្ទាត់មេរៀននេះ" : "ហាត់ម្ដងទៀតដើម្បីស្ទាត់"}
+          <h1 className="m-0 font-khmer text-3xl font-medium">
+            {mastered ? "អ្នកស្ទាត់មេរៀននេះហើយ" : "ហាត់បន្ថែមទៀត"}
           </h1>
-          <p className="mx-auto mt-3 max-w-md text-xs leading-relaxed text-app-dim">
-            ភាពត្រឹមត្រូវរបស់អ្នកគឺ{" "}
+          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-app-dim">
+            ភាពត្រឹមត្រូវរបស់អ្នកបាន{" "}
             <strong className="text-app-accent">{session.completedAccuracy}%</strong>។ ត្រូវការ{" "}
-            {lesson.masteryAccuracy}% ដើម្បីសម្គាល់ថាស្ទាត់។
+            <span className="text-app-text">{lesson.masteryAccuracy}% </span>
+            ឡ់ើងដើម្បីកាន់តែស្ទាត់ច្បាស់។
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-2">
             <button
@@ -387,19 +391,23 @@ function LessonSession({
 
       <div
         ref={typingAreaRef}
-        className="group relative rounded-[20px] border border-app-line bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)] px-6 py-9 text-center shadow-[0_24px_70px_var(--shadow)] transition-[border-color] focus-within:border-[color-mix(in_srgb,var(--accent)_34%,transparent)] data-[status=incorrect]:border-[color-mix(in_srgb,var(--error)_42%,transparent)] data-[typing=true]:cursor-text"
+        className="group relative rounded-[20px] border border-app-line bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)] px-6 py-9 text-center shadow-[0_24px_70px_var(--shadow)] transition-[border-color,background-color,box-shadow] focus-within:border-[color-mix(in_srgb,var(--accent)_34%,transparent)] data-[status=incorrect]:border-app-error data-[status=incorrect]:bg-[color-mix(in_srgb,var(--error)_5%,var(--bg-raised))] data-[status=incorrect]:shadow-[0_0_0_3px_color-mix(in_srgb,var(--error)_14%,transparent),0_24px_70px_var(--shadow)] data-[typing=true]:cursor-text"
         data-status={session.status}
         data-typing={step.kind === "typing"}
         onClick={step.kind === "typing" ? focusInput : undefined}
       >
         <small className="text-[9px] font-semibold uppercase tracking-[.17em] text-app-dim">
-          {step.kind === "typing" ? "Type this" : "Press this key"}
+          {exerciseItem
+            ? `លំហាត់ចុងមេរៀន · ${exerciseItem} / ${LESSON_EXERCISE_LENGTH}`
+            : step.kind === "typing"
+              ? "Type this"
+              : "Press this key"}
         </small>
         <div className="my-5 min-h-[86px] font-khmer text-[clamp(48px,9vw,72px)] leading-[1.45] text-app-text [text-shadow:0_0_28px_var(--accent-soft)]">
           {step.kind === "typing" ? step.prompt : step.label.km}
         </div>
         {step.kind === "typing" ? (
-          <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 font-khmer text-[26px] text-app-accent">
+          <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 font-khmer text-[26px] text-app-accent transition-colors group-data-[status=incorrect]:border-app-error group-data-[status=incorrect]:text-app-error">
             {session.input || <span className="text-app-dim opacity-30">…</span>}
           </div>
         ) : (
@@ -426,13 +434,36 @@ function LessonSession({
               </span>
             ))}
           </div>
-          <p className="mb-0 mt-3 min-h-5 text-xs text-app-dim" role="status" aria-live="polite">
-            {session.status === "incorrect"
-              ? session.stepErrors >= 2
-                ? `${keyInstruction(activeHint, altGrModifierLabel)} — look for the highlighted key`
-                : "មិនទាន់ត្រូវទេ — លុប ហើយសាកម្ដងទៀត"
-              : keyInstruction(activeHint, altGrModifierLabel)}
-          </p>
+          <div className="mx-auto mt-4 h-[88px] max-w-lg sm:h-20">
+            {session.status === "incorrect" ? (
+              <div
+                key={session.errors}
+                className="flex h-full animate-error-nudge items-center gap-3 rounded-xl border border-[color-mix(in_srgb,var(--error)_52%,transparent)] bg-[color-mix(in_srgb,var(--error)_13%,transparent)] px-4 py-3 text-left text-app-error shadow-[0_8px_24px_color-mix(in_srgb,var(--error)_10%,transparent)]"
+                role="alert"
+              >
+                <span
+                  className="grid size-7 shrink-0 place-items-center rounded-full bg-app-error font-ui text-sm font-bold text-app-bg"
+                  aria-hidden="true"
+                >
+                  !
+                </span>
+                <span className="min-w-0 text-xs leading-relaxed">
+                  <strong className="block font-khmer text-sm">មានកំហុស</strong>
+                  {session.stepErrors >= 2
+                    ? `${keyInstruction(activeHint, altGrModifierLabel)} · មើលគ្រាប់ចុចដែលបានបន្លិច។`
+                    : "លុបតួអក្សរខុស រួចសាកម្ដងទៀត។"}
+                </span>
+              </div>
+            ) : (
+              <p
+                className="m-0 grid h-full place-items-center text-xs text-app-dim"
+                role="status"
+                aria-live="polite"
+              >
+                {keyInstruction(activeHint, altGrModifierLabel)}
+              </p>
+            )}
+          </div>
         </div>
         {step.kind === "typing" && (
           <textarea
@@ -474,7 +505,7 @@ function LessonSession({
             <>
               <NidaKeyboard active={activeHint} mode="follow" />
               <p className="hidden text-center text-[11px] leading-relaxed text-app-dim max-md:block">
-                មេរៀនគ្រាប់ចុច NIDA ត្រូវបានរចនាសម្រាប់កុំព្យូទ័រដែលមានក្ដារចុច។ សូមបន្តលើអេក្រង់ធំដើម្បីមើលផែនទីគ្រាប់ចុច។
+                សូមប្រើប្រាស់នៅលើអេក្រង់ធំ​ឬ​កុំព្យូទ័រដែលមានក្ដារចុច។
               </p>
             </>
           )}

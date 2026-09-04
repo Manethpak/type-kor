@@ -20,6 +20,7 @@ export interface TypingLessonStep {
   kind: "typing";
   prompt: string;
   keySequence: PhysicalKeyHint[];
+  review?: boolean;
 }
 
 export interface KeyLessonStep {
@@ -28,6 +29,7 @@ export interface KeyLessonStep {
   label: LocalizedText;
   target: PhysicalKeyHint;
   keySequence: PhysicalKeyHint[];
+  review?: boolean;
 }
 
 export type LessonStep = TypingLessonStep | KeyLessonStep;

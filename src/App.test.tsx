@@ -11,6 +11,25 @@ function renderApp(initialEntry = "/") {
   );
 }
 
+function typeLessonPrompt(prompt: string) {
+  fireEvent.input(screen.getByLabelText(`Type ${prompt}`), {
+    target: { value: prompt },
+    inputType: "insertText",
+    data: prompt,
+  });
+}
+
+function completeHomeAnchorsLesson() {
+  for (const prompt of ["ក", "ល", "ស", "ហ", "កល", "សក", "ហល", "សាលា"]) {
+    typeLessonPrompt(prompt);
+  }
+
+  for (let index = 0; index < 20; index += 1) {
+    const input = screen.getByLabelText(/^Type /);
+    typeLessonPrompt(input.getAttribute("aria-label")!.slice(5));
+  }
+}
+
 const completedOnboarding = {
   schemaVersion: 1,
   onboardingCompleted: true,
@@ -186,6 +205,18 @@ describe("timed typing test", () => {
     });
   });
 
+  it("starts a 20-item exercise after the authored lesson steps", () => {
+    renderApp("/learn/home-anchors");
+    for (const prompt of ["ក", "ល", "ស", "ហ", "កល", "សក", "ហល", "សាលា"]) {
+      typeLessonPrompt(prompt);
+    }
+
+    expect(screen.getByText("លំហាត់ចុងមេរៀន · 1 / 20")).toBeVisible();
+    const input = screen.getByLabelText(/^Type /);
+    typeLessonPrompt(input.getAttribute("aria-label")!.slice(5));
+    expect(screen.getByText("លំហាត់ចុងមេរៀន · 2 / 20")).toBeVisible();
+  });
+
   it("discards a checkpoint when its stable step no longer exists", () => {
     localStorage.setItem(
       "typekor:learning",
@@ -222,13 +253,7 @@ describe("timed typing test", () => {
 
   it("records mastery after a lesson is completed at full accuracy", () => {
     renderApp("/learn/home-anchors");
-    for (const prompt of ["ក", "ល", "ស", "ហ", "កល", "សក", "ហល", "សាលា"]) {
-      fireEvent.input(screen.getByLabelText(`Type ${prompt}`), {
-        target: { value: prompt },
-        inputType: "insertText",
-        data: prompt,
-      });
-    }
+    completeHomeAnchorsLesson();
 
     expect(screen.getByLabelText("Lesson complete")).toBeVisible();
     expect(JSON.parse(localStorage.getItem("typekor:learning")!)).toMatchObject({
@@ -249,6 +274,20 @@ describe("timed typing test", () => {
 
     fireEvent.click(screen.getByText("Type this"));
     expect(input).toHaveFocus();
+  });
+
+  it("makes lesson mistakes prominent and announces how to recover", () => {
+    renderApp("/learn/home-anchors");
+    const input = screen.getByLabelText("Type ក");
+
+    fireEvent.input(input, { target: { value: "x" }, inputType: "insertText", data: "x" });
+
+    expect(screen.getByRole("alert")).toHaveTextContent("មានកំហុស");
+    expect(screen.getByRole("alert")).toHaveTextContent("លុបតួអក្សរខុស រួចសាកម្ដងទៀត។");
+    expect(input.closest("[data-status]")).toHaveAttribute("data-status", "incorrect");
+
+    fireEvent.input(input, { target: { value: "" }, inputType: "deleteContentBackward" });
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
   it("lets learners show and hide the NIDA keyboard", () => {
@@ -282,13 +321,7 @@ describe("timed typing test", () => {
 
   it("continues with Enter and repeats with R after completing a lesson", () => {
     renderApp("/learn/home-anchors");
-    for (const prompt of ["ក", "ល", "ស", "ហ", "កល", "សក", "ហល", "សាលា"]) {
-      fireEvent.input(screen.getByLabelText(`Type ${prompt}`), {
-        target: { value: prompt },
-        inputType: "insertText",
-        data: prompt,
-      });
-    }
+    completeHomeAnchorsLesson();
 
     const continueButton = screen.getByRole("button", { name: /មេរៀនបន្ទាប់/ });
     expect(continueButton).toHaveFocus();
@@ -296,13 +329,7 @@ describe("timed typing test", () => {
     fireEvent.keyDown(window, { key: "r", code: "KeyR" });
     expect(screen.getByLabelText("Type ក")).toHaveFocus();
 
-    for (const prompt of ["ក", "ល", "ស", "ហ", "កល", "សក", "ហល", "សាលា"]) {
-      fireEvent.input(screen.getByLabelText(`Type ${prompt}`), {
-        target: { value: prompt },
-        inputType: "insertText",
-        data: prompt,
-      });
-    }
+    completeHomeAnchorsLesson();
 
     screen.getByRole("button", { name: /មេរៀនបន្ទាប់/ }).blur();
     fireEvent.keyDown(window, { key: "Enter", code: "Enter" });
