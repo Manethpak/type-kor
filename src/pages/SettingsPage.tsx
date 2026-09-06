@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MoonIcon, RestartIcon, SoundIcon, SunIcon } from "../components/Icons";
 import { SettingCard } from "../components/settings/SettingCard";
 import { SettingsGroup } from "../components/settings/SettingsGroup";
@@ -10,6 +11,8 @@ const optionButtonClass =
 const selectedButtonClass = "bg-app-raised text-app-accent! shadow-sm ring-1 ring-app-line";
 const toggleClass =
   "group relative h-6 w-11 shrink-0 cursor-pointer rounded-full bg-app-hover p-1 transition-colors data-[on=true]:bg-app-accent-soft";
+const supportQrUrl =
+  "https://khqr-sdk.vercel.app/api/render/00020101021129270015maneth_pak@aclb0204aclb5204599953031165802KH5910Maneth Pak6009Califonia63040AAC.svg";
 
 export function SettingsPage({
   settings,
@@ -18,6 +21,7 @@ export function SettingsPage({
   settings: TestSettings;
   onChange: (settings: TestSettings) => void;
 }) {
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
   const update = <K extends keyof TestSettings>(key: K, value: TestSettings[K]) =>
     onChange({ ...settings, [key]: value });
 
@@ -250,6 +254,66 @@ export function SettingsPage({
               </p>
             </div>
           </div>
+        </article>
+      </section>
+
+      <section
+        className="mt-8 grid gap-5 border-t border-app-line pt-8 md:grid-cols-3"
+        aria-labelledby="author-heading"
+      >
+        <header>
+          <p className="text-xs font-semibold uppercase tracking-widest text-app-accent">About</p>
+          <h2 id="author-heading" className="mt-1 font-khmer text-xl font-medium text-app-text">
+            អ្នកបង្កើត
+          </h2>
+          <p className="mt-2 max-w-xs font-khmer text-sm leading-relaxed text-app-soft">
+            Type ក ត្រូវបានបង្កើតឡើងដោយក្តីស្រឡាញ់សម្រាប់ភាសាខ្មែរ
+          </p>
+        </header>
+
+        <article className="overflow-hidden rounded-2xl border border-app-line bg-[color-mix(in_srgb,var(--bg-raised)_72%,transparent)] md:col-span-2">
+          <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+              <div>
+                <p className="font-khmer text-sm text-app-dim">បង្កើតឡើងដោយ</p>
+                <a
+                  className="text-lg font-semibold text-app-text underline decoration-app-line underline-offset-4 transition-colors hover:text-app-accent"
+                  href="https://manethpak.dev"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Maneth Pak
+                </a>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-app-accent-soft px-4 py-2 font-khmer text-sm font-semibold text-app-accent transition-[color,background,transform] hover:-translate-y-0.5 hover:bg-app-hover"
+              aria-expanded={isSupportOpen}
+              aria-controls="support-qr"
+              onClick={() => setIsSupportOpen((current) => !current)}
+            >
+              ធ្វើការឧបត្ថម្ភ
+              <span aria-hidden="true">{isSupportOpen ? "−" : "+"}</span>
+            </button>
+          </div>
+
+          {isSupportOpen && (
+            <div
+              id="support-qr"
+              className="border-t border-app-line bg-app-surface px-5 py-6 text-center"
+            >
+              <p className="mb-5 font-khmer text-sm leading-relaxed text-app-dim">
+                ធ្វើការឧបត្ថម្ភខ្ញុំតាម KHQR ខាងក្រោមដើម្បីបន្តការអភិវឌ្ឍ Type ក។ អរគុណ!
+              </p>
+              <img
+                className="mx-auto h-auto w-full max-w-72 rounded-2xl"
+                src={supportQrUrl}
+                alt="KHQR សម្រាប់គាំទ្រ Maneth Pak"
+              />
+            </div>
+          )}
         </article>
       </section>
     </section>

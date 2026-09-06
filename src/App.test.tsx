@@ -101,6 +101,33 @@ describe("timed typing test", () => {
     expect(screen.getByLabelText("Khmer typing test")).toBeVisible();
   });
 
+  it("credits the author and reveals the support QR on request", () => {
+    renderApp("/settings");
+
+    expect(screen.getByRole("link", { name: "Maneth Pak" })).toHaveAttribute(
+      "href",
+      "https://manethpak.dev",
+    );
+    expect(
+      screen.queryByRole("img", { name: "KHQR សម្រាប់គាំទ្រ Maneth Pak" }),
+    ).not.toBeInTheDocument();
+
+    const supportButton = screen.getByRole("button", { name: /គាំទ្រអ្នកបង្កើត/ });
+    fireEvent.click(supportButton);
+
+    expect(supportButton).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("img", { name: "KHQR សម្រាប់គាំទ្រ Maneth Pak" })).toHaveAttribute(
+      "src",
+      "https://khqr-sdk.vercel.app/api/render/00020101021129270015maneth_pak@aclb0204aclb5204599953031165802KH5910Maneth Pak6009Califonia63040AAC.svg",
+    );
+
+    fireEvent.click(supportButton);
+    expect(supportButton).toHaveAttribute("aria-expanded", "false");
+    expect(
+      screen.queryByRole("img", { name: "KHQR សម្រាប់គាំទ្រ Maneth Pak" }),
+    ).not.toBeInTheDocument();
+  });
+
   it("switches and persists the typing difficulty", () => {
     renderApp("/test");
     const difficulty = screen.getByRole("combobox", { name: "Word difficulty" });
