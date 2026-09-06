@@ -1,9 +1,20 @@
 {
   "name": "Type ក — TypeKor",
   "short_name": "Type ក",
+  "description": "រៀនវាយអក្សរខ្មែរ ហាត់ជាមួយក្តារចុច NIDA និងវាស់ល្បឿននិងភាពត្រឹមត្រូវ។",
+  "lang": "km",
+  "id": "./",
   "start_url": ".",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#171813",
   "theme_color": "#171813",
-  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router";
 import { AppShell } from "./components/AppShell";
 import { useAppSettings } from "./hooks/useAppSettings";
 import { useAppState } from "./hooks/useAppState";
@@ -10,6 +10,7 @@ import { KeyboardGuidePage } from "./pages/KeyboardGuidePage";
 import { LearnPage } from "./pages/LearnPage";
 import { LessonPage } from "./pages/LessonPage";
 import { OnboardingPage } from "./pages/OnboardingPage";
+import { OgImagePage } from "./pages/OgImagePage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { TypingPage } from "./pages/TypingPage";
 import { historyRepository } from "./storage/history";
@@ -31,6 +32,7 @@ function ExperienceRoute({
 
 export default function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [settings, setSettings] = useAppSettings();
   const { appState, completeOnboarding, setLastExperience } = useAppState();
   const { learningState, saveCheckpoint, completeLesson } = useLearningProgress();
@@ -88,6 +90,8 @@ export default function App() {
       })),
     [setSettings],
   );
+
+  if (location.pathname === "/og") return <OgImagePage />;
 
   if (!appState.onboardingCompleted) {
     return (

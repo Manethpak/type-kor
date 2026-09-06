@@ -38,20 +38,6 @@ export function SettingsPage({
             title="ការបង្ហាញអត្ថបទ"
             description="កំណត់ពណ៌ ទំហំ និងគម្លាតអក្សរ ដើម្បីឱ្យការអានកាន់តែងាយស្រួល។"
           >
-            <div className="border-b border-app-line bg-[color-mix(in_srgb,var(--surface)_45%,transparent)] px-5 py-4">
-              <p
-                className={cx(
-                  "mt-3 overflow-hidden font-khmer text-app-text",
-                  getFontSizeOption(settings.fontSize).previewClass,
-                )}
-                style={{ lineHeight: settings.lineHeight }}
-              >
-                អក្សរខ្មែរ
-                <br />
-                អក្សរខ្មែរ
-              </p>
-            </div>
-
             <SettingCard icon={<SunIcon />} title="រូបរាង" description="ជ្រើសពណ៌ស្រទន់ដែលងាយស្រួលមើល។">
               <div
                 className="grid grid-cols-2 rounded-lg bg-app-surface p-1"
@@ -127,6 +113,20 @@ export function SettingsPage({
                 </output>
               </label>
             </SettingCard>
+
+            <div className="border-b border-app-line bg-[color-mix(in_srgb,var(--surface)_45%,transparent)] px-5 py-4">
+              <p
+                className={cx(
+                  "mt-3 overflow-hidden font-khmer text-app-text",
+                  getFontSizeOption(settings.fontSize).previewClass,
+                )}
+                style={{ lineHeight: settings.lineHeight }}
+              >
+                អក្សរខ្មែរ
+                <br />
+                អក្សរខ្មែរ
+              </p>
+            </div>
           </SettingsGroup>
         </div>
 

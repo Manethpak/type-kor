@@ -174,7 +174,7 @@ export function TypingPage({
             <div
               ref={surfaceRef}
               className={cx(
-                "prompt-scrollbar relative h-[calc(4lh+2.5rem)] overflow-x-hidden overflow-y-auto px-1 pb-7 pt-3 [mask-image:linear-gradient(to_bottom,transparent,#000_8%,#000_88%,transparent)] [scrollbar-width:none]",
+                "prompt-scrollbar relative h-[calc(3lh+2.5rem)] overflow-x-hidden overflow-y-auto px-1 pb-7 pt-3 [mask-image:linear-gradient(to_bottom,transparent,#000_8%,#000_88%,transparent)] [scrollbar-width:none]",
                 fontSizeClass,
               )}
               style={{ lineHeight: settings.lineHeight }}

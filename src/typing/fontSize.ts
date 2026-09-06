@@ -11,20 +11,20 @@ export const FONT_SIZE_OPTIONS: readonly FontSizeOption[] = [
   {
     value: "small",
     label: "តូច",
-    promptClass: "text-4xl sm:text-5xl",
-    previewClass: "text-2xl",
+    promptClass: "text-[1.8rem] sm:text-[2rem]",
+    previewClass: "text-[2rem]",
   },
   {
     value: "medium",
     label: "មធ្យម",
-    promptClass: "text-5xl sm:text-6xl",
-    previewClass: "text-3xl",
+    promptClass: "text-[2.3rem] sm:text-[2.5rem]",
+    previewClass: "text-[2.5rem]",
   },
   {
     value: "large",
     label: "ធំ",
-    promptClass: "text-6xl sm:text-7xl",
-    previewClass: "text-4xl",
+    promptClass: "text-[2.8rem] sm:text-[3rem]",
+    previewClass: "text-[3rem]",
   },
 ];
 
