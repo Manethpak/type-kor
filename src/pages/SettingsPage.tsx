@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MoonIcon, RestartIcon, SoundIcon, SunIcon } from "../components/Icons";
+import { MessageIcon, MoonIcon, RestartIcon, SoundIcon, SunIcon } from "../components/Icons";
 import { SettingCard } from "../components/settings/SettingCard";
 import { SettingsGroup } from "../components/settings/SettingsGroup";
 import type { TestSettings } from "../typing/types";
@@ -13,6 +13,20 @@ const toggleClass =
   "group relative h-6 w-11 shrink-0 cursor-pointer rounded-full bg-app-hover p-1 transition-colors data-[on=true]:bg-app-accent-soft";
 const supportQrUrl =
   "https://khqr-sdk.vercel.app/api/render/00020101021129270015maneth_pak@aclb0204aclb5204599953031165802KH5910Maneth Pak6009Califonia63040AAC.svg";
+const feedbackEmailUrl = `mailto:manethpak.dev@gmail.com?${new URLSearchParams({
+  subject: "មតិយោបល់សម្រាប់ Type ក",
+  body: `សួស្តី Type ក,
+
+ប្រភេទ៖ មតិយោបល់ / សំណើ / រាយការណ៍បញ្ហា
+
+សាររបស់ខ្ញុំ៖
+
+
+បើខ្ញុំកំពុងរាយការណ៍បញ្ហា៖
+- ខ្ញុំកំពុងធ្វើអ្វី៖
+- អ្វីដែលខ្ញុំរំពឹងថានឹងកើតឡើង៖
+- អ្វីដែលបានកើតឡើង៖`,
+}).toString()}`;
 
 export function SettingsPage({
   settings,
@@ -208,6 +222,50 @@ export function SettingsPage({
           </SettingsGroup>
         </div> */}
       </div>
+
+      <section
+        className="relative mt-10 overflow-hidden rounded-2xl border border-[color-mix(in_srgb,var(--accent)_28%,var(--line))] bg-[color-mix(in_srgb,var(--bg-raised)_82%,transparent)] shadow-[0_18px_55px_var(--shadow)]"
+        aria-labelledby="feedback-heading"
+      >
+        <div
+          className="pointer-events-none absolute -right-8 -top-16 font-khmer text-[11rem] leading-none text-app-accent opacity-[.045]"
+          aria-hidden="true"
+        >
+          ម
+        </div>
+        <div className="relative grid gap-6 p-5 sm:grid-cols-[1fr_auto] sm:items-center sm:p-7">
+          <div className="flex items-start gap-4">
+            <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-app-accent-soft text-app-accent [&_svg]:size-5">
+              <MessageIcon />
+            </span>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-app-accent">
+                Feedback
+              </p>
+              <h2
+                id="feedback-heading"
+                className="mt-1 font-khmer text-xl font-semibold text-app-text"
+              >
+                ជួយឱ្យ Type ក កាន់តែប្រសើរ
+              </h2>
+              <p className="mt-2 max-w-2xl font-khmer text-sm leading-7 text-app-soft">
+                មានមតិយោបល់ សំណើ ឬបានជួបបញ្ហា? ផ្ញើសារមកខ្ញុំដោយផ្ទាល់។
+                កម្មវិធីអ៊ីមែលរបស់អ្នកនឹងបើកជាមួយគំរូសារដែលបានរៀបចំរួចជាស្រេច។
+              </p>
+            </div>
+          </div>
+
+          <a
+            className="group inline-flex min-h-12 cursor-pointer items-center justify-center gap-2.5 rounded-xl bg-app-accent px-5 py-3 font-khmer text-sm font-semibold text-app-bg shadow-[0_10px_28px_color-mix(in_srgb,var(--accent)_20%,transparent)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_14px_34px_color-mix(in_srgb,var(--accent)_28%,transparent)] active:translate-y-0"
+            href={feedbackEmailUrl}
+          >
+            ផ្ញើមតិយោបល់
+            <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        </div>
+      </section>
 
       <section
         className="mt-10 grid gap-5 border-t border-app-line pt-8 md:grid-cols-3"

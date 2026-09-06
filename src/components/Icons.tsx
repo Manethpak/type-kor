@@ -85,6 +85,12 @@ export const MoonIcon = (props: IconProps) => (
     <path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z" />
   </IconBase>
 );
+export const MessageIcon = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" />
+    <path d="M8 9h8M8 13h5" />
+  </IconBase>
+);
 export const TrashIcon = (props: IconProps) => (
   <IconBase {...props}>
     <path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6" />

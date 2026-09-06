@@ -128,6 +128,17 @@ describe("timed typing test", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("opens a prepared feedback email from settings", () => {
+    renderApp("/settings");
+
+    const feedbackLink = screen.getByRole("link", { name: /ផ្ញើមតិយោបល់/ });
+    const href = decodeURIComponent(feedbackLink.getAttribute("href")!);
+
+    expect(href).toContain("mailto:manethpak.dev@gmail.com?");
+    expect(href).toContain("subject=មតិយោបល់សម្រាប់+Type+ក");
+    expect(href).toContain("រាយការណ៍បញ្ហា");
+  });
+
   it("switches and persists the typing difficulty", () => {
     renderApp("/test");
     const difficulty = screen.getByRole("combobox", { name: "Word difficulty" });
