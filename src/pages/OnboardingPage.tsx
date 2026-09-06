@@ -60,10 +60,10 @@ export function OnboardingPage({
             <h2 className="mb-2 mt-2 font-khmer text-3xl font-medium">
               រៀន <span className="font-ui text-sm font-medium text-app-dim">Learning mode</span>
             </h2>
-            <p className="max-w-77.5 text-sm leading-relaxed text-app-soft">
+            <p className="max-w-77.5 font-khmer text-base leading-relaxed text-app-soft">
               រៀន typing ខ្មែរជាមួយក្តារចុច NIDA តាមមេរៀន
             </p>
-            <span className="mt-7 inline-flex items-center gap-2 text-xs font-semibold text-app-accent">
+            <span className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-app-accent">
               ចាប់ផ្ដើមរៀន <span aria-hidden="true">→</span>
             </span>
           </button>
@@ -82,10 +82,10 @@ export function OnboardingPage({
             <h2 className="mb-2 mt-2 font-khmer text-3xl font-medium">
               សាកល្បង <span className="font-ui text-sm font-medium text-app-dim">Testing mode</span>
             </h2>
-            <p className="max-w-77.5 text-sm leading-relaxed text-app-soft">
+            <p className="max-w-77.5 font-khmer text-base leading-relaxed text-app-soft">
               វាស់ល្បឿន និងភាពត្រឹមត្រូវតាមពេលវេលា ឬចំនួនពាក្យ ដោយគ្មានជំនួយ។
             </p>
-            <span className="mt-7 inline-flex items-center gap-2 text-xs font-semibold text-app-accent">
+            <span className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-app-accent">
               ចូលសាកល្បង <span aria-hidden="true">→</span>
             </span>
           </button>

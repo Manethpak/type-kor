@@ -148,7 +148,7 @@ export function NidaKeyboard({ active, mode = "interactable" }: NidaKeyboardProp
           <p className="m-0 text-xs font-semibold uppercase tracking-[.14em] text-app-dim">
             Khmer NIDA · Complete layout
           </p>
-          <p className="m-0 mt-1 truncate text-xs text-app-dim" aria-live="polite">
+          <p className="m-0 mt-1 truncate text-sm text-app-dim" aria-live="polite">
             {mode === "follow"
               ? `Following lesson · ${active ? `next: ${keyInstructionLabel(active, altGrModifierLabel)}` : "waiting for a target"}`
               : lastOutput

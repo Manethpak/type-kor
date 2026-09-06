@@ -183,17 +183,11 @@ function SectionHeading({
 }) {
   return (
     <div className="mb-7 grid grid-cols-[48px_1fr] items-start gap-4 border-app-line">
-      <span
-        className="pt-1 text-xs font-bold tracking-[.18em] text-app-accent"
-        aria-hidden="true"
-      >
+      <span className="pt-1 text-xs font-bold tracking-[.18em] text-app-accent" aria-hidden="true">
         {number}
       </span>
       <div>
-        <h2
-          id={id}
-          className="m-0 font-khmer text-3xl font-medium leading-tight md:text-4xl"
-        >
+        <h2 id={id} className="m-0 font-khmer text-3xl font-medium leading-tight md:text-4xl">
           {titleKm}
         </h2>
         <p className="mb-0 mt-1 text-xs font-semibold uppercase tracking-[.16em] text-app-dim">
@@ -271,13 +265,13 @@ export function KeyboardGuidePage() {
                 <h3 className="m-0 font-khmer text-lg font-medium leading-relaxed text-app-text">
                   {event.titleKm}
                 </h3>
-                <p className="mb-0 mt-2 font-khmer text-sm leading-[1.9] text-app-soft">
+                <p className="mb-0 mt-2 font-khmer text-base leading-[1.9] text-app-soft">
                   {event.bodyKm}
                 </p>
               </div>
               <div className="pt-1 max-[740px]:col-start-2">
                 <h3 className="m-0 text-sm font-semibold text-app-text">{event.titleEn}</h3>
-                <p className="mb-0 mt-2 text-xs leading-[1.75] text-app-dim">{event.bodyEn}</p>
+                <p className="mb-0 mt-2 text-sm leading-[1.75] text-app-dim">{event.bodyEn}</p>
               </div>
             </article>
           ))}
@@ -300,10 +294,10 @@ export function KeyboardGuidePage() {
             ក
           </span>
           <div className="relative mb-6 grid grid-cols-2 gap-6 border-b border-app-line pb-5 max-[650px]:grid-cols-1 max-[650px]:gap-2">
-            <p className="m-0 font-khmer text-sm leading-[1.8] text-app-soft">
+            <p className="m-0 font-khmer text-base leading-[1.8] text-app-soft">
               ចុចគ្រាប់ចុចលើក្ដារចុចរបស់អ្នក ឬចុចលើប្លង់ខាងក្រោម។ សង្កត់ Shift ឬ Right Alt ដើម្បីមើលស្រទាប់ផ្សេងទៀត។
             </p>
-            <p className="m-0 text-xs leading-relaxed text-app-dim">
+            <p className="m-0 text-sm leading-relaxed text-app-dim">
               Press your physical keyboard or click a key below. Hold Shift or Right Alt to reveal
               every NIDA layer and see its output.
             </p>
@@ -311,10 +305,10 @@ export function KeyboardGuidePage() {
           <NidaKeyboard active={undefined} mode="interactable" />
           <div className="hidden rounded-xl border border-app-line bg-app-surface px-5 py-7 text-center max-md:block">
             <strong className="font-khmer text-lg font-medium">បើកនៅលើកុំព្យូទ័រ</strong>
-            <p className="mb-0 mt-2 font-khmer text-xs leading-relaxed text-app-dim">
+            <p className="mb-0 mt-2 font-khmer text-sm leading-relaxed text-app-dim">
               ប្លង់ក្ដារចុច NIDA ពេញលេញអាចសាកល្បងបាននៅលើអេក្រង់ធំ។
             </p>
-            <p className="mb-0 mt-1 text-xs leading-relaxed text-app-dim">
+            <p className="mb-0 mt-1 text-sm leading-relaxed text-app-dim">
               The complete interactive keyboard is available on a larger screen.
             </p>
           </div>
@@ -344,10 +338,10 @@ export function KeyboardGuidePage() {
                 </kbd>
               </div>
               <h3 className="m-0 font-khmer text-xl font-medium">{layer.titleKm}</h3>
-              <p className="mb-0 mt-3 font-khmer text-sm leading-[1.85] text-app-soft">
+              <p className="mb-0 mt-3 font-khmer text-base leading-[1.85] text-app-soft">
                 {layer.bodyKm}
               </p>
-              <p className="mb-12 mt-3 text-xs leading-[1.7] text-app-dim">{layer.bodyEn}</p>
+              <p className="mb-12 mt-3 text-sm leading-[1.7] text-app-dim">{layer.bodyEn}</p>
             </article>
           ))}
         </div>
@@ -376,11 +370,11 @@ export function KeyboardGuidePage() {
           </summary>
 
           <div className="grid grid-cols-2 gap-8 border-y border-app-line px-6 py-5 max-[700px]:grid-cols-1 max-[700px]:gap-3">
-            <p className="m-0 font-khmer text-xs leading-[1.9] text-app-soft">
+            <p className="m-0 font-khmer text-sm leading-[1.9] text-app-soft">
               ភាសាខ្មែរជាទូទៅមិនប្រើចន្លោះរវាងពាក្យទេ ហើយពុម្ពអក្សរអាចប្ដូររូបរាង ឬភ្ជាប់តួអក្សរ។
               តួអក្សរទាំងនេះគ្រប់គ្រងព្រំដែនពាក្យ ការបំបែកបន្ទាត់ និងការភ្ជាប់អក្សរ។
             </p>
-            <p className="m-0 text-xs leading-[1.7] text-app-dim">
+            <p className="m-0 text-sm leading-[1.7] text-app-dim">
               Khmer normally has no visible spaces between words, and fonts can reshape or join
               characters. These controls manage word boundaries, line wrapping, and shaping.
             </p>
@@ -409,18 +403,16 @@ export function KeyboardGuidePage() {
                   </kbd>
                 </div>
                 <div className="max-[620px]:col-start-2">
-                  <h4 className="m-0 font-khmer text-sm font-medium leading-relaxed text-app-text">
+                  <h4 className="m-0 font-khmer text-base font-medium leading-relaxed text-app-text">
                     {character.titleKm}
                   </h4>
-                  <p className="mb-0 mt-1 font-khmer text-xs leading-[1.8] text-app-soft">
+                  <p className="mb-0 mt-1 font-khmer text-sm leading-[1.8] text-app-soft">
                     {character.bodyKm}
                   </p>
                 </div>
                 <div className="max-[820px]:col-start-3 max-[620px]:col-start-2">
-                  <h4 className="m-0 text-xs font-semibold text-app-text">
-                    {character.titleEn}
-                  </h4>
-                  <p className="mb-0 mt-1.5 text-xs leading-[1.7] text-app-dim">
+                  <h4 className="m-0 text-sm font-semibold text-app-text">{character.titleEn}</h4>
+                  <p className="mb-0 mt-1.5 text-sm leading-[1.7] text-app-dim">
                     {character.bodyEn}
                   </p>
                 </div>
@@ -428,7 +420,7 @@ export function KeyboardGuidePage() {
             ))}
           </div>
 
-          <p className="m-0 border-t border-app-line px-5 py-4 text-xs leading-relaxed text-app-dim">
+          <p className="m-0 border-t border-app-line px-5 py-4 text-sm leading-relaxed text-app-dim">
             ZWSP and regular Space cover most everyday typing. ZWJ and ZWNJ are advanced controls
             used when a Khmer font needs explicit shaping instructions.
           </p>
@@ -457,7 +449,7 @@ export function KeyboardGuidePage() {
             <p className="relative mb-0 mt-10 font-khmer text-lg leading-[1.8] text-app-text">
               ក្ដារចុចកំណត់ថាអ្នកបញ្ចូលតួអក្សរអ្វី។ ពុម្ពអក្សរកំណត់ថាតួអក្សរនោះបង្ហាញរូបរាងយ៉ាងដូចម្ដេច។
             </p>
-            <p className="relative mb-0 mt-4 text-xs leading-relaxed text-app-dim">
+            <p className="relative mb-0 mt-4 text-sm leading-relaxed text-app-dim">
               A keyboard decides which character you enter. A font decides how that character is
               drawn.
             </p>
@@ -474,15 +466,13 @@ export function KeyboardGuidePage() {
                 </span>
                 <div>
                   <h3 className="m-0 font-khmer text-base font-medium">{note.titleKm}</h3>
-                  <p className="mb-0 mt-1.5 font-khmer text-xs leading-[1.8] text-app-soft">
+                  <p className="mb-0 mt-1.5 font-khmer text-sm leading-[1.8] text-app-soft">
                     {note.bodyKm}
                   </p>
                 </div>
                 <div className="max-[640px]:col-start-2">
-                  <h3 className="m-0 text-xs font-semibold">{note.titleEn}</h3>
-                  <p className="mb-0 mt-1.5 text-xs leading-[1.7] text-app-dim">
-                    {note.bodyEn}
-                  </p>
+                  <h3 className="m-0 text-sm font-semibold">{note.titleEn}</h3>
+                  <p className="mb-0 mt-1.5 text-sm leading-[1.7] text-app-dim">{note.bodyEn}</p>
                 </div>
               </article>
             ))}
@@ -511,8 +501,8 @@ export function KeyboardGuidePage() {
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span>
-                  <strong className="block text-xs font-semibold">{source.label}</strong>
-                  <small className="mt-1 block text-xs leading-relaxed text-app-dim">
+                  <strong className="block text-sm font-semibold">{source.label}</strong>
+                  <small className="mt-1 block text-sm leading-relaxed text-app-dim">
                     {source.detail}
                   </small>
                 </span>

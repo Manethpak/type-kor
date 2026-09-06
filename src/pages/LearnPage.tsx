@@ -59,9 +59,7 @@ export function LearnPage({
           <b className="block text-xl font-medium text-app-accent [font-variant-numeric:tabular-nums]">
             {coreMastered}/{coreLessonIds.size}
           </b>
-          <small className="text-xs uppercase tracking-[.14em] text-app-dim">
-            core mastered
-          </small>
+          <small className="text-xs uppercase tracking-[.14em] text-app-dim">core mastered</small>
           <small className="mt-1 block text-xs text-app-dim">
             {masteredMappings.size}/{totalMappings} key mappings
           </small>
@@ -85,7 +83,7 @@ export function LearnPage({
             <strong className="mt-1 block font-khmer text-lg font-medium">
               {recommended.title.km}
             </strong>
-            <span className="mt-0.5 block text-xs text-app-dim">
+            <span className="mt-0.5 block font-khmer text-sm text-app-dim">
               {recommended.description.km}
             </span>
           </span>
@@ -116,7 +114,7 @@ export function LearnPage({
                 <h2 id={`${unit.id}-title`} className="m-0 font-khmer text-xl font-medium">
                   {unit.title.km}
                 </h2>
-                <p className="mb-0 mt-0.5 text-xs text-app-dim">{unit.description.km}</p>
+                <p className="mb-0 mt-0.5 font-khmer text-sm text-app-dim">{unit.description.km}</p>
               </div>
             </div>
 
@@ -154,7 +152,7 @@ export function LearnPage({
                     <strong className="block font-khmer text-lg font-medium transition-colors group-hover:text-app-accent">
                       {lesson.title.km}
                     </strong>
-                    <span className="mt-1 block text-xs leading-normal text-app-dim">
+                    <span className="mt-1 block font-khmer text-sm leading-relaxed text-app-dim">
                       {lesson.description.km}
                     </span>
                     {progress && (

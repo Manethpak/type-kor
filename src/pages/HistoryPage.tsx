@@ -26,7 +26,7 @@ export function HistoryPage({
         </div>
         {history.length > 0 && (
           <button
-            className="flex cursor-pointer items-center gap-2 p-2 text-xs text-app-dim transition-colors hover:text-app-error [&_svg]:w-3.5"
+            className="flex cursor-pointer items-center gap-2 p-2 text-sm text-app-dim transition-colors hover:text-app-error [&_svg]:w-3.5"
             onClick={onClear}
           >
             <TrashIcon /> លុបទាំងអស់
@@ -35,7 +35,7 @@ export function HistoryPage({
       </div>
 
       {history.length === 0 ? (
-        <div className="grid min-h-[280px] place-items-center content-center rounded-[18px] border border-dashed border-app-line bg-[color-mix(in_srgb,var(--surface)_45%,transparent)] p-10 text-center [&>svg]:w-[35px] [&>svg]:text-app-accent [&>svg]:opacity-70 [&_h2]:mb-1 [&_h2]:mt-[15px] [&_h2]:font-khmer [&_h2]:text-2xl [&_h2]:font-medium [&_p]:m-0 [&_p]:text-sm [&_p]:text-app-dim">
+        <div className="grid min-h-[280px] place-items-center content-center rounded-[18px] border border-dashed border-app-line bg-[color-mix(in_srgb,var(--surface)_45%,transparent)] p-10 text-center [&>svg]:w-[35px] [&>svg]:text-app-accent [&>svg]:opacity-70 [&_h2]:mb-1 [&_h2]:mt-[15px] [&_h2]:font-khmer [&_h2]:text-2xl [&_h2]:font-medium [&_p]:m-0 [&_p]:font-khmer [&_p]:text-base [&_p]:text-app-dim">
           <HistoryIcon />
           <h2>មិនទាន់មានលទ្ធផល</h2>
           <p>សាកល្បងវាយអក្សរម្តង ដើម្បីមើលលទ្ធផលរបស់អ្នកនៅទីនេះ។</p>
@@ -47,22 +47,28 @@ export function HistoryPage({
               className="grid grid-cols-[1.5fr_1fr_1fr_1fr] items-center rounded-xl border border-app-line bg-app-raised px-[18px] py-[15px] transition-[border-color,transform] hover:translate-x-[3px] hover:border-[color-mix(in_srgb,var(--accent)_35%,transparent)] max-[760px]:grid-cols-2 max-[760px]:gap-2"
               key={item.id}
             >
-              <time className="text-xs text-app-dim">
+              <time className="text-sm text-app-dim">
                 {new Intl.DateTimeFormat("km-KH", {
                   dateStyle: "medium",
                   timeStyle: "short",
                 }).format(new Date(item.startedAt))}
               </time>
-              <strong className="text-2xl font-[450] text-app-accent">
-                {speedUnit === "cpm"
-                  ? item.clustersPerMinute
-                  : (item.wordsPerMinute ?? Math.round(item.clustersPerMinute / 5))}
-                <small className="text-xs font-medium"> {speedUnit}</small>
-              </strong>
-              <span className="text-xs text-app-dim">{item.accuracy}% ត្រឹមត្រូវ</span>
-              <span className="text-xs text-app-dim">
+              <div className="flex gap-2">
+                <p className="text-app-accent text-xl">
+                  {item.clustersPerMinute}
+                  <small className="text-xs font-medium">cpm</small>
+                </p>
+                /
+                <p className="text-xl">
+                  {item.wordsPerMinute ?? Math.round(item.clustersPerMinute / 5)}
+                  <small className="text-xs font-medium">wpm</small>
+                </p>
+              </div>
+
+              <span className="text-sm text-app-dim">{item.accuracy}% ត្រឹមត្រូវ</span>
+              <span className="text-sm text-app-dim">
                 {item.mode === "time" ? `${item.modeValue} វិនាទី` : `${item.modeValue} ពាក្យ`}
-                {item.wordDifficulty ? ` · ${difficultyLabels[item.wordDifficulty]}` : ""}
+                {item.wordDifficulty ? ` · កម្រិត${difficultyLabels[item.wordDifficulty]}` : ""}
               </span>
             </article>
           ))}

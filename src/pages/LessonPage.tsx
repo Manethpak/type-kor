@@ -305,7 +305,7 @@ function LessonSession({
           <h1 className="m-0 font-khmer text-3xl font-medium">
             {mastered ? "អ្នកស្ទាត់មេរៀននេះហើយ" : "ហាត់បន្ថែមទៀត"}
           </h1>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-app-dim">
+          <p className="mx-auto mt-3 max-w-md font-khmer text-base leading-relaxed text-app-dim">
             ភាពត្រឹមត្រូវរបស់អ្នកបាន{" "}
             <strong className="text-app-accent">{session.completedAccuracy}%</strong>។ ត្រូវការ{" "}
             <span className="text-app-text">{lesson.masteryAccuracy}% </span>
@@ -313,7 +313,7 @@ function LessonSession({
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-2">
             <button
-              className="cursor-pointer rounded-[10px] border border-app-line bg-app-surface px-4 py-2.5 text-xs text-app-soft transition-colors hover:text-app-accent"
+              className="cursor-pointer rounded-[10px] border border-app-line bg-app-surface px-4 py-2.5 text-sm text-app-soft transition-colors hover:text-app-accent"
               onClick={repeatLesson}
               type="button"
             >
@@ -325,7 +325,7 @@ function LessonSession({
             {nextLesson ? (
               <button
                 ref={primaryActionRef}
-                className="cursor-pointer rounded-[10px] bg-app-accent px-4 py-2.5 text-xs font-semibold text-app-bg transition-[filter,transform] hover:brightness-110 active:translate-y-px"
+                className="cursor-pointer rounded-[10px] bg-app-accent px-4 py-2.5 text-sm font-semibold text-app-bg transition-[filter,transform] hover:brightness-110 active:translate-y-px"
                 onClick={continueLesson}
                 type="button"
               >
@@ -337,7 +337,7 @@ function LessonSession({
             ) : (
               <button
                 ref={primaryActionRef}
-                className="cursor-pointer rounded-[10px] bg-app-accent px-4 py-2.5 text-xs font-semibold text-app-bg"
+                className="cursor-pointer rounded-[10px] bg-app-accent px-4 py-2.5 text-sm font-semibold text-app-bg"
                 onClick={continueLesson}
                 type="button"
               >
@@ -369,7 +369,7 @@ function LessonSession({
           </button>
           <div>
             <h1 className="m-0 font-khmer text-3xl font-medium">{lesson.title.km}</h1>
-            <p className="mb-0 mt-1 text-sm text-app-soft">{lesson.description.km}</p>
+            <p className="mb-0 mt-1 font-khmer text-base text-app-soft">{lesson.description.km}</p>
           </div>
         </div>
         <div className="min-w-24 text-right">
@@ -408,7 +408,7 @@ function LessonSession({
             {session.input || <span className="text-app-dim opacity-30">…</span>}
           </div>
         ) : (
-          <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 text-xs text-app-dim">
+          <div className="mx-auto min-h-9 w-[min(520px,100%)] border-b border-app-line pb-2 text-sm text-app-dim">
             {step.label.en}
           </div>
         )}
@@ -444,8 +444,8 @@ function LessonSession({
                 >
                   !
                 </span>
-                <span className="min-w-0 text-xs leading-relaxed">
-                  <strong className="block font-khmer text-sm">មានកំហុស</strong>
+                <span className="min-w-0 text-sm leading-relaxed">
+                  <strong className="block font-khmer text-base">មានកំហុស</strong>
                   {session.stepErrors >= 2
                     ? `${keyInstruction(activeHint, altGrModifierLabel)} · មើលគ្រាប់ចុចដែលបានបន្លិច។`
                     : "លុបតួអក្សរខុស រួចសាកម្ដងទៀត។"}
@@ -481,7 +481,7 @@ function LessonSession({
       <div className="mt-6" data-help={session.stepErrors >= 2}>
         <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
           <button
-            className="cursor-pointer rounded-md border border-app-line bg-app-raised px-2.5 py-1 text-xs font-semibold text-app-dim transition-[color,border-color,background] hover:border-[color-mix(in_srgb,var(--accent)_35%,transparent)] hover:text-app-accent"
+            className="cursor-pointer rounded-md border border-app-line bg-app-raised px-2.5 py-1 text-sm font-semibold text-app-dim transition-[color,border-color,background] hover:border-[color-mix(in_srgb,var(--accent)_35%,transparent)] hover:text-app-accent"
             type="button"
             aria-controls="lesson-nida-keyboard"
             aria-expanded={keyboardVisible}
@@ -495,7 +495,7 @@ function LessonSession({
           {keyboardVisible && (
             <>
               <NidaKeyboard active={activeHint} mode="follow" />
-              <p className="hidden text-center text-xs leading-relaxed text-app-dim max-md:block">
+              <p className="hidden text-center font-khmer text-sm leading-relaxed text-app-dim max-md:block">
                 សូមប្រើប្រាស់នៅលើអេក្រង់ធំ​ឬ​កុំព្យូទ័រដែលមានក្ដារចុច។
               </p>
             </>

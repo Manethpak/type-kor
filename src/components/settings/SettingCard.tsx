@@ -15,8 +15,8 @@ export function SettingCard({ icon, title, description, children }: SettingCardP
           {icon}
         </span>
         <div className="min-w-0 pt-0.5">
-          <h3 className="text-sm font-semibold text-app-text">{title}</h3>
-          <p className="mt-1 max-w-xs text-xs leading-relaxed text-app-dim">{description}</p>
+          <h3 className="text-base font-semibold text-app-text">{title}</h3>
+          <p className="mt-1 max-w-xs text-sm leading-relaxed text-app-dim">{description}</p>
         </div>
       </div>
       <div className="shrink-0 self-end sm:self-auto">{children}</div>

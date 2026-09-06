@@ -6,7 +6,7 @@ import { FONT_SIZE_OPTIONS, getFontSizeOption } from "../typing/fontSize";
 import { cx } from "../utils/classNames";
 
 const optionButtonClass =
-  "inline-flex min-h-9 cursor-pointer items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium text-app-dim transition-[color,background,box-shadow] hover:bg-app-hover hover:text-app-text [&_svg]:size-3.5";
+  "inline-flex min-h-9 cursor-pointer items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-app-dim transition-[color,background,box-shadow] hover:bg-app-hover hover:text-app-text [&_svg]:size-3.5";
 const selectedButtonClass = "bg-app-raised text-app-accent! shadow-sm ring-1 ring-app-line";
 const toggleClass =
   "group relative h-6 w-11 shrink-0 cursor-pointer rounded-full bg-app-hover p-1 transition-colors data-[on=true]:bg-app-accent-soft";
@@ -31,7 +31,7 @@ export function SettingsPage({
       </header>
 
       <div className="grid items-start gap-5 lg:grid-cols-5">
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-5">
           <SettingsGroup
             id="appearance-settings"
             eyebrow="Reading"
@@ -130,7 +130,7 @@ export function SettingsPage({
           </SettingsGroup>
         </div>
 
-        <div className="space-y-5 lg:col-span-2">
+        {/* <div className="space-y-5 lg:col-span-2">
           <SettingsGroup
             id="typing-settings"
             eyebrow="Typing"
@@ -202,20 +202,7 @@ export function SettingsPage({
               </button>
             </SettingCard>
           </SettingsGroup>
-
-          {/* <SettingsGroup
-            id="shortcut-settings"
-            eyebrow="Shortcut"
-            title="ផ្លូវកាត់"
-            description="បញ្ជាលំហាត់ដោយមិនចាំបាច់ចាកចេញពីក្ដារចុច។"
-          >
-            <SettingCard icon={<RestartIcon />} title="ចាប់ផ្ដើមឡើងវិញ" description="ប្រើពីអេក្រង់សាកល្បង។">
-              <kbd className="rounded-md border border-b-2 border-app-line bg-app-surface px-2 py-1 font-ui text-xs font-semibold uppercase text-app-soft">
-                esc
-              </kbd>
-            </SettingCard>
-          </SettingsGroup> */}
-        </div>
+        </div> */}
       </div>
 
       <section

@@ -74,7 +74,7 @@ export function ResultView({
           onClick={onRestart}
           aria-label="retry"
         >
-          <RestartIcon /> <span className="max-[560px]:hidden text-sm">ម្ដងទៀត</span>
+          <RestartIcon /> <span className="max-[560px]:hidden text-sm">Enter</span>
         </button>
       </header>
 
@@ -96,7 +96,7 @@ export function ResultView({
                 CPM
               </span>
             </div>
-            <div className="mt-4 flex gap-4 border-t border-app-line pt-2 text-xs">
+            <div className="mt-4 flex gap-4 border-t border-app-line pt-2 text-sm">
               <span className="text-app-dim">
                 raw <b className="ml-1 font-semibold text-app-text">{rawCpm}</b>
               </span>
@@ -119,7 +119,7 @@ export function ResultView({
                 WPM
               </span>
             </div>
-            <div className="mt-4 flex gap-4 border-t border-app-line pt-2 text-xs">
+            <div className="mt-4 flex gap-4 border-t border-app-line pt-2 text-sm">
               <span className="text-app-dim">
                 raw <b className="ml-1 font-semibold text-app-text">{rawWpm}</b>
               </span>

@@ -19,7 +19,7 @@ import { cx } from "../utils/classNames";
 const controlGroupClass =
   "flex h-[42px] items-center rounded-lg border border-app-line bg-app-raised px-1 py-1";
 const modeButtonClass =
-  "cursor-pointer rounded-md px-2 py-1 text-xs font-medium text-app-dim transition-colors hover:bg-app-accent-soft hover:text-app-accent";
+  "cursor-pointer rounded-md px-2 py-1 text-sm font-medium text-app-dim transition-colors hover:bg-app-accent-soft hover:text-app-accent";
 const selectedButtonClass = "bg-app-accent-soft text-app-accent!";
 const difficultyOptions: { difficulty: WordDifficultySelection; label: string }[] = [
   { difficulty: "beginner", label: "កម្រិតដំបូង" },
@@ -57,7 +57,7 @@ export function TypingPage({
 
   useEffect(() => {
     const listener = (event: globalThis.KeyboardEvent) => {
-      if (event.key !== "Escape") return;
+      if (event.key !== "Enter") return;
       event.preventDefault();
       restart();
     };
@@ -117,7 +117,7 @@ export function TypingPage({
                 ))}
               </div>
               <div className={cx(controlGroupClass, "gap-2 px-2")}>
-                <label className="text-sm text-app-text tracking-wide">
+                <label className="text-base text-app-text tracking-wide">
                   កម្រិតពាក្យ
                   <select
                     className="ml-1.5 cursor-pointer rounded-md border-0 bg-app-surface px-1.5 py-1 normal-case tracking-normal text-app-text/80 outline-none focus:ring-1 focus:ring-app-accent"
@@ -289,7 +289,7 @@ export function TypingPage({
           >
             <RestartIcon /> <span>ចាប់ផ្ដើមឡើងវិញ</span>
             <kbd className="rounded-[5px] border border-b-2 border-app-line bg-app-surface px-1.5 py-0.5 font-ui text-xs uppercase text-app-soft">
-              esc
+              Enter
             </kbd>
           </button>
         </>
