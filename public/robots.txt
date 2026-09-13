@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /history
+Disallow: /settings
+Disallow: /og
+
+Sitemap: https://typekor.manethpak.dev/sitemap.xml

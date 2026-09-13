@@ -13,6 +13,7 @@ import { OnboardingPage } from "./pages/OnboardingPage";
 import { OgImagePage } from "./pages/OgImagePage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { TypingPage } from "./pages/TypingPage";
+import { SeoMeta } from "./components/SeoMeta";
 import { historyRepository } from "./storage/history";
 import type { TestResult } from "./storage/types";
 import type { ExperienceMode } from "./learning/types";
@@ -116,6 +117,7 @@ export default function App() {
           path="/test"
           element={
             <ExperienceRoute experience="test" onVisit={setLastExperience}>
+              <SeoMeta page="test" />
               <TypingPage
                 session={typingSession}
                 settings={settings}
@@ -128,6 +130,7 @@ export default function App() {
           path="/learn"
           element={
             <ExperienceRoute experience="learn" onVisit={setLastExperience}>
+              <SeoMeta page="learn" />
               <LearnPage learningState={learningState} onCheckpoint={saveCheckpoint} />
             </ExperienceRoute>
           }
@@ -150,7 +153,15 @@ export default function App() {
             <HistoryPage history={history} speedUnit={settings.speedUnit} onClear={clearHistory} />
           }
         />
-        <Route path="/keyboard-guide" element={<KeyboardGuidePage />} />
+        <Route
+          path="/keyboard-guide"
+          element={
+            <>
+              <SeoMeta page="keyboard" />
+              <KeyboardGuidePage />
+            </>
+          }
+        />
         <Route path="/keyboard" element={<Navigate to="/keyboard-guide" replace />} />
         <Route
           path="/settings"

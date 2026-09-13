@@ -54,6 +54,10 @@ export function LearnPage({
           <h1 id="learn-title" className="m-0 font-khmer text-4xl font-medium">
             រៀនវាយអក្សរខ្មែរ
           </h1>
+          <p className="mb-0 mt-2 max-w-2xl font-khmer text-sm leading-relaxed text-app-dim">
+            មេរៀនវាយអក្សរខ្មែរ សម្រាប់អ្នកចាប់ផ្ដើម និងអ្នកចង់បង្កើនល្បឿនជាមួយក្ដារចុច NIDA។
+            <span className="ml-1 font-ui">Khmer typing lessons for every level.</span>
+          </p>
         </div>
         <div className="rounded-xl border border-app-line bg-app-raised px-4 py-3 text-right">
           <b className="block text-xl font-medium text-app-accent [font-variant-numeric:tabular-nums]">
