@@ -302,6 +302,35 @@ describe("timed typing test", () => {
     });
   });
 
+  it("distinguishes a completed lesson below mastery from a mastered lesson", () => {
+    localStorage.setItem(
+      "typekor:learning",
+      JSON.stringify({
+        schemaVersion: 2,
+        progress: {
+          "home-anchors": {
+            attempts: 1,
+            bestAccuracy: 89,
+            completedAt: "2026-08-10T09:00:00.000Z",
+            masteredAt: null,
+          },
+          "home-reach": {
+            attempts: 1,
+            bestAccuracy: 90,
+            completedAt: "2026-08-10T09:00:00.000Z",
+            masteredAt: "2026-08-10T09:00:00.000Z",
+          },
+        },
+        checkpoint: null,
+      }),
+    );
+
+    renderApp("/learn");
+
+    expect(screen.getByLabelText("Completed")).toHaveTextContent("−");
+    expect(screen.getByLabelText("Mastered")).toHaveTextContent("✓");
+  });
+
   it("focuses each lesson typing area until the learner clicks elsewhere", () => {
     renderApp("/learn/home-anchors");
     const input = screen.getByLabelText("Type ក");

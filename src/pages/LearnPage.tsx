@@ -126,6 +126,7 @@ export function LearnPage({
               {unit.lessons.map((lesson, lessonIndex) => {
                 const progress = learningState.progress[lesson.id];
                 const isMastered = Boolean(progress?.masteredAt);
+                const isCompleted = Boolean(progress?.completedAt);
                 const isCurrent = learningState.checkpoint?.lessonId === lesson.id;
                 return (
                   <button
@@ -140,17 +141,24 @@ export function LearnPage({
                       <span
                         className={cx(
                           "grid size-5 place-items-center rounded-full border border-app-line text-xs text-app-dim",
-                          isMastered &&
+                          (isMastered || isCompleted) &&
                             "border-[color-mix(in_srgb,var(--accent)_40%,transparent)] bg-app-accent-soft text-app-accent",
                           isCurrent &&
+                            !isCompleted &&
                             !isMastered &&
                             "animate-blink border-app-accent text-app-accent",
                         )}
                         aria-label={
-                          isMastered ? "Mastered" : isCurrent ? "In progress" : "Not started"
+                          isMastered
+                            ? "Mastered"
+                            : isCompleted
+                              ? "Completed"
+                              : isCurrent
+                                ? "In progress"
+                                : "Not started"
                         }
                       >
-                        {isMastered ? "✓" : isCurrent ? "•" : ""}
+                        {isMastered ? "✓" : isCompleted ? "−" : isCurrent ? "•" : ""}
                       </span>
                     </span>
                     <strong className="block font-khmer text-lg font-medium transition-colors group-hover:text-app-accent">
