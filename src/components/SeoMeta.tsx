@@ -4,17 +4,17 @@ const siteUrl = "https://typekor.manethpak.dev";
 
 const pageMeta = {
   learn: {
-    title: "រៀនវាយអក្សរខ្មែរ | Khmer Typing Lessons | TypeKor",
+    title: "Khmer Typing Lessons | រៀនវាយអក្សរខ្មែរ | TypeKor",
     description:
-      "រៀនវាយអក្សរខ្មែរតាមជំហានជាមួយមេរៀនអនុវត្ត និងប្លង់ក្ដារចុច NIDA។ Khmer typing lessons for beginners and advanced learners.",
+      "Free Khmer typing lessons for beginners and advanced learners. រៀនវាយអក្សរខ្មែរតាមជំហាន និងហាត់ជាមួយក្ដារចុច NIDA។",
   },
   keyboard: {
-    title: "ក្ដារចុចខ្មែរ NIDA | Khmer Keyboard Guide | TypeKor",
-    description: "ស្វែងយល់ពីប្លង់ក្ដារចុចខ្មែរ NIDA ស្រទាប់ Base, Shift និង Right Alt ដើម្បីវាយអក្សរខ្មែរបានត្រឹមត្រូវ។",
+    title: "Khmer NIDA Keyboard Guide | ប្លង់ក្ដារចុចខ្មែរ | TypeKor",
+    description: "Learn the Khmer NIDA keyboard layout, including Base, Shift, and Right Alt layers. ស្វែងយល់ពីប្លង់ក្ដារចុចខ្មែរ និងរបៀបវាយអក្សរឱ្យបានត្រឹមត្រូវ។",
   },
   test: {
-    title: "សាកល្បងវាយអក្សរខ្មែរ | Khmer Typing Test | TypeKor",
-    description: "សាកល្បងវាយអក្សរខ្មែរ និងវាស់ល្បឿននិងភាពត្រឹមត្រូវរបស់អ្នកជាមួយ TypeKor។",
+    title: "Khmer Typing Test | សាកល្បងវាយអក្សរខ្មែរ | TypeKor",
+    description: "Take a free Khmer typing test to measure your speed and accuracy. សាកល្បងវាយអក្សរខ្មែរ ហាត់វាយ និងមើលលទ្ធផលភ្លាមៗ។",
   },
 };
 
@@ -37,10 +37,14 @@ export function SeoMeta({ page }: { page: keyof typeof pageMeta }) {
     const ogDescription = document.querySelector('meta[property="og:description"]');
     ogDescription?.setAttribute("content", metadata.description);
     const ogUrl = document.querySelector('meta[property="og:url"]');
-    ogUrl?.setAttribute(
-      "content",
-      `${siteUrl}/${page === "test" ? "test" : page === "learn" ? "learn" : "keyboard-guide"}`,
-    );
+    const pageUrl = `${siteUrl}/${page === "test" ? "test" : page === "learn" ? "learn" : "keyboard-guide"}`;
+    ogUrl?.setAttribute("content", pageUrl);
+    document
+      .querySelector('meta[name="twitter:title"]')
+      ?.setAttribute("content", metadata.title);
+    document
+      .querySelector('meta[name="twitter:description"]')
+      ?.setAttribute("content", metadata.description);
   }, [page]);
 
   return null;

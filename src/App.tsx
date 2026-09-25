@@ -94,7 +94,8 @@ export default function App() {
 
   if (location.pathname === "/og") return <OgImagePage />;
 
-  if (!appState.onboardingCompleted) {
+  // Keep deep links crawlable and usable on a fresh browser; onboarding belongs to the home route.
+  if (!appState.onboardingCompleted && location.pathname === "/") {
     return (
       <OnboardingPage
         theme={settings.theme}

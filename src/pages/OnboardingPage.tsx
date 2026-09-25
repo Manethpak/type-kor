@@ -37,10 +37,11 @@ export function OnboardingPage({
           </div>
           <h1
             id="welcome-title"
-            className="text-lg font-semibold uppercase tracking-widest text-app-accent"
+            className="font-khmer text-3xl font-medium tracking-tight text-app-accent"
           >
-            Type ក
+            រៀនវាយអក្សរខ្មែរ
           </h1>
+          <p className="mt-1 text-sm font-medium text-app-dim">Khmer typing practice, lessons, and speed test</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3 max-[700px]:grid-cols-1">
@@ -90,6 +91,42 @@ export function OnboardingPage({
             </span>
           </button>
         </div>
+
+        <section
+          className="mx-auto mt-9 max-w-3xl border-t border-app-line pt-6 text-center"
+          aria-labelledby="practice-info-title"
+        >
+          <h2 id="practice-info-title" className="font-khmer text-xl font-medium text-app-text">
+            ហាត់វាយអក្សរខ្មែរ និងរៀនក្ដារចុច NIDA ដោយឥតគិតថ្លៃ
+          </h2>
+          <p className="mx-auto mt-2 max-w-2xl font-khmer text-sm leading-relaxed text-app-soft">
+            TypeKor ជួយអ្នករៀនវាយអក្សរខ្មែរតាមមេរៀនជាជំហានៗ សាកល្បងល្បឿនវាយ និងពិនិត្យភាពត្រឹមត្រូវ។
+            អ្នកអាចរៀនទីតាំងគ្រាប់ចុចតាមប្លង់ក្ដារចុច NIDA ហើយហាត់ពាក្យខ្មែរពីកម្រិតដំបូងទៅកម្រិតខ្ពស់។
+          </p>
+          <nav
+            className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm font-medium text-app-accent"
+            aria-label="Explore Khmer typing tools"
+          >
+            <a
+              className="underline decoration-app-line underline-offset-4 hover:decoration-current"
+              href="/learn"
+            >
+              រៀនវាយអក្សរខ្មែរ · Khmer typing lessons
+            </a>
+            <a
+              className="underline decoration-app-line underline-offset-4 hover:decoration-current"
+              href="/test"
+            >
+              សាកល្បងវាយ · Khmer typing test
+            </a>
+            <a
+              className="underline decoration-app-line underline-offset-4 hover:decoration-current"
+              href="/keyboard-guide"
+            >
+              មគ្គុទ្ទេសក៍ក្ដារចុច NIDA
+            </a>
+          </nav>
+        </section>
       </section>
     </main>
   );

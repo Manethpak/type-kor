@@ -79,6 +79,9 @@ export function TypingPage({
 
   return (
     <section className="w-full animate-arrive" aria-label="Khmer typing test">
+      <h1 className="hidden">
+        សាកល្បងវាយអក្សរខ្មែរ <span>Khmer Typing Test</span>
+      </h1>
       {!session.result && (
         <>
           <div className="mb-7 flex min-h-12 items-end justify-between max-[760px]:items-start max-[760px]:gap-4.5">
