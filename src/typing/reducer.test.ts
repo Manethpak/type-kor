@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { segmentKhmer } from "../engine/khmer";
+import { clusterKhmerText } from "../engine/khmer";
 import { calculateResult, createTypingState, typingReducer } from "./reducer";
 
 describe("typing reducer", () => {
-  it("starts on first input and commits one orthographic cluster", () => {
-    let state = createTypingState(segmentKhmer("ខ្ញុំ អ្នក"));
+  it("starts on first input and commits one Khmer Character Cluster", () => {
+    let state = createTypingState(clusterKhmerText("ខ្ញុំ អ្នក"));
     state = typingReducer(state, { type: "start", at: 1_000 });
     state = typingReducer(state, { type: "pending", value: "ខ្", status: "prefix" });
     expect(state.currentIndex).toBe(0);
@@ -16,7 +16,7 @@ describe("typing reducer", () => {
   });
 
   it("reopens a committed cluster without erasing the cumulative attempt", () => {
-    let state = createTypingState(segmentKhmer("ស៊ី"));
+    let state = createTypingState(clusterKhmerText("ស៊ី"));
     state = typingReducer(state, { type: "start", at: 1_000 });
     state = typingReducer(state, { type: "commit", at: 1_100, attempt: "ស៊ី", correct: true });
     state = typingReducer(state, { type: "reopen", at: 1_200 });
@@ -29,7 +29,7 @@ describe("typing reducer", () => {
   });
 
   it("uses input-unit accuracy and retains corrected errors", () => {
-    let state = createTypingState(segmentKhmer("ខ្ញុំ"));
+    let state = createTypingState(clusterKhmerText("ខ្ញុំ"));
     state = typingReducer(state, { type: "start", at: 1_000 });
     state = typingReducer(state, {
       type: "input",
@@ -68,7 +68,7 @@ describe("typing reducer", () => {
 
   it("includes the selected word difficulty in completed results", () => {
     const state = {
-      ...createTypingState(segmentKhmer("ខ្មែរ")),
+      ...createTypingState(clusterKhmerText("ខ្មែរ")),
       startedAt: 1_000,
       endedAt: 2_000,
       finished: true,
@@ -82,14 +82,14 @@ describe("typing reducer", () => {
   });
 
   it("finishes a running timed test at the supplied deadline", () => {
-    let state = createTypingState(segmentKhmer("ខ្មែរ"));
+    let state = createTypingState(clusterKhmerText("ខ្មែរ"));
     state = typingReducer(state, { type: "start", at: 1_000 });
     state = typingReducer(state, { type: "finish", at: 16_000 });
     expect(state).toMatchObject({ startedAt: 1_000, endedAt: 16_000, finished: true });
   });
 
   it("records the final commit time when the prompt is completed", () => {
-    const prompt = segmentKhmer("ខ្មែរ");
+    const prompt = clusterKhmerText("ខ្មែរ");
     let state = createTypingState(prompt);
     state = typingReducer(state, { type: "start", at: 1_000 });
     prompt.forEach((cluster, index) => {
@@ -106,7 +106,7 @@ describe("typing reducer", () => {
 
   it("derives cumulative and raw interval analytics from timestamped events", () => {
     const state = {
-      ...createTypingState(segmentKhmer("ខ្មែរ")),
+      ...createTypingState(clusterKhmerText("ខ្មែរ")),
       startedAt: 0,
       endedAt: 2_000,
       correctClusters: 3,
@@ -162,7 +162,7 @@ describe("typing reducer", () => {
   });
 
   it("adds a final partial-second sample to completed results", () => {
-    const prompt = segmentKhmer("ខ្មែរ ខ្មែរ");
+    const prompt = clusterKhmerText("ខ្មែរ ខ្មែរ");
     let state = createTypingState(prompt);
     state = typingReducer(state, { type: "start", at: 1_000 });
     prompt.forEach((cluster, index) => {
@@ -189,7 +189,7 @@ describe("typing reducer", () => {
   });
 
   it("calculates burst speed over a rolling five-second window", () => {
-    let state = createTypingState(segmentKhmer("ខ្មែរ"));
+    let state = createTypingState(clusterKhmerText("ខ្មែរ"));
     state = typingReducer(state, { type: "start", at: 1_000 });
     state = typingReducer(state, {
       type: "input",
@@ -204,7 +204,7 @@ describe("typing reducer", () => {
   });
 
   it("counts correct normalized code points as conventional five-character words", () => {
-    let state = createTypingState(segmentKhmer("ខ្ញុំ អ្នក"));
+    let state = createTypingState(clusterKhmerText("ខ្ញុំ អ្នក"));
     state = typingReducer(state, { type: "start", at: 0 });
     state = typingReducer(state, { type: "commit", at: 1_000, attempt: "ខ្ញុំ", correct: true });
     state = typingReducer(state, { type: "commit", at: 1_100, attempt: " ", correct: true });

@@ -1,14 +1,14 @@
 /**
- * Modern Khmer structural normalization.
+ * Khmer Character Clustering (KCC) and modern Khmer structural normalization.
  *
- * Ported from the reference algorithm in Unicode Technical Note #61 v2,
+ * Structural normalization is ported from Unicode Technical Note #61 v2,
  * Copyright (c) 2021-2024 SIL Global, used under the MIT License.
  * https://www.unicode.org/notes/tn61/
  */
 import type {
   KhmerTextEngine,
   MatchStatus,
-  OrthographicCluster,
+  KhmerCharacterCluster,
   ValidationIssue,
   ValidationResult,
 } from "./types";
@@ -169,50 +169,41 @@ export function canonicalizeKhmer(input: string): string {
   return result + input.slice(previousEnd).normalize("NFC");
 }
 
-function segmentNormalized(input: string): OrthographicCluster[] {
-  const characters = Array.from(input);
-  const offsets: number[] = [];
-  let utf16Offset = 0;
-  for (const character of characters) {
-    offsets.push(utf16Offset);
-    utf16Offset += character.length;
-  }
-  offsets.push(utf16Offset);
+const KCC_REGISTER_SHIFT = "[\\u17C9\\u17CA]";
+const KCC_SIGN = "[\\u17C6-\\u17C8\\u17CB\\u17CD-\\u17D1\\u17D3\\u17DD]";
 
-  const categories = characters.map(categoryFor);
-  for (let index = 1; index < characters.length; index += 1) {
-    if (
-      (characters[index - 1] === "\u17D2" || characters[index - 1] === "\u200D") &&
-      categories[index] === Category.Base
-    )
-      categories[index] = categories[index - 1];
-  }
+/**
+ * KCC grammar (not word segmentation):
+ * <C|I> [Robat|Regshift] {COENG <C|I> [Regshift]}
+ * [[ZWJ|ZWNJ] V] {S} [ZWJ COENG <C|I>].
+ * Brackets mean optional; braces mean zero to two occurrences.
+ * Unmatched characters remain standalone tokens so malformed input is not lost.
+ */
+const KCC_PATTERN = new RegExp(
+  `${B}[\\u17CC\\u17C9\\u17CA]?` +
+    `(?:\\u17D2${B}${KCC_REGISTER_SHIFT}?){0,2}` +
+    `(?:[\\u200C\\u200D]?[\\u17B6-\\u17C5])?` +
+    `${KCC_SIGN}{0,2}` +
+    `(?:\\u200D\\u17D2${B})?` +
+    "|[\\s\\S]",
+  "gu",
+);
 
-  const clusters: OrthographicCluster[] = [];
-  let index = 0;
-  while (index < characters.length) {
-    const start = index;
-    const isBase = categories[index] === Category.Base;
-    if (isBase) {
-      index += 1;
-      while (index < characters.length && categories[index] > Category.Base) index += 1;
-    } else {
-      index += 1;
-    }
-    const display = characters.slice(start, index).join("");
+/** Cluster before structural reordering, which can move ZWJ out of its KCC slot. */
+export function clusterKhmerText(input: string): KhmerCharacterCluster[] {
+  input = normalizeTestBoundaries(input);
+  const clusters: KhmerCharacterCluster[] = [];
+  for (const match of input.matchAll(KCC_PATTERN)) {
+    const display = match[0];
     clusters.push({
       display,
-      comparisonKey: display,
-      start: offsets[start],
-      end: offsets[index],
+      comparisonKey: canonicalizeKhmer(display),
+      start: match.index,
+      end: match.index + display.length,
       kind: /^\s+$/u.test(display) ? "space" : KHMER_CHAR.test(display) ? "khmer" : "punctuation",
     });
   }
   return clusters;
-}
-
-export function segmentKhmer(input: string): OrthographicCluster[] {
-  return segmentNormalized(canonicalizeKhmer(input));
 }
 
 export function validateKhmer(input: string): ValidationResult {
@@ -254,15 +245,19 @@ export function validateKhmer(input: string): ValidationResult {
     offset += character.length;
   }
 
-  for (const cluster of segmentNormalized(normalized)) {
-    if (cluster.kind !== "khmer") continue;
-    const vowels = Array.from(cluster.display).filter((character) => {
+  // Validation also needs to see invalid sequences (such as two vowels), which
+  // the KCC grammar deliberately splits into separate tokens.
+  const validationRuns = normalized.matchAll(
+    /[\u1780-\u17A2\u17A5-\u17B3](?:\u17D2[\u1780-\u17A2\u17A5-\u17B3]|[\u17B4-\u17D1\u17D3\u17DD\u200C\u200D])*/gu,
+  );
+  for (const cluster of validationRuns) {
+    const vowels = Array.from(cluster[0]).filter((character) => {
       const category = categoryFor(character);
       return category >= Category.VPre && category <= Category.VPost;
     });
     if (vowels.length > 1) {
       issues.push({
-        index: cluster.start,
+        index: cluster.index,
         code: "duplicate-vowel",
         message: "Cluster contains multiple dependent vowels",
       });
@@ -275,11 +270,18 @@ export function validateKhmer(input: string): ValidationResult {
 export const khmerTextEngine: KhmerTextEngine = {
   canonicalize: canonicalizeKhmer,
   validate: validateKhmer,
-  segment: segmentKhmer,
+  cluster: clusterKhmerText,
   compare(target, rawAttempt): MatchStatus {
     const attempt = canonicalizeKhmer(rawAttempt);
     if (attempt === target.comparisonKey) return "correct";
-    if (attempt.length === 0 || target.comparisonKey.startsWith(attempt)) return "prefix";
+    // A valid display prefix can reorder during normalization (notably ZWJ
+    // before a vowel or a register shifter after a subscript).
+    if (
+      attempt.length === 0 ||
+      target.comparisonKey.startsWith(attempt) ||
+      target.display.startsWith(normalizeTestBoundaries(rawAttempt))
+    )
+      return "prefix";
     return "incorrect";
   },
 };

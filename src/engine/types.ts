@@ -1,8 +1,10 @@
 export type MatchStatus = "prefix" | "correct" | "incorrect";
 
-export interface OrthographicCluster {
+/** A Khmer Character Cluster (KCC), or a standalone boundary/non-cluster token. */
+export interface KhmerCharacterCluster {
   display: string;
   comparisonKey: string;
+  /** UTF-16 offsets into input after test-boundary normalization (which preserves length). */
   start: number;
   end: number;
   kind: "khmer" | "space" | "punctuation";
@@ -23,6 +25,6 @@ export interface ValidationResult {
 export interface KhmerTextEngine {
   canonicalize(input: string): string;
   validate(input: string): ValidationResult;
-  segment(input: string): OrthographicCluster[];
-  compare(target: OrthographicCluster, rawAttempt: string): MatchStatus;
+  cluster(input: string): KhmerCharacterCluster[];
+  compare(target: KhmerCharacterCluster, rawAttempt: string): MatchStatus;
 }

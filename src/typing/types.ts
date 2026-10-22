@@ -1,6 +1,6 @@
 import type { WordDifficulty } from "../data/wordList";
 import type { WordDifficultySelection } from "../data/wordList";
-import type { OrthographicCluster } from "../engine/types";
+import type { KhmerCharacterCluster } from "../engine/types";
 import type { TestResult } from "../storage/types";
 
 export type ClusterState = "pending" | "correct" | "incorrect";
@@ -17,7 +17,7 @@ export interface TypingAnalyticsEvent {
 }
 
 export interface TypingState {
-  prompt: OrthographicCluster[];
+  prompt: KhmerCharacterCluster[];
   states: ClusterState[];
   attempts: string[];
   currentIndex: number;
@@ -50,7 +50,7 @@ export type TypingAction =
   | { type: "commit"; at: number; attempt: string; correct: boolean }
   | { type: "reopen"; at: number }
   | { type: "finish"; at: number }
-  | { type: "reset"; prompt: OrthographicCluster[] };
+  | { type: "reset"; prompt: KhmerCharacterCluster[] };
 
 export type FontSize = "small" | "medium" | "large";
 

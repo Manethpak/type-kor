@@ -1,9 +1,9 @@
 import { difficultyWordLists, generateMixedWords, generateWords } from "../data/wordList";
 import { khmerTextEngine } from "../engine/khmer";
-import type { OrthographicCluster } from "../engine/types";
+import type { KhmerCharacterCluster } from "../engine/types";
 import type { TestSettings } from "./types";
 
-export function createTypingPrompt(settings: TestSettings, seed: number): OrthographicCluster[] {
+export function createTypingPrompt(settings: TestSettings, seed: number): KhmerCharacterCluster[] {
   const count = settings.mode === "words" ? settings.modeValue : 90;
   const selectedWords =
     settings.wordDifficulty === "mixed"
@@ -12,5 +12,5 @@ export function createTypingPrompt(settings: TestSettings, seed: number): Orthog
   const words = selectedWords.map((word, index) =>
     settings.punctuation && index > 0 && (index + 1) % 12 === 0 ? `${word}។` : word,
   );
-  return khmerTextEngine.segment(words.join(" "));
+  return khmerTextEngine.cluster(words.join(" "));
 }

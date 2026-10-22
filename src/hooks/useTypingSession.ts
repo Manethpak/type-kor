@@ -118,7 +118,7 @@ export function useTypingSession(settings: TestSettings, onComplete: (result: Te
           break;
         }
 
-        const attempts = khmerTextEngine.segment(remaining);
+        const attempts = khmerTextEngine.cluster(remaining);
         if (attempts.length > 1) {
           const first = attempts[0];
           const consumed = remaining.slice(0, first.end);

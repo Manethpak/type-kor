@@ -1,5 +1,5 @@
 import { khmerTextEngine } from "../engine/khmer";
-import type { OrthographicCluster } from "../engine/types";
+import type { KhmerCharacterCluster } from "../engine/types";
 
 export function getInputDelta(previousValue: string, nextValue: string) {
   const previous = Array.from(previousValue);
@@ -25,7 +25,11 @@ export function getInputDelta(previousValue: string, nextValue: string) {
   };
 }
 
-function classifyPendingInput(prompt: OrthographicCluster[], startIndex: number, rawValue: string) {
+function classifyPendingInput(
+  prompt: KhmerCharacterCluster[],
+  startIndex: number,
+  rawValue: string,
+) {
   let remaining = rawValue;
   let index = startIndex;
   let status: "prefix" | "incorrect" = "prefix";
@@ -44,7 +48,7 @@ function classifyPendingInput(prompt: OrthographicCluster[], startIndex: number,
       break;
     }
 
-    const attempts = khmerTextEngine.segment(remaining);
+    const attempts = khmerTextEngine.cluster(remaining);
     if (attempts.length > 1) {
       remaining = remaining.slice(attempts[0].end);
       index += 1;
@@ -59,7 +63,7 @@ function classifyPendingInput(prompt: OrthographicCluster[], startIndex: number,
 }
 
 export function countInsertedInputErrors(
-  prompt: OrthographicCluster[],
+  prompt: KhmerCharacterCluster[],
   currentIndex: number,
   retainedPrefix: string,
   inserted: string[],

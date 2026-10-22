@@ -1,9 +1,9 @@
-import type { OrthographicCluster } from "../engine/types";
+import type { KhmerCharacterCluster } from "../engine/types";
 import type { WordDifficultySelection } from "../data/wordList";
 import type { PerformanceSample, TestResult } from "../storage/types";
 import type { TypingAction, TypingAnalyticsEvent, TypingState } from "./types";
 
-export function createTypingState(prompt: OrthographicCluster[]): TypingState {
+export function createTypingState(prompt: KhmerCharacterCluster[]): TypingState {
   return {
     prompt,
     states: prompt.map(() => "pending"),
